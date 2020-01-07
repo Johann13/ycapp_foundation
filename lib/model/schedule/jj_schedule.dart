@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
-import 'package:ycapp_foundation/ui/color_extensions.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJVodLink {

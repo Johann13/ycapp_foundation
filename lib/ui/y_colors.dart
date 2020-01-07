@@ -109,6 +109,7 @@ class YColors {
       900: const Color(0xFFe15100),
     },
   );
+
   static double mapTo(Color color) {
     return (color.value / (255 * 255 * 255 * 255)).toDouble();
   }
@@ -139,9 +140,10 @@ extension YColorExtension on Color {
     return TinyColor(this).tint(l).color;
   }
 
+  double get luminance =>
+      (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue) / 255;
+
   Color get textColor {
-    double luminance =
-        (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue) / 255;
     if (luminance > 0.5) {
       return Colors.black87;
     } else {
@@ -192,6 +194,16 @@ extension YColorExtension on Color {
       return Colors.white;
     } else {
       return Colors.black87;
+    }
+  }
+
+  double contrast(Color c) {
+    double l1 = c.luminance;
+    double l2 = this.luminance;
+    if (l1 > l2) {
+      return (l1 + 0.05) / (l2 + 0.05);
+    } else {
+      return (l2 + 0.05) / (l1 + 0.05);
     }
   }
 }
