@@ -67,7 +67,7 @@ class YCSlot extends YogconBase {
   List<String> creator;
   int stage;
 
-  YCSlot.fromMap(String id, Map map) :super.fromMap(id, map) {
+  YCSlot.fromMap(Map map) :super.fromMap(map) {
     title = map['title'];
     subTitle = map['subTitle'];
     creator = [];

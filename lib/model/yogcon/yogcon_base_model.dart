@@ -1,10 +1,9 @@
 class YogconBase {
-  String id;
   int day;
   String _start;
   String _end;
 
-  YogconBase.fromMap(this.id, Map map) {
+  YogconBase.fromMap(Map map) {
     _start = map['start'];
     _end = map['end'];
     day = map['day'];

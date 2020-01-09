@@ -5,9 +5,9 @@ class Signing extends YogconBase {
   SigningTable a;
   SigningTable b;
 
-  Signing.fromMap(String id, Map map) : super.fromMap(id, map) {
-    a = SigningTable.fromMap(id, map['a']);
-    b = SigningTable.fromMap(id, map['b']);
+  Signing.fromMap( Map map) : super.fromMap( map) {
+    a = SigningTable.fromMap(map['a']);
+    b = SigningTable.fromMap(map['b']);
   }
 }
 
@@ -41,12 +41,10 @@ class SigningDay extends YogconContainer<Signing> {
 }
 
 class SigningTable {
-  String id;
   List<String> creator;
   String title;
 
-  SigningTable.fromMap(String id, Map map) {
-    this.id = id;
+  SigningTable.fromMap(Map map) {
     title = map['title'];
     creator = [];
     if (map.containsKey('creator')) {
