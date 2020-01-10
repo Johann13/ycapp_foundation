@@ -1,4 +1,6 @@
-class YogconBase {
+import 'package:ycapp_foundation/model/base_model.dart';
+
+abstract class YogconBase extends BaseModel{
   int day;
   String _start;
   String _end;
@@ -51,9 +53,21 @@ class YogconBase {
   Duration get duration => end.difference(start);
 
   double get height => duration.inMinutes / 15;
+
+  @override
+  String get id => '${day}_$_start';
+
+  @override
+  Map toJson() {
+    return {
+      'start': _start,
+      'end': _end,
+      'day': day,
+    };
+  }
 }
 
-abstract class YogconContainer<T extends YogconBase> {
+abstract class YogconContainer<T extends YogconBase> extends BaseModel {
   T get last;
 
   T get first;

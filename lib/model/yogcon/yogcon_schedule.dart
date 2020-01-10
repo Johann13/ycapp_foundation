@@ -1,10 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ycapp_foundation/model/base_model.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 import 'package:ycapp_foundation/model/yogcon/yogcon_base_model.dart';
 
-class YCSchedule {
+class YCSchedule extends BaseModel{
   YCDay sa;
   YCDay su;
 
@@ -20,6 +21,16 @@ class YCSchedule {
   su.slots,
   ];
 
+  @override
+  String get id => 'ycschedule';
+
+  @override
+  Map toJson() {
+    return {
+      'sa': sa.toJson(),
+      'su': su.toJson(),
+    };
+  }
 
 }
 
@@ -59,6 +70,15 @@ class YCDay extends YogconContainer<YCSlot> {
   @override
   int get height => duration.inMinutes ~/ 15;
 
+  @override
+  String get id => 'ycscheduleday${first.day}';
+
+  @override
+  Map toJson() {
+    return {
+      'slots': slots.map((s) => s.toJson()).toList(),
+    };
+  }
 }
 
 class YCSlot extends YogconBase {
@@ -106,4 +126,17 @@ class YCSlot extends YogconBase {
     return YColors.primaryColorPallet;
   }
 
+  @override
+  String get id => '${day}_${stage}_$s';
+
+  @override
+  Map toJson() {
+    return super.toJson()
+      ..addAll({
+        'title': title,
+        'subTitle': subTitle,
+        'creator': creator,
+        'stage': stage,
+      });
+  }
 }

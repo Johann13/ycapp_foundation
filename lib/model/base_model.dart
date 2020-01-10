@@ -1,6 +1,4 @@
-
-abstract class BaseModel{
-
+abstract class BaseModel {
   String get id;
 
   Map toJson();
