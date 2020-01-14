@@ -1,5 +1,6 @@
 import 'package:ycapp_foundation/model/channel/channel.dart';
 import 'package:ycapp_foundation/model/channel/image_quality.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
 
 class YoutubeChannel extends Channel {
   String youtubeId;
@@ -14,8 +15,7 @@ class YoutubeChannel extends Channel {
       youtubeId = map['youtubeId'];
     }
     if (map.containsKey('updatedStatsAt')) {
-      updatedStatsAt =
-          DateTime.fromMillisecondsSinceEpoch(map['updatedStatsAt']);
+      updatedStatsAt = getDate(map['updatedStatsAt']);
     }
     if (map.containsKey('snippet')) {
       if (map['snippet'] != null) {
@@ -95,7 +95,7 @@ class Snippet {
       this.desc = map['desc'];
     }
     if (map.containsKey('publishedAt')) {
-      //this.publishedAt = DateTime.fromMillisecondsSinceEpoch(map['publishedAt']);
+      this.publishedAt = getDate(map['publishedAt']);
     }
     if (map.containsKey('thumbnails')) {
       Map tmap = map['thumbnails'];
@@ -266,8 +266,7 @@ class Video {
     youtubeId = map['snippet']['channelId'];
     title = map['snippet']['title'];
     desc = map['snippet']['description'];
-    publishedAt =
-        DateTime.fromMillisecondsSinceEpoch(map['snippet']['publishedAt']);
+    publishedAt = getDate(map['snippet']['publishedAt']);
     defaultThumb = Thumb.fromMap(map['snippet']['thumbnails']['default']);
     mediumThumb = Thumb.fromMap(map['snippet']['thumbnails']['medium']);
     highThumb = Thumb.fromMap(map['snippet']['thumbnails']['high']);

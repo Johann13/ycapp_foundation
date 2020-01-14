@@ -17,6 +17,9 @@ class NewsLink {
     }
   }
 
+  String get url => _url;
+  String get route => _route;
+
   bool get hasUrl => _url != null && _url.isNotEmpty;
 
   bool get hasRoute => _route != null && _route.isNotEmpty;

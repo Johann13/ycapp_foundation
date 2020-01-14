@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:ycapp_foundation/model/channel/channel_lib.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
@@ -174,23 +175,7 @@ class ScheduleSlot {
       min = map['min'];
     }
     if (map.containsKey('lastUpdate')) {
-      if (map['lastUpdate'] is int) {
-        lastUpdate = DateTime.fromMillisecondsSinceEpoch(map['lastUpdate']);
-      } else if (map['lastUpdate'] is Timestamp) {
-        Timestamp t = map['lastUpdate'];
-        lastUpdate = t.toDate();
-      } else if (map['lastUpdate'] is Map) {
-        Map date = map['lastUpdate'];
-        if (date.containsKey('_seconds')) {
-          lastUpdate = DateTime.fromMillisecondsSinceEpoch(
-              map['lastUpdate']['_seconds'] * 1000);
-        } else if (date.containsKey('seconds')) {
-          lastUpdate = DateTime.fromMillisecondsSinceEpoch(
-              map['lastUpdate']['seconds'] * 1000);
-        }
-      } else {
-        lastUpdate = map['lastUpdate'];
-      }
+      lastUpdate = getDate(map['lastUpdate']);
     }
     if (map.containsKey('image') &&
         map.containsKey('imageAuthor') &&

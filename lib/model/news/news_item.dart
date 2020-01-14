@@ -1,4 +1,5 @@
 
+import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/model/news/news_link.dart';
 
 Map<String, String> filterChoices = {
@@ -46,8 +47,7 @@ class News {
       links = list.map((l) => NewsLink.fromMap(l)).toList();
     }
     if (map.containsKey('createdAt')) {
-      //Timestamp t = map['createdAt'];
-      //createdAt = t.toDate();
+      createdAt = getDate(map['createdAt']);
     }
     if (map.containsKey('tags')) {
       List list = map['tags'];

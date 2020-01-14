@@ -1,4 +1,5 @@
 import 'package:ycapp_foundation/model/channel/channel.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
 
 class TwitchChannel extends Channel {
   TwitchData twitchData;
@@ -183,10 +184,10 @@ class TwitchData {
       this.description = map['description'];
     }
     if (map.containsKey('createdAt')) {
-      this.createdAt = DateTime.fromMillisecondsSinceEpoch(map['createdAt']);
+      this.createdAt = getDate(map['createdAt']);
     }
     if (map.containsKey('updatedAt')) {
-      this.updatedAt = DateTime.fromMillisecondsSinceEpoch(map['updatedAt']);
+      this.updatedAt = getDate(map['updatedAt']);
     }
     if (map.containsKey('profileImage')) {
       this.profileImage = map['profileImage'];
@@ -247,7 +248,7 @@ class TwitchStream {
       gameId = map['gameId'];
     }
     if (map.containsKey('startedAt')) {
-      startedAt = DateTime.fromMillisecondsSinceEpoch(map['startedAt']);
+      startedAt = getDate(map['startedAt']);
     }
     if (map.containsKey('thumbnail')) {
       _thumbnail = map['thumbnail'];
@@ -262,7 +263,7 @@ class TwitchStream {
       viewerCount = map['viewerCount'];
     }
     if (map.containsKey('endedAt')) {
-      _endedAt = DateTime.fromMillisecondsSinceEpoch(map['endedAt']);
+      _endedAt = getDate(map['endedAt']);
     }
   }
 
@@ -360,7 +361,7 @@ class TwitchVideo {
     }
     if (map.containsKey('publishedAt'))
       this.publishedAt =
-          DateTime.fromMillisecondsSinceEpoch(map['publishedAt']);
+          getDate(map['publishedAt']);
     if (map.containsKey('thumbnail')) this._thumbnail = map['thumbnail'];
     if (map.containsKey('title')) this.title = map['title'];
     if (map.containsKey('twitchId')) this.twitchId = map['twitchId'];
@@ -445,7 +446,7 @@ class TwitchClip {
   TwitchClip.fromMap(Map map) {
     if (map.containsKey('publishedAt'))
       this.publishedAt =
-          DateTime.fromMillisecondsSinceEpoch(map['publishedAt']);
+          getDate(map['publishedAt']);
     if (map.containsKey('thumbnail')) this._thumbnail = map['thumbnail'];
     if (map.containsKey('title')) this.title = map['title'];
     if (map.containsKey('twitchId')) this.twitchId = map['twitchId'];
@@ -540,7 +541,7 @@ class TwitchChannelFollow {
       name = map['name'];
     }
     if (map.containsKey('date')) {
-      date = DateTime.fromMillisecondsSinceEpoch(map['mills']);
+      date = getDate(map['mills']);
     }
     if (map.containsKey('diff')) {
       diff = map['diff'];

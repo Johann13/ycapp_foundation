@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
@@ -86,23 +87,7 @@ class JJSlot {
       this.slot = map['slot'];
     }
     if (map.containsKey('start')) {
-      if (map['start'] is int) {
-        start = DateTime.fromMillisecondsSinceEpoch(map['start']);
-      } else if (map['start'] is Timestamp) {
-        Timestamp t = map['start'];
-        start = t.toDate();
-      } else if (map['start'] is Map) {
-        Map date = map['start'];
-        if (date.containsKey('_seconds')) {
-          start = DateTime.fromMillisecondsSinceEpoch(
-              map['start']['_seconds'] * 1000);
-        } else if (date.containsKey('seconds')) {
-          start = DateTime.fromMillisecondsSinceEpoch(
-              map['start']['seconds'] * 1000);
-        }
-      } else {
-        start = map['start'];
-      }
+      start = getDate(map['start']);
       day = start.toUtc().day;
     }
     if (map.containsKey('title')) {

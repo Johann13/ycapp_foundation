@@ -1,3 +1,5 @@
+import 'package:ycapp_foundation/model/date_util.dart';
+
 enum InboxNotificationType { Twitch, Youtube, Other }
 
 class InboxNotification {
@@ -29,14 +31,14 @@ class InboxNotification {
       channelName = map['channelName'];
     }
     if (map.containsKey('date')) {
-      date = DateTime.fromMillisecondsSinceEpoch(map['date']);
+      date = getDate(map['date']);
     } else {
       date = DateTime.now();
     }
     if (map.containsKey('publishedMills')) {
-      published = DateTime.fromMillisecondsSinceEpoch(map['publishedMills']);
+      published = getDate(map['publishedMills']);
     } else if (map.containsKey('published')) {
-      published = DateTime.fromMillisecondsSinceEpoch(map['published']);
+      published = getDate(map['published']);
     }
     if (map.containsKey('title')) {
       title = map['title'];
