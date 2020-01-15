@@ -14,6 +14,8 @@ DateTime getDate(v) {
     }
   } else if (v is DateTime) {
     return v;
+  } else if (v is String) {
+    return DateTime.parse(v);
   } else {
     return v.toDate();
   }
