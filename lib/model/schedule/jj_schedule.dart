@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
-import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJVodLink {
@@ -32,7 +31,8 @@ class JJVodLink {
     return _name;
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() =>
+      {
         'name': _name,
         'url': url,
       };
@@ -56,7 +56,8 @@ class JJSlot {
   List<JJVodLink> twitchVODs = [];
   int colorOrientation;
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() =>
+      {
         'id': id,
         'slot': slot,
         'day': day,
@@ -88,7 +89,9 @@ class JJSlot {
     }
     if (map.containsKey('start')) {
       start = getDate(map['start']);
-      day = start.toUtc().day;
+      day = start
+          .toUtc()
+          .day;
     }
     if (map.containsKey('title')) {
       this.title = map['title'];
@@ -133,17 +136,17 @@ class JJSlot {
           if (hex.isNotEmpty) {
             _color = hex
                 .map((c) {
-                  if (c.startsWith('#')) {
-                    c = c.substring(1);
-                  }
-                  if (c.length < 8) {
-                    c = 'ff$c';
-                  }
-                  if (c.length == 8) {
-                    return Color(int.parse(c, radix: 16));
-                  }
-                  return null;
-                })
+              if (c.startsWith('#')) {
+                c = c.substring(1);
+              }
+              if (c.length < 8) {
+                c = 'ff$c';
+              }
+              if (c.length == 8) {
+                return Color(int.parse(c, radix: 16));
+              }
+              return null;
+            })
                 .where((c) => c != null)
                 .toList();
           }
@@ -168,8 +171,9 @@ class JJSlot {
         }
       }
     }
+
     if (map.containsKey('colorOrientation')) {
-      colorOrientation = map['colorOrientation'];
+      colorOrientation = map['colorOrientation'] ?? 1;
     }
     if (map.containsKey('youtubeUrl')) {
       youtubeUrl = map['youtubeUrl'] ?? '';
@@ -205,7 +209,12 @@ class JJSlot {
       desc = map['desc'];
     }
     if (map.containsKey('length')) {
-      length = map['length'];
+      var v = map['length'];
+      if (v is int) {
+        length = v.toDouble();
+      } else {
+        length = v;
+      }
     } else {
       length = 3;
     }
@@ -234,17 +243,19 @@ class JJSlot {
     return now.isBefore(end) && now.isAfter(start);
   }
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColorPallet[500]
           : YColors.primaryColorPallet[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
 
   set border(Color color) => _border = color;
 
@@ -259,7 +270,7 @@ class JJSlot {
       }*/
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
+        _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
@@ -311,7 +322,10 @@ class JJSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -377,7 +391,7 @@ class JJSlot {
 
     return BoxDecoration(
       gradient:
-          LinearGradient(begin: begin, end: end, colors: _color, stops: stops),
+      LinearGradient(begin: begin, end: end, colors: _color, stops: stops),
     );
   }
 
@@ -445,7 +459,7 @@ class JJDay {
 
   List<JJTimes> get times {
     List<JJTimes> list =
-        slots.map((s) => JJTimes(s.start.toUtc(), s.end.toUtc())).toList();
+    slots.map((s) => JJTimes(s.start.toUtc(), s.end.toUtc())).toList();
     list.sort((a, b) => a.start.compareTo(b.start));
     return list;
   }
@@ -705,5 +719,8 @@ class JJTimes {
 
   JJTimes(this.start, this.end);
 
-  int get hours => end.difference(start).inHours;
+  int get hours =>
+      end
+          .difference(start)
+          .inHours;
 }
