@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:ycapp_foundation/model/channel/channel_lib.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
-import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 import 'jj_schedule.dart';
@@ -37,6 +36,7 @@ class ScheduleSlot {
   List<Color> _color = [];
   int length;
   int lengthMin;
+  int height;
   int hour;
   int min;
   DateTime lastUpdate;
@@ -70,6 +70,7 @@ class ScheduleSlot {
       'border': _border?.value?.toRadixString(16),
       'featuredStream': featuredStream?.toMap(),
       'lengthMin': lengthMin,
+      'height': height,
     };
   }
 
@@ -174,6 +175,11 @@ class ScheduleSlot {
       lengthMin = map['lengthMin'];
     } else {
       lengthMin = length * 60;
+    }
+    if (map.containsKey('height')) {
+      height = map['height'];
+    } else {
+      height = lengthMin;
     }
     if (map.containsKey('hour')) {
       hour = map['hour'];
