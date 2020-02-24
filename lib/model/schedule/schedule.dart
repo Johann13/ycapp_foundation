@@ -36,6 +36,7 @@ class ScheduleSlot {
   List<String> creator;
   List<Color> _color = [];
   int length;
+  int lengthMin;
   int hour;
   int min;
   DateTime lastUpdate;
@@ -68,6 +69,7 @@ class ScheduleSlot {
       'game': game,
       'border': _border?.value?.toRadixString(16),
       'featuredStream': featuredStream?.toMap(),
+      'lengthMin': lengthMin,
     };
   }
 
@@ -168,6 +170,9 @@ class ScheduleSlot {
     if (map.containsKey('length')) {
       length = map['length'];
     }
+    if (map.containsKey('lengthMin')) {
+      lengthMin = map['lengthMin'];
+    }
     if (map.containsKey('hour')) {
       hour = map['hour'];
     }
@@ -231,7 +236,7 @@ class ScheduleSlot {
       }
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
+        _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
@@ -271,7 +276,10 @@ class ScheduleSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -289,17 +297,19 @@ class ScheduleSlot {
 
   set colors(List<Color> list) => _color = list;
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColorPallet[500]
           : YColors.primaryColorPallet[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
 
   set border(Color color) => _border = color;
 
@@ -351,12 +361,27 @@ class ScheduleSlot {
     DateTime now = DateTime.now().toUtc();
 
     DateTime dateTime =
-        DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
+    DateTime.utc(
+        now.year,
+        now.month,
+        now.day,
+        hour,
+        min,
+        0,
+        0,
+        0);
 
     dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
 
     return DateTime.utc(
-        dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
+        dateTime.year,
+        dateTime.month,
+        dateTime.day,
+        hour,
+        min,
+        0,
+        0,
+        0);
   }
 
   DateTime get nextStream2 {
@@ -370,7 +395,15 @@ class ScheduleSlot {
 
   DateTime get start {
     DateTime now = DateTime.now().toUtc();
-    return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
+    return DateTime.utc(
+        now.year,
+        now.month,
+        now.day,
+        hour,
+        min,
+        0,
+        0,
+        0);
   }
 
   bool get hasImage {
@@ -425,7 +458,14 @@ class ScheduleDay {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.slots == null) {
       return dateTime;
     }
@@ -445,9 +485,19 @@ class ScheduleDay {
   List<SlotTime> get slotTimes =>
       slots.map((s) => s.slotTime).where((s) => s.min == 0).toList();
 
-  List<DateTime> get times11 => slotTimes
-      .map((time) => DateTime.utc(2019, 1, 1, time.hour, time.min, 0, 0, 0))
-      .toList();
+  List<DateTime> get times11 =>
+      slotTimes
+          .map((time) =>
+          DateTime.utc(
+              2019,
+              1,
+              1,
+              time.hour,
+              time.min,
+              0,
+              0,
+              0))
+          .toList();
 
   List<JJTimes> get times {
     List<JJTimes> list = slots.map((s) => JJTimes(s.start, s.end)).toList();
@@ -496,7 +546,14 @@ class Schedule {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.days.isEmpty) {
       return dateTime;
     }
@@ -512,7 +569,7 @@ class Schedule {
 
   List<SlotTime> get slotTimes {
     List<SlotTime> s =
-        days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
+    days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
     s.sort((a, b) => a.hashCode - b.hashCode);
     return s;
   }
@@ -541,7 +598,8 @@ class Schedule {
     return days.map((d) => d.slots.length).reduce(max);
   }
 
-  ScheduleSlot get currentSlot => slots.firstWhere((s) {
+  ScheduleSlot get currentSlot =>
+      slots.firstWhere((s) {
         return s.isStream;
       }, orElse: () {
         return null;
