@@ -342,7 +342,7 @@ class ScheduleSlot {
   }
 
   DateTime get end {
-    return nextStream.add(Duration(hours: length)).toUtc();
+    return nextStream.add(Duration(minutes: lengthMin)).toUtc();
   }
 
   bool get isStream {
