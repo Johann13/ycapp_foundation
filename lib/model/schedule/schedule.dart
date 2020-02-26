@@ -207,6 +207,36 @@ class ScheduleSlot {
   bool get isFeatured => featuredStream != null;
 
   double get textSize {
+    if(height<=60){
+      return 8.0;
+    }else if(height<=90){
+      return 8.0;
+    }else if(height<=120){
+      return 9.0;
+    }else if(height<=150){
+      return 9.0;
+    }else if(height<=180){
+      return 10.0;
+    }else if(height<=240){
+      return 11.0;
+    }else if(height<=300){
+      return 11.0;
+    }else if(height<=360){
+      return 12.0;
+    }else if(height<=420){
+      return 12.0;
+    }else if(height<=480){
+      return 14.0;
+    }else if(height<=540){
+      return 14.0;
+    }else if(height<=600){
+      return 16.0;
+    }else if(height<=660){
+      return 16.0;
+    }else{
+      return 18.0;
+    }
+    /*
     if (length <= 3) {
       return 12.0;
     } else if (length <= 6) {
@@ -215,7 +245,7 @@ class ScheduleSlot {
       return 18.0;
     } else {
       return 22.0;
-    }
+    }*/
   }
 
   bool get isLive {
