@@ -23,8 +23,10 @@ class SlotTime {
     }
   }
 
+  int get value => (hour * 60) + min;
+
   @override
-  int get hashCode => (hour * 60) + min;
+  int get hashCode => value;
 }
 
 class ScheduleSlot {
@@ -207,33 +209,33 @@ class ScheduleSlot {
   bool get isFeatured => featuredStream != null;
 
   double get textSize {
-    if(height<=60){
+    if (height <= 60) {
       return 8.0;
-    }else if(height<=90){
+    } else if (height <= 90) {
       return 8.0;
-    }else if(height<=120){
+    } else if (height <= 120) {
       return 9.0;
-    }else if(height<=150){
+    } else if (height <= 150) {
       return 9.0;
-    }else if(height<=180){
+    } else if (height <= 180) {
       return 10.0;
-    }else if(height<=240){
+    } else if (height <= 240) {
       return 11.0;
-    }else if(height<=300){
+    } else if (height <= 300) {
       return 11.0;
-    }else if(height<=360){
+    } else if (height <= 360) {
       return 12.0;
-    }else if(height<=420){
+    } else if (height <= 420) {
       return 12.0;
-    }else if(height<=480){
+    } else if (height <= 480) {
       return 14.0;
-    }else if(height<=540){
+    } else if (height <= 540) {
       return 14.0;
-    }else if(height<=600){
+    } else if (height <= 600) {
       return 16.0;
-    }else if(height<=660){
+    } else if (height <= 660) {
       return 16.0;
-    }else{
+    } else {
       return 18.0;
     }
     /*
@@ -598,6 +600,11 @@ class Schedule {
         .toSet()
         .toList();
   }
+
+/*List<DateTime> get scheduleTimes {
+    ScheduleDay d = days[0];
+    d.slots.map((s) => s.slotTime).toList();
+  }*/
 }
 
 class ScheduleImage {
