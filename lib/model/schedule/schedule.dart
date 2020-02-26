@@ -563,6 +563,29 @@ class Schedule {
   }
 
   List<JJTimes> get times {
+    List<ScheduleSlot> s = slots;
+    s
+      ..sort((a, b) {
+        return a.slotTime.value - b.slotTime.value;
+      });
+    DateTime first = s.first.start;
+    DateTime last = s.last.end;
+    Duration duration = last.difference(first);
+    int hm = duration.inMinutes;
+    int timeCount = hm ~/ 180;
+    int hours = hm ~/ 60;
+    int mins = hm % 60;
+    print('h: $hours');
+    print('m: $mins');
+    print('timeCount: $timeCount');
+
+    return [
+      for (int i = 0; i < timeCount; i++)
+        JJTimes(
+          DateTime.utc(2000, 1, 1, 11, 0).add(Duration(hours: i * 3)),
+          DateTime.utc(2000, 1, 1, 11, 0).add(Duration(hours: (i + 1) * 3)),
+        ),
+    ];
     ScheduleDay day = this.days[0];
     for (ScheduleDay d in days) {
       if (d.slots != null) {
