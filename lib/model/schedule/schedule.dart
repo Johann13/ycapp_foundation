@@ -268,7 +268,7 @@ class ScheduleSlot {
           (0.299 * color.red + 0.587 * color.green + 0.114 * color.blue) / 255;
 
       if (luminance > 0.5) {
-        return Color(0xff042133);
+        return Colors.black;
       } else {
         return Colors.white;
       }
