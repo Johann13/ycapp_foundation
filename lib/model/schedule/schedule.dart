@@ -25,6 +25,11 @@ class SlotTime {
 
   int get value => (hour * 60) + min;
 
+  DateTime get toUTC {
+    DateTime now = DateTime.now();
+    return DateTime.utc(now.year, 1, 1, hour, min);
+  }
+
   @override
   int get hashCode => value;
 }
@@ -568,8 +573,9 @@ class Schedule {
       ..sort((a, b) {
         return a.slotTime.value - b.slotTime.value;
       });
-    DateTime first = s.first.start;
-    DateTime last = s.last.end;
+    DateTime first = s.first.slotTime.toUTC;
+    DateTime last =
+        s.last.slotTime.toUTC.add(Duration(minutes: s.last.lengthMin));
     Duration duration = last.difference(first);
     int hm = duration.inMinutes;
     int timeCount = hm ~/ 180;
