@@ -90,6 +90,7 @@ class ScheduleSlot {
     this.day = 1,
     this.slot = 1,
     this.lengthMin = 180,
+    this.height = 180,
     Color color,
   }) {
     this._color = [color ?? const Color(0xff2752ae)];
