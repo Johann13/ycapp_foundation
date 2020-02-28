@@ -179,7 +179,12 @@ class ScheduleSlot {
       length = map['length'];
     }
     if (map.containsKey('lengthMin')) {
-      lengthMin = map['lengthMin'];
+      var lengthMin = map['lengthMin'];
+      if (lengthMin is double) {
+        this.lengthMin = lengthMin.toInt();
+      } else if (lengthMin is int) {
+        this.lengthMin = lengthMin;
+      }
     } else {
       lengthMin = length * 60;
     }
