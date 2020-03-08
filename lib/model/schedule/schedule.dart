@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:timezone/standalone.dart';
 import 'package:ycapp_foundation/model/channel/channel_lib.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
@@ -406,14 +407,14 @@ class ScheduleSlot {
 
   DateTime get nextStream {
     DateTime now = DateTime.now().toUtc();
-
     DateTime dateTime =
         DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
-
-    dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
-
-    return DateTime.utc(
-        dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
+    final london = getLocation('Europe/London');
+    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
+    tz = tz.add(Duration(days: ((day - tz.weekday) % 7)));
+    return tz.toLocal();
+    //dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
+    //return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
   }
 
   DateTime get nextStream2 {
@@ -427,7 +428,10 @@ class ScheduleSlot {
 
   DateTime get start {
     DateTime now = DateTime.now().toUtc();
-    return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
+    final london = getLocation('Europe/London');
+    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
+    return tz;
+    //return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
   }
 
   bool get hasImage {
