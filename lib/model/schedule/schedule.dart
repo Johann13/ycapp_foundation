@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:timezone/standalone.dart';
+import 'package:timezone/timezone.dart';
 import 'package:ycapp_foundation/model/channel/channel_lib.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
@@ -28,8 +29,7 @@ class SlotTime {
 
   DateTime get toUTC {
     DateTime now = DateTime.now();
-    final london = getLocation('UTC');
-    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
+    TZDateTime tz = TZDateTime(local, now.year, now.month, now.day, hour, min);
     return tz;
   }
 
