@@ -28,7 +28,16 @@ class SlotTime {
 
   DateTime get toUTC {
     DateTime now = DateTime.now();
-    return DateTime.utc(now.year, 1, 1, hour, min);
+    final london = getLocation('UTC');
+    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
+    return tz;
+  }
+
+  DateTime get toUK {
+    DateTime now = DateTime.now();
+    final london = getLocation('Europe/London');
+    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
+    return tz;
   }
 
   @override
