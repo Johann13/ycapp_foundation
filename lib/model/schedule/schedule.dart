@@ -611,13 +611,8 @@ class Schedule {
               .add(Duration(hours: (i + 1) * 3)),
         ),
     ].map((jj) {
-      if (h < 0) {
-        return JJTimes(jj.start.subtract(Duration(hours: h)),
-            jj.end.subtract(Duration(hours: h)));
-      } else {
-        return JJTimes(
-            jj.start.add(Duration(hours: h)), jj.end.add(Duration(hours: h)));
-      }
+      return JJTimes(
+          jj.start.add(Duration(hours: h)), jj.end.add(Duration(hours: h)));
     }).toList();
     /*
     ScheduleDay day = this.days[0];
