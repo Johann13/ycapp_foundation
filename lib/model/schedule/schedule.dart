@@ -618,7 +618,7 @@ class Schedule {
         return JJTimes(
             jj.start.add(Duration(hours: h)), jj.end.add(Duration(hours: h)));
       }
-    });
+    }).toList();
     /*
     ScheduleDay day = this.days[0];
     for (ScheduleDay d in days) {
