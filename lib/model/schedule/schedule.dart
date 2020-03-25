@@ -605,14 +605,12 @@ class Schedule {
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
-          TZDateTime(london, now.year, now.month, now.day, 11, 0).add(Duration(hours: i * 3)),
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
-              .add(Duration(hours: (i + 1) * 3)),
+              .add(Duration(hours: (i * 3) + h)),
+          TZDateTime(london, now.year, now.month, now.day, 11, 0)
+              .add(Duration(hours: ((i + 1) * 3) + h)),
         ),
-    ].map((jj) {
-      return JJTimes(
-          jj.start.add(Duration(hours: h)), jj.end.add(Duration(hours: h)));
-    }).toList();
+    ].toList();
     /*
     ScheduleDay day = this.days[0];
     for (ScheduleDay d in days) {
