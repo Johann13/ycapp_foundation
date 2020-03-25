@@ -602,12 +602,13 @@ class Schedule {
     //int hours = hm ~/ 60;
     //int mins = hm % 60;
     Location london = getLocation('Europe/London');
-    int h = DateTime.now().timeZoneOffset.inHours;
+    DateTime now = DateTime.now();
+    int h = now.timeZoneOffset.inHours;
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
-          TZDateTime(london, 2000, 1, 1, 11, 0).add(Duration(hours: i * 3)),
-          TZDateTime(london, 2000, 1, 1, 11, 0)
+          TZDateTime(london, now.year, now.month, now.day, 11, 0).add(Duration(hours: i * 3)),
+          TZDateTime(london, now.year, now.month, now.day, 11, 0)
               .add(Duration(hours: (i + 1) * 3)),
         ),
     ].map((jj) {
