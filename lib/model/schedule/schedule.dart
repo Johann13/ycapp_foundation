@@ -601,11 +601,14 @@ class Schedule {
     int timeCount = hm ~/ 180;
     //int hours = hm ~/ 60;
     //int mins = hm % 60;
+    Location london = getLocation('Europe/London');
+
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
-          DateTime.utc(2000, 1, 1, 11, 0).add(Duration(hours: i * 3)),
-          DateTime.utc(2000, 1, 1, 11, 0).add(Duration(hours: (i + 1) * 3)),
+          TZDateTime(london, 2000, 1, 1, 11, 0).add(Duration(hours: i * 3)),
+          TZDateTime(london, 2000, 1, 1, 11, 0)
+              .add(Duration(hours: (i + 1) * 3)),
         ),
     ];
     /*
