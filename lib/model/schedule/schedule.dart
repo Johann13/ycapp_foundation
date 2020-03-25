@@ -599,7 +599,7 @@ class Schedule {
     //int mins = hm % 60;
     Location london = getLocation('Europe/London');
     DateTime now = TZDateTime.now(london);
-    int h = now.timeZoneOffset.inHours;
+    int h = DateTime.now().timeZoneOffset.inHours;
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
