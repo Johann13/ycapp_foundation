@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:timezone/browser.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
@@ -714,8 +715,8 @@ class JJSchedule {
 }
 
 class JJTimes {
-  final DateTime start;
-  final DateTime end;
+  final TZDateTime start;
+  final TZDateTime end;
 
   JJTimes(this.start, this.end);
 
