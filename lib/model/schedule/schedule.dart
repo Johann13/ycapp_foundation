@@ -29,7 +29,7 @@ class SlotTime {
 
   DateTime get toUTC {
     DateTime now = DateTime.now();
-    TZDateTime tz = TZDateTime(local, now.year, now.month, now.day, hour, min);
+    TZDateTime tz = TZDateTime.utc(now.year, now.month, now.day, hour, min);
     return tz;
   }
 
