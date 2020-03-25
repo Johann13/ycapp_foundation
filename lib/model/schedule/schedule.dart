@@ -27,13 +27,13 @@ class SlotTime {
 
   int get value => (hour * 60) + min;
 
-  DateTime get toUTC {
+  TZDateTime get toUTC {
     DateTime now = DateTime.now();
     TZDateTime tz = TZDateTime.utc(now.year, now.month, now.day, hour, min);
     return tz;
   }
 
-  DateTime get toUK {
+  TZDateTime get toUK {
     DateTime now = DateTime.now();
     final london = getLocation('Europe/London');
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
@@ -401,7 +401,7 @@ class ScheduleSlot {
     return day * 2 + slot + 3;
   }
 
-  DateTime get end {
+  TZDateTime get end {
     return nextStream.add(Duration(minutes: lengthMin)).toUtc();
   }
 
@@ -414,28 +414,26 @@ class ScheduleSlot {
     return DateTime.now().isAfter(end);
   }
 
-  DateTime get nextStream {
+  TZDateTime get nextStream {
     DateTime now = DateTime.now().toUtc();
-    DateTime dateTime =
-        DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
     final london = getLocation('Europe/London');
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     tz = tz.add(Duration(days: ((day - tz.weekday) % 7)));
-    return tz.toLocal();
+    return tz;
     //dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
     //return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
   }
 
-  DateTime get nextStream2 {
+  TZDateTime get nextStream2 {
     DateTime now = DateTime.now().toUtc();
-    DateTime next = nextStream;
+    TZDateTime next = nextStream;
     if (now.day == next.day && !now.isBefore(nextStream)) {
       next = next.add(Duration(days: 7));
     }
     return next;
   }
 
-  DateTime get start {
+  TZDateTime get start {
     DateTime now = DateTime.now().toUtc();
     final london = getLocation('Europe/London');
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
