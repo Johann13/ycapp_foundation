@@ -593,9 +593,9 @@ class Schedule {
       ..sort((a, b) {
         return a.slotTime.value - b.slotTime.value;
       });
-    DateTime first = s.first.slotTime.toUTC;
+    DateTime first = s.first.slotTime.toUK;
     DateTime last =
-        s.last.slotTime.toUTC.add(Duration(minutes: s.last.lengthMin));
+        s.last.slotTime.toUK.add(Duration(minutes: s.last.lengthMin));
     Duration duration = last.difference(first);
     int hm = duration.inMinutes;
     int timeCount = hm ~/ 180;
