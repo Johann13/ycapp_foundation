@@ -420,7 +420,7 @@ class ScheduleSlot {
   TZDateTime get nextStream {
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     tz = tz.add(Duration(days: ((day - tz.weekday) % 7)));
-    return tz;
+    return tz.toUtc();
     //dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
     //return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
   }
@@ -430,12 +430,14 @@ class ScheduleSlot {
     if (now.day == next.day && !now.isBefore(nextStream)) {
       next = next.add(Duration(days: 7));
     }
-    return next;
+    return next.toUtc();
+    ;
   }
 
   TZDateTime get start {
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
-    return tz;
+    return tz.toUtc();
+    ;
     //return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
   }
 
@@ -511,6 +513,7 @@ class ScheduleDay {
   List<SlotTime> get slotTimes =>
       slots.map((s) => s.slotTime).where((s) => s.min == 0).toList();
 
+/*
   List<DateTime> get times11 => slotTimes
       .map((time) => DateTime.utc(2019, 1, 1, time.hour, time.min, 0, 0, 0))
       .toList();
@@ -520,6 +523,7 @@ class ScheduleDay {
     list.sort((a, b) => a.start.compareTo(b.start));
     return list;
   }
+  */
 }
 
 class Schedule {
@@ -598,16 +602,18 @@ class Schedule {
     //int hours = hm ~/ 60;
     //int mins = hm % 60;
     Location london = getLocation('Europe/London');
-    DateTime t = TZDateTime.from(DateTime.now(), london);
     DateTime now = TZDateTime.now(UTC);
-    int h = (DateTime.now().timeZoneOffset.inHours - t.timeZoneOffset.inHours);
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
-              .add(Duration(hours: (i * 3) + h)),
+              .add(Duration(hours: (i * 3)))
+              .toUtc()
+              .add(DateTime.now().timeZoneOffset),
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
-              .add(Duration(hours: ((i + 1) * 3) + h)),
+              .add(Duration(hours: ((i + 1) * 3)))
+              .toUtc()
+              .add(DateTime.now().timeZoneOffset),
         ),
     ].toList();
     /*
