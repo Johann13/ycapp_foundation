@@ -227,7 +227,7 @@ class ScheduleSlot {
     }
   }
 
-  Location get london => UTC;
+  Location get london => getLocation('Europe/London');
 
   TZDateTime get now => TZDateTime.now(london);
 
