@@ -50,5 +50,5 @@ class YSort {
       a.name.toUpperCase().compareTo(b.name.toUpperCase());
 
   static int sortCreatorByName(Creator a, Creator b) =>
-      a.name.toUpperCase().compareTo(b.name.toUpperCase());
+      a.name.toUpperCase().compareTo(b.realName.toUpperCase());
 }
