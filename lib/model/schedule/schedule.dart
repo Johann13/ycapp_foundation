@@ -430,13 +430,11 @@ class ScheduleSlot {
       next = next.add(Duration(days: 7));
     }
     return next.toUtc();
-    ;
   }
 
   TZDateTime get start {
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     return tz.toUtc();
-    ;
     //return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
   }
 
