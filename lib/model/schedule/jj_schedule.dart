@@ -42,7 +42,7 @@ class JJSlot {
   String id;
   int slot;
   int day;
-  DateTime start;
+  TZDateTime start;
   double length;
   String title;
   String subtitle;
@@ -87,7 +87,8 @@ class JJSlot {
       this.slot = map['slot'];
     }
     if (map.containsKey('start')) {
-      start = getDate(map['start']);
+      start =
+          TZDateTime.from(getDate(map['start']), getLocation('Europe/London'));
       day = start.toUtc().day;
     }
     if (map.containsKey('title')) {
