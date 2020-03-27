@@ -235,7 +235,7 @@ class Creator extends BaseModel {
     DateTime now = DateTime.now();
     int month = now.month;
     int day = now.day;
-    if (day == 1 && month == 4) {
+    if (day == 1 && month == DateTime.april) {
       return 'Tom';
     }
     return _name;
