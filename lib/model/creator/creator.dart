@@ -8,7 +8,7 @@ import 'package:ycapp_foundation/model/creator/creator_links.dart';
 
 class Creator extends BaseModel {
   String creatorId;
-  String name;
+  String _name;
   String _desc;
   bool visible;
   Color colorPrimary;
@@ -46,7 +46,7 @@ class Creator extends BaseModel {
       this.creatorId = map['creatorId'];
     }
     if (map.containsKey('name')) {
-      this.name = map['name'];
+      this._name = map['name'];
     }
     if (map.containsKey('desc')) {
       _desc = map['desc'];
@@ -231,6 +231,18 @@ class Creator extends BaseModel {
     }
   }
 
+  String get name {
+    DateTime now = DateTime.now();
+    int month = now.month;
+    int day = now.day;
+    if (day == 1 && month == 4) {
+      return 'Tom';
+    }
+    return _name;
+  }
+
+  String get realName => _name;
+
   String get creatorBanner => _channelBanner;
 
   String get profileImage => _channelProfile;
@@ -281,7 +293,7 @@ class Creator extends BaseModel {
     if (_desc != null) {
       return _desc;
     } else {
-      return 'Description coming soon. You can also submit your own description for $name.';
+      return 'No Description found.';
     }
   }
 
@@ -432,7 +444,7 @@ class Creator extends BaseModel {
 
   Map toJson() => {
         'creatorId': creatorId,
-        'name': name,
+        'name': _name,
         'desc': desc,
         'visible': visible,
         'color1': colorPrimary?.value?.toRadixString(16),
