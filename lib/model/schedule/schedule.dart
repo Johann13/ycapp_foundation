@@ -35,7 +35,7 @@ class SlotTime {
 
   TZDateTime get toUK {
     DateTime now = DateTime.now();
-    final london = getLocation('Europe/London');
+    final london = UTC;
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     return tz;
   }
@@ -228,7 +228,7 @@ class ScheduleSlot {
     }
   }
 
-  Location get london => getLocation('Europe/London');
+  Location get london => UTC;
 
   TZDateTime get now => TZDateTime.now(london);
 
@@ -597,10 +597,9 @@ class Schedule {
     int timeCount = hm ~/ 180;
     //int hours = hm ~/ 60;
     //int mins = hm % 60;
-    Location london = getLocation('Europe/London');
+    Location london = UTC;
     DateTime now = TZDateTime.now(london);
-    int h =
-        (DateTime.now().timeZoneOffset.inHours - london.currentTimeZone.offset);
+    int h = (DateTime.now().timeZoneOffset.inHours);
     return [
       for (int i = 0; i < timeCount; i++)
         JJTimes(
