@@ -24,7 +24,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  plugin:
+    platforms:
+      android:
+        package: com.feser.ycapp_foundation.ycapp_foundation
+        pluginClass: YcappFoundationPlugin
+      ios:
+        pluginClass: YcappFoundationPlugin
   # To add assets to your package, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
