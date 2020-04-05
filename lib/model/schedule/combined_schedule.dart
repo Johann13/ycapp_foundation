@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:timezone/browser.dart';
 import 'package:ycapp_foundation/model/schedule/schedule.dart';
-
 
 class CombinedSchedule {
   List<CombinedScheduleDay> days = [];
@@ -131,16 +131,14 @@ class CombinedSchedule {
     return (latestStreamStart - earliestStreamStart) + 1;
   }
 
-  List<DateTime> get times {
+  List<TZDateTime> get times {
     int min = earliestStreamStart;
     int max = latestStreamStart;
     List<DateTime> list = [];
     DateTime now = DateTime.now().toUtc();
-    DateTime dstStart = DateTime.utc(now.year, 3, 31);
-    DateTime dstEnd = DateTime.utc(now.year, 10, 27);
-    bool dst = now.isAfter(dstStart) && now.isBefore(dstEnd);
     for (int i = min; i <= max; i++) {
-      list.add(DateTime.utc(now.year, now.month, now.day, i, 0, 0, 0));
+      list.add(TZDateTime(getLocation('Europe/London'), now.year, now.month,
+          now.day, i, 0, 0, 0));
     }
     return list;
   }
