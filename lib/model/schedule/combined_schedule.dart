@@ -134,7 +134,7 @@ class CombinedSchedule {
   List<TZDateTime> get times {
     int min = earliestStreamStart;
     int max = latestStreamStart;
-    List<DateTime> list = [];
+    List<TZDateTime> list = [];
     DateTime now = DateTime.now().toUtc();
     for (int i = min; i <= max; i++) {
       list.add(TZDateTime(getLocation('Europe/London'), now.year, now.month,
