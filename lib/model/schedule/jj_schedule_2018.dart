@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ycapp_foundation/ui/y_colors.dart';
 import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
-
+import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJScheduleSlot2018 {
   String id;
