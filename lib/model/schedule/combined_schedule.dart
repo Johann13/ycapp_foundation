@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:timezone/browser.dart';
+import 'package:timezone/timezone.dart';
 import 'package:ycapp_foundation/model/schedule/schedule.dart';
 
 class CombinedSchedule {
