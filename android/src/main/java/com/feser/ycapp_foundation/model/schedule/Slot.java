@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.feser.ycapp.prefs.Prefs;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.TimeZone;
-
+import com.feser.ycapp_foundation.prefs.Prefs;
 import static java.text.DateFormat.SHORT;
 
 public class Slot {

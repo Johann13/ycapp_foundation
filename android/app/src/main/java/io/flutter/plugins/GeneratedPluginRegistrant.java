@@ -11,7 +11,7 @@ public final class GeneratedPluginRegistrant {
     if (alreadyRegisteredWith(registry)) {
       return;
     }
-    YcappFoundationPlugin.registerWith(registry.registrarFor("com.feser.ycapp_foundation.ycapp_foundation.YcappFoundationPlugin"));
+    YcappFoundationPlugin.registerWith(registry.registrarFor("com.feser.ycapp_foundation.YcappFoundationPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

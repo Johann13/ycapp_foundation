@@ -1,4 +1,4 @@
-package com.feser.ycapp_foundation.ycapp_foundation;
+package com.feser.ycapp_foundation;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;

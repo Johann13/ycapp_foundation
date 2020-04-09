@@ -1,5 +1,3 @@
-
-
 import 'package:ycapp_foundation/model/channel/twitch_channel.dart';
 import 'package:ycapp_foundation/model/channel/youtube_channel.dart';
 import 'package:ycapp_foundation/model/creator/creator.dart';
