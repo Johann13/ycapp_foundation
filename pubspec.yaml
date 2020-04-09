@@ -33,7 +33,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.feser.ycapp_foundation.ycapp_foundation
+        package: com.feser.ycapp_foundation
         pluginClass: YcappFoundationPlugin
       ios:
         pluginClass: YcappFoundationPlugin
