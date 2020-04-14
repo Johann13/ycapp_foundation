@@ -5,8 +5,15 @@ class Ad extends BaseModel {
   String name;
   List<int> days;
   List<String> images;
+  String link;
 
-  Ad(this._id, this.name, this.days, this.images);
+  Ad(
+    this._id,
+    this.name,
+    this.days,
+    this.images,
+    this.link,
+  );
 
   Ad.fromMap(Map map)
       : this(
@@ -14,6 +21,7 @@ class Ad extends BaseModel {
           map['name'],
           map['days'],
           map['images'],
+          map['link'],
         );
 
   @override
@@ -25,5 +33,6 @@ class Ad extends BaseModel {
         'name': name,
         'days': days,
         'images': images,
+        'link': link,
       };
 }
