@@ -3,16 +3,16 @@ import 'package:ycapp_foundation/model/base_model.dart';
 class Ad extends BaseModel {
   String _id;
   String name;
-  List<int> day;
+  List<int> days;
   List<String> images;
 
-  Ad(this._id, this.name, this.day, this.images);
+  Ad(this._id, this.name, this.days, this.images);
 
   Ad.fromMap(Map map)
       : this(
           map['id'],
           map['name'],
-          map['day'],
+          map['days'],
           map['images'],
         );
 
@@ -23,7 +23,7 @@ class Ad extends BaseModel {
   Map toJson() => {
         'id': _id,
         'name': name,
-        'day': day,
+        'days': days,
         'images': images,
       };
 }
