@@ -34,5 +34,5 @@ class Ad extends BaseModel {
         'days': days,
         'images': images,
         'link': link,
-      };
+        };
 }
