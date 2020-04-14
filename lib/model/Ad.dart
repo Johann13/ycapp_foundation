@@ -3,7 +3,7 @@ import 'package:ycapp_foundation/model/base_model.dart';
 class Ad extends BaseModel {
   String _id;
   String name;
-  int day;
+  List<int> day;
   List<String> images;
 
   Ad(this._id, this.name, this.day, this.images);
