@@ -7,6 +7,9 @@ class Ad extends BaseModel {
   String name;
   List<int> days;
   List<String> images;
+  List<String> creator;
+  List<String> twitch;
+  List<String> youtube;
   String link;
   Color color;
 
@@ -17,21 +20,28 @@ class Ad extends BaseModel {
     this.images,
     this.link,
     this.color,
+    this.creator,
+    this.twitch,
+    this.youtube,
   );
 
   Ad.fromMap(Map map)
       : this(
-            map['id'],
-            map['name'],
-            map['days'],
-            map['images'],
-            map['link'],
-            Color(
-              int.parse(
-                '#' + map['color'],
-                radix: 16,
-              ),
-            ));
+          map['id'],
+          map['name'],
+          map['days'],
+          map['images'],
+          map['link'],
+          Color(
+            int.parse(
+              '#' + map['color'],
+              radix: 16,
+            ),
+          ),
+          map['creator'],
+          map['twitch'],
+          map['youtube'],
+        );
 
   @override
   String get id => _id;
@@ -44,5 +54,8 @@ class Ad extends BaseModel {
         'images': images,
         'link': link,
         'color': color.value.toRadixString(16),
+        'creator': creator,
+        'twitch': twitch,
+        'youtube': youtube,
       };
 }
