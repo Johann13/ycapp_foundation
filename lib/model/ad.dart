@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ycapp_foundation/model/base_model.dart';
 
 class Ad extends BaseModel {
@@ -6,6 +8,7 @@ class Ad extends BaseModel {
   List<int> days;
   List<String> images;
   String link;
+  Color color;
 
   Ad(
     this._id,
@@ -13,16 +16,22 @@ class Ad extends BaseModel {
     this.days,
     this.images,
     this.link,
+    this.color,
   );
 
   Ad.fromMap(Map map)
       : this(
-          map['id'],
-          map['name'],
-          map['days'],
-          map['images'],
-          map['link'],
-        );
+            map['id'],
+            map['name'],
+            map['days'],
+            map['images'],
+            map['link'],
+            Color(
+              int.parse(
+                '#' + map['color'],
+                radix: 16,
+              ),
+            ));
 
   @override
   String get id => _id;
@@ -34,5 +43,6 @@ class Ad extends BaseModel {
         'days': days,
         'images': images,
         'link': link,
-        };
+        'color': color.value.toRadixString(16),
+      };
 }
