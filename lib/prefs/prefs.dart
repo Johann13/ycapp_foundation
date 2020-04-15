@@ -24,9 +24,15 @@ class Prefs {
   }
 
   static Future<List<String>> getStringList(String key,
-      {List<String> defaultValue}) async {
+      {List<String> defaultValue, bool setDefault = true}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getStringList(key) ?? (defaultValue ?? List());
+    List<String> def = (defaultValue ?? []);
+    List<String> value = preferences.getStringList(key);
+    if (value == null) {
+      await preferences.setStringList(key, def);
+      return def;
+    }
+    return value;
   }
 
   static Future<Set<String>> getKeys() async {
