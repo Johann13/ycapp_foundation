@@ -3,22 +3,41 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs {
-  static Future<int> getInt(String key, int defaultValue) async {
+  static Future<int> getInt(String key, int defaultValue,
+      {bool setDefault = true}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getInt(key) ?? defaultValue;
+    int value = preferences.getInt(key);
+    if (value == null && setDefault) {
+      await preferences.setInt(key, defaultValue);
+      return defaultValue;
+    }
+    return value;
   }
 
-  static Future<double> getDouble(String key, double defaultValue) async {
+  static Future<double> getDouble(String key, double defaultValue,
+      {bool setDefault = true}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getDouble(key) ?? defaultValue;
+    double value = preferences.getDouble(key);
+    if (value == null && setDefault) {
+      await preferences.setDouble(key, defaultValue);
+      return defaultValue;
+    }
+    return value;
   }
 
-  static Future<bool> getBool(String key, bool defaultValue) async {
+  static Future<bool> getBool(String key, bool defaultValue,
+      {bool setDefault = true}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getBool(key) ?? defaultValue;
+    bool value = preferences.getBool(key);
+    if (value == null && setDefault) {
+      await preferences.setBool(key, value);
+      return defaultValue;
+    }
+    return value;
   }
 
-  static Future<String> getString(String key, String defaultValue) async {
+  static Future<String> getString(String key, String defaultValue,
+      {bool setDefault = true}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(key) ?? defaultValue;
   }
@@ -28,7 +47,7 @@ class Prefs {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<String> def = (defaultValue ?? []);
     List<String> value = preferences.getStringList(key);
-    if (value == null) {
+    if (value == null && setDefault) {
       await preferences.setStringList(key, def);
       return def;
     }
