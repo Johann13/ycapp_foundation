@@ -228,6 +228,10 @@ class ScheduleSlot {
     }
   }
 
+  Location get london => getLocation('Europe/London');
+
+  TZDateTime get now => TZDateTime.now(london);
+
   bool get isFeatured => featuredStream != null;
 
   double get textSize {
@@ -406,17 +410,14 @@ class ScheduleSlot {
   }
 
   bool get isStream {
-    DateTime now = DateTime.now().toUtc();
     return now.isBefore(end) && now.isAfter(nextStream);
   }
 
   bool get ended {
-    return DateTime.now().isAfter(end);
+    return now.isAfter(end);
   }
 
   TZDateTime get nextStream {
-    DateTime now = DateTime.now().toUtc();
-    final london = getLocation('Europe/London');
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     tz = tz.add(Duration(days: ((day - tz.weekday) % 7)));
     return tz;
@@ -425,7 +426,6 @@ class ScheduleSlot {
   }
 
   TZDateTime get nextStream2 {
-    DateTime now = DateTime.now().toUtc();
     TZDateTime next = nextStream;
     if (now.day == next.day && !now.isBefore(nextStream)) {
       next = next.add(Duration(days: 7));
@@ -434,8 +434,6 @@ class ScheduleSlot {
   }
 
   TZDateTime get start {
-    DateTime now = DateTime.now().toUtc();
-    final london = getLocation('Europe/London');
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
     return tz;
     //return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
@@ -600,7 +598,7 @@ class Schedule {
     //int hours = hm ~/ 60;
     //int mins = hm % 60;
     Location london = getLocation('Europe/London');
-    DateTime now = DateTime.now();
+    DateTime now = TZDateTime.now(london);
     int h = now.timeZoneOffset.inHours;
     return [
       for (int i = 0; i < timeCount; i++)
