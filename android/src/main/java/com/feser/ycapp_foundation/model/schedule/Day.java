@@ -20,7 +20,7 @@ public class Day {
 	}
 
 	public Day(int day) {
-		this(new ArrayList<>(), day);
+		this(new ArrayList<Slot>(), day);
 	}
 
 	private Day(ArrayList<Slot> slots, int day) {
