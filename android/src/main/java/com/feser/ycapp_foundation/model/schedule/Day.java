@@ -19,11 +19,12 @@ public class Day {
 		}
 	}
 
-	Day(int day) {
+	public Day(int day) {
 		this(new ArrayList<>(), day);
 	}
 
-	private Day(List<Slot> slots, int day) {
+	private Day(ArrayList<Slot> slots, int day) {
+		this.day = day;
 		slotMap = new HashMap<>();
 		/*for (int i = 1; i <= 4; i++) {
 			slotMap.put(i, new Slot("TBA"));
