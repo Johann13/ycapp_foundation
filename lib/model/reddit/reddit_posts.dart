@@ -17,18 +17,18 @@ class RedditPosts {
 
   RedditPosts(this.posts);
 
-  static Future<RedditPosts> getNew(
+  static Future<RedditPosts> getTop(
     String subreddit, {
     int limit = 10,
     SortTime time = SortTime.Week,
   }) =>
-      get(subreddit, sort: Sort.New, time: time);
+      get(subreddit, sort: Sort.Top, time: time);
 
-  static Future<RedditPosts> getTop(
+  static Future<RedditPosts> getNew(
     String subreddit, {
     int limit = 10,
   }) =>
-      get(subreddit, sort: Sort.Top);
+      get(subreddit, sort: Sort.New);
 
   static Future<RedditPosts> get(
     String subreddit, {
