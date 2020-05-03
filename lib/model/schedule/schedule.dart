@@ -285,6 +285,14 @@ class ScheduleSlot {
         (subTitle ?? '').toLowerCase().contains('yogscinema'));
   }
 
+  bool get isCinema {
+    if (!isStream) {
+      return false;
+    }
+    return (title ?? '').toLowerCase().contains('yogscinema') ||
+        (subTitle ?? '').toLowerCase().contains('yogscinema');
+  }
+
   int get dayPos {
     return (hour * 60) + min;
   }
@@ -643,6 +651,15 @@ class Schedule {
       }, orElse: () {
         return null;
       });
+
+  ScheduleSlot get next {
+    return slots.reduce((a, b) {
+      if (a.nextStream2.isBefore(b.nextStream2)) {
+        return a;
+      }
+      return b;
+    });
+  }
 
   List<String> get creator {
     return slots
