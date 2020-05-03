@@ -42,10 +42,10 @@ class YColors {
   static const Color youtubeRedAlphaLight = const Color(0x30ff0000);
   static const Color youtubeBlack = const Color(0xff282828);
 
-  static const Color accentColor = const Color(0xffff7b30);
-  static const Color accentColorAlphaDark = const Color(0xccff7b30);
-  static const Color accentColorAlpha = const Color(0x99ff7b30);
-  static const Color accentColorAlphaLight = const Color(0x30ff7b30);
+  static const Color accentColor =  const Color(0xffff8b23);
+  static const Color accentColorAlphaDark = const Color(0xccff8b23);
+  static const Color accentColorAlpha = const Color(0x99ff8b23);
+  static const Color accentColorAlphaLight = const Color(0x30ff8b23);
 
   static const Color primaryColor = const Color(0xff0094ff);
   static const Color primaryColorAlphaDark = const Color(0xcc0094ff);
@@ -94,7 +94,7 @@ class YColors {
     },
   );
 
-  static const MaterialColor accentColorPallet = const MaterialColor(
+  static const MaterialColor accentColorPalletOld = const MaterialColor(
     0xffff7b30,
     const <int, Color>{
       50: const Color(0xFFffba92),
@@ -107,6 +107,24 @@ class YColors {
       700: const Color(0xFFff6209),
       800: const Color(0xFFf45800),
       900: const Color(0xFFe15100),
+    },
+  );
+
+
+
+  static const MaterialColor accentColorPallet = const MaterialColor(
+    0xffff8b23,
+    const <int, Color>{
+      50: const Color( 0xFFffbf85),
+      100: const Color(0xFFffb471),
+      200: const Color(0xFFffaa5e),
+      300: const Color(0xFFffa04a),
+      400: const Color(0xFFff9537),
+      500: const Color(0xffff8b23),
+      600: const Color(0xffff810f),
+      700: const Color(0xFFfb7700),
+      800: const Color(0xFFe76d00),
+      900: const Color(0xFFd46400),
     },
   );
 
