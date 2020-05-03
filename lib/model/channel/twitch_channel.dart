@@ -32,7 +32,7 @@ class TwitchChannel extends Channel {
     return prevStream.viewerCount / twitchData.followerCount;
   }
 
-  bool get isLive => stream != null && game != null;
+  bool get isLive => stream != null;
 
   bool get isCinema {
     if (!isLive) {
