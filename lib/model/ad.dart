@@ -65,7 +65,7 @@ class Ad extends BaseModel {
           map.containsKey('color')
               ? Color(
                   int.parse(
-                    '#' + map['color'],
+                    map['color'],
                     radix: 16,
                   ),
                 )
