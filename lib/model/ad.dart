@@ -89,6 +89,8 @@ class Ad extends BaseModel {
       return AdType.SmallImage;
     } else if (type == 'stream' && date != null) {
       return AdType.Stream;
+    } else if (date != null) {
+      return AdType.CountDown;
     } else {
       return AdType.Text;
     }
