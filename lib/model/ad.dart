@@ -12,7 +12,6 @@ enum AdType {
 }
 
 //type: normal, stream
-
 class Ad extends BaseModel {
   String _id;
   String type;
