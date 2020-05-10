@@ -55,7 +55,7 @@ class Ad extends BaseModel {
           map['type'] ?? 'normal',
           map['title'],
           map['subtitle'],
-          (map['day'] as List).cast<int>(),
+          ((map['day']) ?? [] as List).cast<int>(),
           map.containsKey('map') ? getDate(map['date']) : null,
           map.containsKey('showFrom') ? getDate(map['showFrom']) : null,
           map.containsKey('showTo') ? getDate(map['showTo']) : null,
@@ -70,9 +70,9 @@ class Ad extends BaseModel {
                   ),
                 )
               : null,
-          (map['creator'] as List).cast<String>(),
-          (map['twitch'] as List).cast<String>(),
-          (map['youtube'] as List).cast<String>(),
+          ((map['creator']) ?? [] as List).cast<String>(),
+          ((map['twitch']) ?? [] as List).cast<String>(),
+          ((map['youtube']) ?? [] as List).cast<String>(),
         );
 
   @override
