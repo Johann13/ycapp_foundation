@@ -10,7 +10,8 @@ enum AdType {
   SmallImage,
   Text,
   CountDown,
-  Stream,
+  Twitch,
+  Youtube,
 }
 
 //type: normal, twitch, youtube, ad (app relevant ads)
@@ -89,8 +90,10 @@ class Ad extends BaseModel {
       return AdType.BigImage;
     } else if (hasSmallImage) {
       return AdType.SmallImage;
-    } else if (type == 'stream' && date != null) {
-      return AdType.Stream;
+    } else if (type == 'twitch' && date != null) {
+      return AdType.Twitch;
+    } else if (type == 'youtube') {
+      return AdType.Youtube;
     } else if (date != null) {
       return AdType.CountDown;
     } else {
