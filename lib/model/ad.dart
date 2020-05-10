@@ -11,7 +11,7 @@ enum AdType {
   Stream,
 }
 
-//type: normal, stream
+//type: normal, twitch, youtube, ad (app relevant ads)
 class Ad extends BaseModel {
   String _id;
   String type;
