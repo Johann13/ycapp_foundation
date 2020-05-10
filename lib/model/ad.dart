@@ -7,15 +7,21 @@ enum AdType {
   BigImage,
   SmallImage,
   Text,
+  CountDown,
+  Stream,
 }
+
+//type: normal, stream
 
 class Ad extends BaseModel {
   String _id;
+  String type;
   String title;
   String subtitle;
   List<int> days;
-  DateTime from;
-  DateTime to;
+  DateTime date;
+  DateTime showFrom;
+  DateTime showTo;
   String smallImage;
   String bigImage;
   List<String> creator;
@@ -26,11 +32,13 @@ class Ad extends BaseModel {
 
   Ad(
     this._id,
+    this.type,
     this.title,
     this.subtitle,
     this.days,
-    this.from,
-    this.to,
+    this.date,
+    this.showFrom,
+    this.showTo,
     this.smallImage,
     this.bigImage,
     this.link,
@@ -43,11 +51,13 @@ class Ad extends BaseModel {
   Ad.fromMap(Map map)
       : this(
           map['id'],
+          map['type'] ?? 'normal',
           map['title'],
           map['subtitle'],
           map['days'],
-          map['from'],
-          map['to'],
+          map['date'],
+          map['showFrom'],
+          map['showTo'],
           map['smallImage'],
           map['bigImage'],
           map['link'],
@@ -73,11 +83,13 @@ class Ad extends BaseModel {
 
   bool get hasSmallImage => smallImage != null && smallImage.isNotEmpty;
 
-  AdType get type {
+  AdType get visualType {
     if (hasBigImage) {
       return AdType.BigImage;
     } else if (hasSmallImage) {
       return AdType.SmallImage;
+    } else if (type == 'stream' && date != null) {
+      return AdType.Stream;
     } else {
       return AdType.Text;
     }
@@ -89,6 +101,9 @@ class Ad extends BaseModel {
         'title': title,
         'subtitle': subtitle,
         'days': days,
+        'date': date,
+        'showFrom': showFrom,
+        'showTo': showTo,
         'smallImage': smallImage,
         'bigImage': bigImage,
         'link': link,
