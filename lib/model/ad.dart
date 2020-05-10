@@ -1,12 +1,23 @@
 import 'dart:ui';
 
 import 'package:ycapp_foundation/model/base_model.dart';
+import 'package:ycapp_foundation/ui/y_colors.dart';
+
+enum AdType {
+  BigImage,
+  SmallImage,
+  Text,
+}
 
 class Ad extends BaseModel {
   String _id;
-  String name;
+  String title;
+  String subtitle;
   List<int> days;
-  List<String> images;
+  DateTime from;
+  DateTime to;
+  String smallImage;
+  String bigImage;
   List<String> creator;
   List<String> twitch;
   List<String> youtube;
@@ -15,9 +26,13 @@ class Ad extends BaseModel {
 
   Ad(
     this._id,
-    this.name,
+    this.title,
+    this.subtitle,
     this.days,
-    this.images,
+    this.from,
+    this.to,
+    this.smallImage,
+    this.bigImage,
     this.link,
     this.color,
     this.creator,
@@ -28,16 +43,22 @@ class Ad extends BaseModel {
   Ad.fromMap(Map map)
       : this(
           map['id'],
-          map['name'],
+          map['title'],
+          map['subtitle'],
           map['days'],
-          map['images'],
+          map['from'],
+          map['to'],
+          map['smallImage'],
+          map['bigImage'],
           map['link'],
-          Color(
-            int.parse(
-              '#' + map['color'],
-              radix: 16,
-            ),
-          ),
+          map.containsKey('color')
+              ? Color(
+                  int.parse(
+                    '#' + map['color'],
+                    radix: 16,
+                  ),
+                )
+              : YColors.primaryColor,
           map['creator'],
           map['twitch'],
           map['youtube'],
@@ -46,12 +67,30 @@ class Ad extends BaseModel {
   @override
   String get id => _id;
 
+  bool get hasLink => link != null && link.isNotEmpty;
+
+  bool get hasBigImage => bigImage != null && bigImage.isNotEmpty;
+
+  bool get hasSmallImage => smallImage != null && smallImage.isNotEmpty;
+
+  AdType get type {
+    if (hasBigImage) {
+      return AdType.BigImage;
+    } else if (hasSmallImage) {
+      return AdType.SmallImage;
+    } else {
+      return AdType.Text;
+    }
+  }
+
   @override
   Map toJson() => {
         'id': _id,
-        'name': name,
+        'title': title,
+        'subtitle': subtitle,
         'days': days,
-        'images': images,
+        'smallImage': smallImage,
+        'bigImage': bigImage,
         'link': link,
         'color': color.value.toRadixString(16),
         'creator': creator,
