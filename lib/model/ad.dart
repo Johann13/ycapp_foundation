@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:ycapp_foundation/model/base_model.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
+import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 enum AdType {
@@ -54,9 +56,9 @@ class Ad extends BaseModel {
           map['title'],
           map['subtitle'],
           map['days'],
-          map['date'],
-          map['showFrom'],
-          map['showTo'],
+          map.containsKey('map') ? getDate(map['date']) : null,
+          map.containsKey('showFrom') ? getDate(map['showFrom']) : null,
+          map.containsKey('showTo') ? getDate(map['showTo']) : null,
           map['smallImage'],
           map['bigImage'],
           map['link'],
