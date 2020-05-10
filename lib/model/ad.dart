@@ -67,7 +67,7 @@ class Ad extends BaseModel {
                     radix: 16,
                   ),
                 )
-              : YColors.primaryColor,
+              : null,
           map['creator'],
           map['twitch'],
           map['youtube'],
@@ -108,7 +108,7 @@ class Ad extends BaseModel {
         'smallImage': smallImage,
         'bigImage': bigImage,
         'link': link,
-        'color': color.value.toRadixString(16),
+        'color': color?.value?.toRadixString(16),
         'creator': creator,
         'twitch': twitch,
         'youtube': youtube,
