@@ -1,6 +1,9 @@
 import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 
 DateTime getDate(v) {
+  if(v is Timestamp){
+    return v.toDate();
+  }else
   if (v is int) {
     return DateTime.fromMillisecondsSinceEpoch(v);
   } else if (v is Timestamp) {
