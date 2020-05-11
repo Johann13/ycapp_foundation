@@ -2,22 +2,26 @@ import 'dart:ui';
 
 import 'package:ycapp_foundation/model/base_model.dart';
 import 'package:ycapp_foundation/model/date_util.dart';
-import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
-import 'package:ycapp_foundation/ui/y_colors.dart';
 
-enum AdType {
+enum AdVisual {
   BigImage,
   SmallImage,
-  Text,
   CountDown,
+  Text,
+}
+
+enum AdType {
+  Regular,
   Twitch,
   Youtube,
+  Merch,
+  App,
 }
 
 //type: normal, twitch, youtube, ad (app relevant ads)
 class Ad extends BaseModel {
   String _id;
-  String type;
+  String _type;
   String title;
   String subtitle;
   List<int> days;
@@ -31,10 +35,11 @@ class Ad extends BaseModel {
   List<String> youtube;
   String link;
   Color color;
+  bool visible;
 
   Ad(
     this._id,
-    this.type,
+    this._type,
     this.title,
     this.subtitle,
     this.days,
@@ -48,6 +53,7 @@ class Ad extends BaseModel {
     this.creator,
     this.twitch,
     this.youtube,
+    this.visible,
   );
 
   Ad.fromMap(Map map)
@@ -74,6 +80,7 @@ class Ad extends BaseModel {
           ((map['creator']) ?? [] as List).cast<String>(),
           ((map['twitch']) ?? [] as List).cast<String>(),
           ((map['youtube']) ?? [] as List).cast<String>(),
+          map['visible'],
         );
 
   @override
@@ -85,25 +92,41 @@ class Ad extends BaseModel {
 
   bool get hasSmallImage => smallImage != null && smallImage.isNotEmpty;
 
-  AdType get visualType {
+  AdVisual get visualType {
     if (hasBigImage) {
-      return AdType.BigImage;
+      return AdVisual.BigImage;
     } else if (hasSmallImage) {
-      return AdType.SmallImage;
-    } else if (type == 'twitch' && date != null) {
-      return AdType.Twitch;
-    } else if (type == 'youtube') {
-      return AdType.Youtube;
+      return AdVisual.SmallImage;
     } else if (date != null) {
-      return AdType.CountDown;
+      return AdVisual.CountDown;
     } else {
-      return AdType.Text;
+      return AdVisual.Text;
     }
   }
+
+  AdType get type {
+    switch (_type) {
+      case 'twitch':
+        return AdType.Twitch;
+      case 'youtube':
+        return AdType.Youtube;
+      case 'merch':
+        return AdType.Merch;
+      case 'app':
+        return AdType.App;
+      default:
+        return AdType.Regular;
+    }
+  }
+
+  String get typeString => _type;
+
+  set typeString(String s) => _type = s;
 
   @override
   Map toJson() => {
         'id': _id,
+        'type': _type,
         'title': title,
         'subtitle': subtitle,
         'days': days,
