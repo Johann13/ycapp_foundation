@@ -84,10 +84,7 @@ public class Slot {
         }
         if (map.containsKey("border")) {
             Object b = map.get("border");
-
-            Log.d("Slot", "has border");
             if (b instanceof String) {
-                Log.d("Slot", "border: " + b);
                 border = (String) b;
             } else {
                 border = "2752ae";
