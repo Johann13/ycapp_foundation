@@ -16,9 +16,10 @@ enum AdType {
   Youtube,
   Merch,
   App,
+  News,
 }
 
-//type: normal, twitch, youtube, ad (app relevant ads)
+//type: twitch, youtube, app, news, merch, other
 class Ad extends BaseModel {
   String _id;
   String _type;
@@ -59,7 +60,7 @@ class Ad extends BaseModel {
   Ad.fromMap(Map map)
       : this(
           map['id'],
-          map['type'] ?? 'normal',
+          map['type'] ?? 'other',
           map['title'],
           map['subtitle'],
           ((map['day']) ?? [] as List).cast<int>(),
@@ -92,12 +93,18 @@ class Ad extends BaseModel {
 
   bool get hasSmallImage => smallImage != null && smallImage.isNotEmpty;
 
+  bool get hasDate => date != null;
+
+  bool get hasShowFrom => showFrom != null;
+
+  bool get hasShowTo => showTo != null;
+
   AdVisual get visualType {
     if (hasBigImage) {
       return AdVisual.BigImage;
     } else if (hasSmallImage) {
       return AdVisual.SmallImage;
-    } else if (date != null) {
+    } else if (hasDate) {
       return AdVisual.CountDown;
     } else {
       return AdVisual.Text;
@@ -114,6 +121,8 @@ class Ad extends BaseModel {
         return AdType.Merch;
       case 'app':
         return AdType.App;
+      case 'news':
+        return AdType.News;
       default:
         return AdType.Regular;
     }
