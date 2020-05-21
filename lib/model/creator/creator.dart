@@ -442,6 +442,8 @@ class Creator extends BaseModel {
     ];*/
   }
 
+  String get channelPref => _channelPref;
+
   @override
   String get id => creatorId;
 
