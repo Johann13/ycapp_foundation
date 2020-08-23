@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:core';
+
+import 'package:ycapp_foundation/prefs/prefs.dart';
 
 class YoutubeNotification {
   String id;
@@ -34,70 +37,105 @@ class YoutubeNotification {
   );
 
   factory YoutubeNotification.fromMap(Map<String, dynamic> map) {
-    String id = map["id"];
-    String channelId = map["channelId"];
-    Sring channelName = map["channelName"];
-    String gameId = map["gameId"];
-    String gameName = map["gameName"];
-    String gameBoxArtUrl = map["gameBoxArtUrl"];
-    String streamTitle = map["streamTitle"];
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(map["date"]));
-    DateTime startedAt;
-    if (map.containsKey("publishedMills")) {
-      startedAt =
-          DateTime.fromMillisecondsSinceEpoch(int.parse(map["publishedMills"]));
+    String id = map['id'];
+    String channelId = map['channelId'];
+    String channelName = map['channelName'];
+    String videoId = map['videoId'];
+    String videoTitle = map['videoTitle'];
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(map['date']));
+    DateTime publishedAt;
+    if (map.containsKey('publishedMills')) {
+      publishedAt = DateTime.fromMillisecondsSinceEpoch(map['publishedMills']);
     }
-    String summary = map["summary"] ?? '';
-    String creatorNames = map["creatorNames"] ?? '';
-    List<String> creatorKeys = (map["creatorKeys"] ?? '').split(",");
+    String keyString = map['creatorKeys'] ?? '';
+    String creatorNames = map['creatorNames'] ?? '';
+    List<String> creatorKeys = (map['creatorKeys'] ?? '').split(',');
+    String duration = map['duration'] ?? '';
+    String creatorListString = map["creator"] ?? '';
+    List data = json.decode(creatorListString);
+    List<YoutubeCreator> creatorList =
+        data.map((d) => YoutubeCreator(d['key'], d['name'])).toList();
     return YoutubeNotification(
       id,
       channelId,
       channelName,
-      gameId,
-      gameName,
-      gameBoxArtUrl,
-      streamTitle,
-      summary,
+      videoId,
+      videoTitle,
       date,
-      startedAt,
+      publishedAt,
       creatorNames,
+      keyString,
       creatorKeys,
+      creatorList,
+      creatorListString,
+      duration,
     );
   }
 
-  String get summery {
-    return _summary ?? channelName + " went live!";
+  Future<String> get creatorNameText async {
+    List<String> creator = await Prefs.getStringList('creatorSubscriptions');
+    String p = await Prefs.getString("youtube_notification_wiitv", "sub");
+    int n;
+    String s = '';
+    List<YoutubeCreator> temp = [];
+    switch (p) {
+      case "disable":
+        return "";
+      case "all":
+        s += '\nWith';
+        temp = creatorList;
+        n = temp.length;
+        for (int i = 0; i < n; i++) {
+          YoutubeCreator yc = temp[i];
+          s += yc.name;
+          if (i == n - 2) {
+            s += ' and ';
+          } else if (i < n - 1) {
+            s += ', ';
+          }
+        }
+        return s;
+      case "sub":
+        s += '\nWith';
+        for (YoutubeCreator yc in creatorList) {
+          if (creator.contains(yc.key)) {
+            temp.add(yc);
+          }
+        }
+        n = temp.length;
+        bool useAndMore = temp.length < creatorList.length;
+        for (int i = 0; i < n; i++) {
+          YoutubeCreator yc = temp[i];
+          s += yc.name;
+          if (i == n - 2 && !useAndMore) {
+            s += ' and ';
+          } else if (i < n - 1) {
+            s += ', ';
+          }
+        }
+        if (useAndMore) {
+          s += ' and more!';
+        }
+        return s;
+      default:
+        return '';
+    }
   }
 
   int get notificationId {
-    if (startedAt != null) {
-      return (((date.millisecondsSinceEpoch ~/ 1000) +
-              (startedAt.millisecondsSinceEpoch ~/ 1000)) ~/
-          2);
+    if (publishedAt != null) {
+      return ((date.millisecondsSinceEpoch ~/ 1000) +
+              (publishedAt.millisecondsSinceEpoch ~/ 1000)) ~/
+          2;
     } else {
       return date.millisecondsSinceEpoch ~/ 1000;
     }
-  }
-
-  bool get isCollab {
-    if (channelName == null) {
-      return false;
-    }
-    if (channelName.isEmpty) {
-      return false;
-    }
-    if (creatorKeys == null) {
-      return false;
-    }
-    if (creatorKeys.isEmpty) {
-      return false;
-    }
-    return true;
   }
 }
 
 class YoutubeCreator {
   String key;
   String name;
+
+  YoutubeCreator(this.key, this.name);
 }
