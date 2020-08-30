@@ -158,11 +158,11 @@ extension YColorExtension on Color {
     return TinyColor(this).tint(l).color;
   }
 
-  double get luminance =>
+  double get luminance2 =>
       (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue) / 255;
 
   Color get textColor {
-    if (luminance > 0.5) {
+    if (luminance2 > 0.5) {
       return Colors.black87;
     } else {
       return Colors.white;
@@ -216,8 +216,8 @@ extension YColorExtension on Color {
   }
 
   double contrast(Color c) {
-    double l1 = c.luminance;
-    double l2 = this.luminance;
+    double l1 = c.luminance2;
+    double l2 = this.luminance2;
     if (l1 > l2) {
       return (l1 + 0.05) / (l2 + 0.05);
     } else {
