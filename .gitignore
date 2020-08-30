@@ -5,3 +5,11 @@
 .pub/
 
 build/
+.idea/libraries/Dart_SDK.xml
+.idea/libraries/Flutter_Plugins.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/ycapp_foundation.iml
+example/pubspec.lock
+pubspec.lock
