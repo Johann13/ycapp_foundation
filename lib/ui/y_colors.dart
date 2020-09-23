@@ -2,7 +2,7 @@ import 'dart:math' as Math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tinycolor/tinycolor.dart';
+import 'package:tinycolor/tinycolor.dart' as t;
 
 class YColors {
   static const Color twitchPurple = const Color(0xff9146FF);
@@ -135,27 +135,27 @@ class YColors {
 
 extension YColorExtension on Color {
   Color get greyscale {
-    return TinyColor(this).greyscale().color;
+    return t.TinyColor(this).greyscale().color;
   }
 
   Color desaturate(int i) {
-    return TinyColor(this).desaturate(i).color;
+    return t.TinyColor(this).desaturate(i).color;
   }
 
   Color lighten(int l) {
-    return TinyColor(this).lighten(l).color;
+    return t.TinyColor(this).lighten(l).color;
   }
 
   Color darken(int l) {
-    return TinyColor(this).darken(l).color;
+    return t.TinyColor(this).darken(l).color;
   }
 
   Color shade(int l) {
-    return TinyColor(this).shade(l).color;
+    return t.TinyColor(this).shade(l).color;
   }
 
   Color tint(int l) {
-    return TinyColor(this).tint(l).color;
+    return t.TinyColor(this).tint(l).color;
   }
 
   double get luminance2 =>
@@ -198,11 +198,11 @@ extension YColorExtension on Color {
   }
 
   bool get isLight {
-    return TinyColor(this).isLight();
+    return t.TinyColor(this).isLight();
   }
 
   bool get isDark {
-    return TinyColor(this).isDark();
+    return t.TinyColor(this).isDark();
   }
 
   Color get inverseTextColor {
