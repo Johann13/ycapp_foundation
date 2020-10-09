@@ -58,11 +58,7 @@ class YSort {
       return -1;
     } else if (b.lastLive != null) {
       return 1;
-    } else if (a.type < b.type) {
-      return -1;
-    } else if (b.type < a.type) {
-      return 1;
     }
-    return b.name.compareTo(a.name);
+    return a.name.compareTo(b.name);
   }
 }
