@@ -381,6 +381,7 @@ class ScheduleSlot {
 
   set border(Color color) => _border = color;
 
+  /*
   Decoration get decoration {
     if (_color.length == 1) {
       return null;
@@ -398,7 +399,7 @@ class ScheduleSlot {
           colors: _color,
           stops: stops),
     );
-  }
+  }*/
 
   String get id {
     return '${day}_$slot';
