@@ -54,6 +54,7 @@ class JJSlot {
   String youtubeUrl;
   List<JJVodLink> youtubeVODs = [];
   List<JJVodLink> twitchVODs = [];
+  List<JJVodLink> highlights = [];
   int colorOrientation;
 
   Map<String, dynamic> toMap() => {
@@ -71,6 +72,7 @@ class JJSlot {
         'youtubeUrl': youtubeUrl,
         'twitchVODs': twitchVODs.map((v) => v.toMap()).toList(),
         'youtubeVODs': youtubeVODs.map((v) => v.toMap()).toList(),
+        'highlights': highlights.map((v) => v.toMap()).toList(),
         'colorOrientation': colorOrientation,
         'border': _border?.value?.toRadixString(16),
       };
@@ -200,6 +202,14 @@ class JJSlot {
           twitchVODs.add(vod);
         });
       }
+      if (map.containsKey('highlights')) {
+        List l = map['highlights'];
+        highlights.clear();
+        l.forEach((m) {
+          JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Highlight VOD');
+          highlights.add(vod);
+        });
+      }
     } catch (e) {
       print('$e');
     }
@@ -251,7 +261,9 @@ class JJSlot {
 
   Color get border => _border != null
       ? _border
-      : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
+      : colors[0].isDark
+          ? colors[0].lighten(10)
+          : colors[0].darken(10);
 
   set border(Color color) => _border = color;
 
@@ -332,6 +344,7 @@ class JJSlot {
     return Color.fromARGB(a.round(), r.round(), g.round(), b.round());
   }
 
+  /*
   Decoration get decoration {
     if (_color.length == 1) {
       return null;
@@ -384,9 +397,10 @@ class JJSlot {
 
     return BoxDecoration(
       gradient:
-          LinearGradient(begin: begin, end: end, colors: _color, stops: stops),
+          LinearGradient(begin: begin, end: end, color: _color, stops: stops),
     );
   }
+  */
 
   bool get hasLinks {
     return hasYoutubeLink || hasTwitchLink;
