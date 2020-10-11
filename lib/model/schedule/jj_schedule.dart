@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
-import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJVodLink {
@@ -57,6 +56,8 @@ class JJSlot {
   List<JJVodLink> highlights = [];
   int colorOrientation;
 
+  int height;
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'slot': slot,
@@ -82,110 +83,137 @@ class JJSlot {
   }
 
   void setValues(Map map) {
-    if (map.containsKey('id')) {
-      this.id = map['id'];
+    try {
+      if (map.containsKey('start')) {
+        var timestamp = map['start'];
+        start = TZDateTime.from(
+          DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch),
+          getLocation('Europe/London'),
+        );
+      }
+    } catch (e) {
+      print('date error $e');
     }
-    if (map.containsKey('slot')) {
-      this.slot = map['slot'];
-    }
-    if (map.containsKey('start')) {
-      start =
-          TZDateTime.from(getDate(map['start']), getLocation('Europe/London'));
-      day = start.toUtc().day;
-    }
-    if (map.containsKey('title')) {
-      this.title = map['title'];
-    }
-    if (map.containsKey('subtitle')) {
-      this.subtitle = map['subtitle'];
-    }
-    if (map.containsKey('desc')) {
-      this.desc = map['desc'];
-    }
-    creator = [];
-    if (map.containsKey('creator')) {
+    try {
+      if (map.containsKey('id')) {
+        this.id = map['id'];
+      }
+      this.day = start.day;
       /*
-      print('${map['creator']}');
-      print('${map['creator'].runtimeType}');*/
-      List l = map['creator'];
-      creator = l.cast<String>();
-    }
-    if (map.containsKey('color')) {
-      var c = map['color'];
-      if (c is String) {
-        if (c.isEmpty) {
-          _color.add(YColors.primaryColorPallet[700]);
+      if (map.containsKey('day')) {
+        this.day = map['day'];
+      }*/
+      if (map.containsKey('slot')) {
+        this.slot = map['slot'];
+      }
+      if (map.containsKey('title')) {
+        this.title = map['title'];
+      }
+      if (map.containsKey('subtitle')) {
+        this.subtitle = map['subtitle'];
+      }
+      if (map.containsKey('desc')) {
+        this.desc = map['desc'];
+      }
+      creator = [];
+      if (map.containsKey('creator')) {
+        List l = map['creator'];
+        creator = l.cast<String>();
+      }
+
+      if (map.containsKey('length')) {
+        var v = map['length'];
+        if (v is int) {
+          length = v.toDouble();
         } else {
-          if (c.contains(',')) {
-            _color = c.split(',').map((s) {
-              if (s.startsWith('#')) {
-                s = s.substring(1);
-              }
-              if (s.length == 6) {
-                s = 'ff$s';
-              }
-              return Color(int.parse(s.toLowerCase(), radix: 16));
-            }).toList();
-          } else {
-            _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
-          }
+          length = v;
         }
-      } else if (map['color'] is List) {
-        List<String> hex = (map['color'] as List).cast<String>();
-        if (hex != null) {
-          if (hex.isNotEmpty) {
-            _color = hex
-                .map((c) {
-                  if (c.startsWith('#')) {
-                    c = c.substring(1);
-                  }
-                  if (c.length < 8) {
-                    c = 'ff$c';
-                  }
-                  if (c.length == 8) {
-                    return Color(int.parse(c, radix: 16));
-                  }
-                  return null;
-                })
-                .where((c) => c != null)
-                .toList();
+      } else {
+        length = 3;
+      }
+    } catch (e) {
+      print('basic error $e');
+    }
+    try {
+      if (map.containsKey('color')) {
+        var c = map['color'];
+        if (c is String) {
+          if (c.isEmpty) {
+            _color.add(YColors.primaryColorPallet[700]);
+          } else {
+            if (c.contains(',')) {
+              _color = c.split(',').map((s) {
+                if (s.startsWith('#')) {
+                  s = s.substring(1);
+                }
+                if (s.length == 6) {
+                  s = 'ff$s';
+                }
+                return Color(int.parse(s.toLowerCase(), radix: 16));
+              }).toList();
+            } else {
+              _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
+            }
           }
+        } else if (map['color'] is List) {
+          List<String> hex = (map['color'] as List).cast<String>();
+          if (hex != null) {
+            if (hex.isNotEmpty) {
+              _color = hex
+                  .map((c) {
+                    if (c.startsWith('#')) {
+                      c = c.substring(1);
+                    }
+                    if (c.length < 8) {
+                      c = 'ff$c';
+                    }
+                    if (c.length == 8) {
+                      return Color(int.parse(c, radix: 16));
+                    }
+                    return null;
+                  })
+                  .where((c) => c != null)
+                  .toList();
+            }
+          }
+        } else {
+          _color.add(YColors.primaryColorPallet[700]);
         }
       } else {
         _color.add(YColors.primaryColorPallet[700]);
       }
-    } else {
-      _color.add(YColors.primaryColorPallet[700]);
-    }
-    if (map.containsKey('border')) {
-      String c = map['border'];
-      if (c != null) {
-        if (c.startsWith('#')) {
-          c = c.substring(1);
-        }
-        if (c.length < 8) {
-          c = 'ff$c';
-        }
-        if (c.length == 8) {
-          this._border = Color(int.parse(c, radix: 16));
+      if (map.containsKey('border')) {
+        String c = map['border'];
+        if (c != null) {
+          if (c.startsWith('#')) {
+            c = c.substring(1);
+          }
+          if (c.length < 8) {
+            c = 'ff$c';
+          }
+          if (c.length == 8) {
+            this._border = Color(int.parse(c, radix: 16));
+          }
         }
       }
-    }
 
-    if (map.containsKey('colorOrientation')) {
-      colorOrientation = map['colorOrientation'] ?? 1;
-    }
-    if (map.containsKey('youtubeUrl')) {
-      youtubeUrl = map['youtubeUrl'] ?? '';
-    } else {
-      youtubeUrl = '';
-    }
-    if (map.containsKey('twitchUrl')) {
-      twitchUrl = map['twitchUrl'] ?? '';
-    } else {
-      twitchUrl = '';
+      if (map.containsKey('colorOrientation')) {
+        colorOrientation = map['colorOrientation'] ?? 1;
+      }
+    } catch (e) {
+      print('color error $e');
     }
     try {
+      if (map.containsKey('youtubeUrl')) {
+        youtubeUrl = map['youtubeUrl'] ?? '';
+      } else {
+        youtubeUrl = '';
+      }
+      if (map.containsKey('twitchUrl')) {
+        twitchUrl = map['twitchUrl'] ?? '';
+      } else {
+        twitchUrl = '';
+      }
       if (map.containsKey('youtubeVODs')) {
         var l = map['youtubeVODs'];
         youtubeVODs.clear();
@@ -211,20 +239,16 @@ class JJSlot {
         });
       }
     } catch (e) {
-      print('$e');
+      print('vods error, $e');
     }
     if (map.containsKey('desc')) {
       desc = map['desc'];
     }
-    if (map.containsKey('length')) {
-      var v = map['length'];
-      if (v is int) {
-        length = v.toDouble();
-      } else {
-        length = v;
-      }
+
+    if (map.containsKey('height')) {
+      height = map['height'];
     } else {
-      length = 3;
+      height = length * 60 as int;
     }
   }
 
@@ -465,8 +489,7 @@ class JJDay {
   }
 
   List<JJTimes> get times {
-    List<JJTimes> list =
-        slots.map((s) => JJTimes(s.start.toUtc(), s.end.toUtc())).toList();
+    List<JJTimes> list = slots.map((s) => JJTimes(s.start, s.end)).toList();
     list.sort((a, b) => a.start.compareTo(b.start));
     return list;
   }
@@ -568,20 +591,57 @@ class JJSchedule {
       }
       return a.day - b.day;
     });
-    List<JJDay> days = [];
-    for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
-    }
+    List<JJDay> days = [
+      for (int i = 0; i < 31; i++) JJDay(i, []),
+    ];
+
     for (JJSlot slot in slots) {
-      days[slot.day - 1].slots.add(slot);
+      try {
+        days[slot.day - 1].slots.add(slot);
+      } catch (e) {
+        print('add slot to day error $e');
+      }
+    }
+    print('days length: ${days.length}');
+    List<JJWeek> weeks = [JJWeek(0)];
+    int firstDayOfTheMonth = slots.first.start.weekday;
+
+    int startAt = 0;
+    print('firstDayOfTheMonth:$firstDayOfTheMonth');
+
+    switch (firstDayOfTheMonth) {
+      case DateTime.monday:
+        startAt = 7;
+        break;
+      case DateTime.tuesday:
+        startAt = 6;
+        break;
+      case DateTime.wednesday:
+        startAt = 5;
+        break;
+      case DateTime.thursday:
+        startAt = 4;
+        break;
+      case DateTime.friday:
+        startAt = 10;
+        break;
+      case DateTime.saturday:
+        startAt = 9;
+        break;
+      case DateTime.sunday:
+        startAt = 8;
+        break;
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
-    for (JJDay day in days) {
+    for (int i = 0; i < startAt; i++) {
+      weeks.last.days.add(days[i]);
+    }
+    print('first week days length ${weeks.last.days.length}');
+
+    for (JJDay day in days.sublist(startAt)) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
-      if (d.length >= 7 &&
-          weeks.last.days.last.weekdayStart == DateTime.sunday) {
+      if (weeks.last.days.last.weekdayStart == DateTime.sunday) {
         weeks.add(JJWeek(weeks.length));
       }
       if (weeks.last.days.isEmpty) {
