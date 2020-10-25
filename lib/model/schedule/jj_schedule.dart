@@ -778,6 +778,13 @@ class JJSchedule {
     }
     return jjWeek;
   }
+
+  List<String> get creator => slots
+      .where((s) => s.creator != null && s.creator.isNotEmpty)
+      .map((s) => s.creator)
+      .expand((element) => element)
+      .toSet()
+      .toList();
 }
 
 class JJTimes {
