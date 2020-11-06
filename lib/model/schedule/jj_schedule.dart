@@ -38,6 +38,7 @@ class JJVodLink {
 }
 
 class JJSlot {
+  String year;
   String id;
   int slot;
   int day;
@@ -78,7 +79,7 @@ class JJSlot {
         'border': _border?.value?.toRadixString(16),
       };
 
-  JJSlot.fromMap(Map map) {
+  JJSlot.fromMap(this.year, Map map) {
     setValues(map);
   }
 
@@ -134,6 +135,7 @@ class JJSlot {
     } catch (e) {
       print('basic error $e');
     }
+
     try {
       if (map.containsKey('color')) {
         var c = map['color'];
@@ -203,6 +205,7 @@ class JJSlot {
     } catch (e) {
       print('color error $e');
     }
+
     try {
       if (map.containsKey('youtubeUrl')) {
         youtubeUrl = map['youtubeUrl'] ?? '';
@@ -241,14 +244,25 @@ class JJSlot {
     } catch (e) {
       print('vods error, $e');
     }
-    if (map.containsKey('desc')) {
-      desc = map['desc'];
+
+    try {
+      if (map.containsKey('desc')) {
+        desc = map['desc'];
+      }
+    } catch (e) {
+      print('desc error');
     }
 
-    if (map.containsKey('height')) {
-      height = map['height'];
-    } else {
-      height = length * 60 as int;
+    try {
+      if (map.containsKey('height')) {
+        height = map['height'];
+      } else {
+        height = (length * 60).toInt();
+      }
+    } catch (e) {
+      print('height error');
+
+      print('map[height]: ${map['height']} ');
     }
   }
 
@@ -460,6 +474,7 @@ class JJSlot {
 }
 
 class JJDay {
+  String year;
   int day;
 
   List<JJSlot> slots = [];
@@ -468,7 +483,7 @@ class JJDay {
     return DateTime.utc(2019, DateTime.december, day + 1);
   }
 
-  JJDay(this.day, this.slots);
+  JJDay(this.year, this.day, this.slots);
 
   void add(JJSlot slot) {
     slots.add(slot);
@@ -493,13 +508,21 @@ class JJDay {
     list.sort((a, b) => a.start.compareTo(b.start));
     return list;
   }
+
+
+  TZDateTime get weekDay {
+    TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
+    TZDateTime tz = TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
+    return tz;
+  }
 }
 
 class JJWeek {
+  String year;
   List<JJDay> days;
   final int week;
 
-  JJWeek(this.week) {
+  JJWeek(this.year, this.week) {
     this.days = [];
   }
 
@@ -540,13 +563,15 @@ class JJWeek {
 }
 
 class JJSchedule {
+  String year;
   List<JJDay> days;
   List<JJWeek> weeks;
   List<JJSlot> slots;
 
-  JJSchedule._();
+  JJSchedule._(this.year);
 
-  factory JJSchedule.withMaxWeekSize(List<JJSlot> slots, int maxWeekSize) {
+  factory JJSchedule.withMaxWeekSize(
+      String year, List<JJSlot> slots, int maxWeekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -555,18 +580,18 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
+      days.add(JJDay(year,i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
+    List<JJWeek> weeks = [JJWeek(year,0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= maxWeekSize) {
-        weeks.add(JJWeek(weeks.length));
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -577,14 +602,14 @@ class JJSchedule {
       }
     }
 
-    JJSchedule schedule = JJSchedule._();
+    JJSchedule schedule = JJSchedule._(year);
     schedule.slots = slots;
     schedule.days = days;
     schedule.weeks = weeks;
     return schedule;
   }
 
-  factory JJSchedule(List<JJSlot> slots) {
+  factory JJSchedule(String year, List<JJSlot> slots) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -592,7 +617,7 @@ class JJSchedule {
       return a.day - b.day;
     });
     List<JJDay> days = [
-      for (int i = 0; i < 31; i++) JJDay(i, []),
+      for (int i = 0; i < 31; i++) JJDay(year,i, []),
     ];
 
     for (JJSlot slot in slots) {
@@ -603,7 +628,7 @@ class JJSchedule {
       }
     }
     print('days length: ${days.length}');
-    List<JJWeek> weeks = [JJWeek(0)];
+    List<JJWeek> weeks = [JJWeek(year,0)];
     int firstDayOfTheMonth = slots.first.start.weekday;
 
     int startAt = 0;
@@ -642,7 +667,7 @@ class JJSchedule {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(weeks.length));
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -653,7 +678,7 @@ class JJSchedule {
       }
     }
 
-    JJSchedule schedule = JJSchedule._();
+    JJSchedule schedule = JJSchedule._(year);
     schedule.slots = slots;
     schedule.days = days;
     schedule.weeks = weeks;
@@ -669,19 +694,19 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
+      days.add(JJDay(year,i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
+    List<JJWeek> weeks = [JJWeek(year,0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= 7 &&
           weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(weeks.length));
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -707,18 +732,18 @@ class JJSchedule {
       });
       List<JJDay> days = [];
       for (int i = 0; i < 31; i++) {
-        days.add(JJDay(i, []));
+        days.add(JJDay(year,i, []));
       }
       for (JJSlot slot in slots) {
         days[slot.day - 1].slots.add(slot);
       }
 
-      List<JJWeek> weeks = [JJWeek(0)];
+      List<JJWeek> weeks = [JJWeek(year,0)];
       for (JJDay day in days) {
         JJWeek last = weeks.last;
         List<JJDay> d = last.days;
         if (d.length >= maxWeekSize) {
-          weeks.add(JJWeek(weeks.length));
+          weeks.add(JJWeek(year,weeks.length));
         }
         if (weeks.last.days.isEmpty) {
           weeks.last.days.add(day);
