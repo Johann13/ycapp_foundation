@@ -15,6 +15,7 @@ abstract class Channel extends BaseModel{
   List<String> youtube;
   List<String> twitch;
   List<String> podcast;
+  List<String> community;
 
   int type;
 
@@ -96,6 +97,18 @@ abstract class Channel extends BaseModel{
           cmap.forEach((k, v) => podcast.add(k));
         } else if (map['podcast'] is List) {
           podcast = (map['podcast'] as List).cast<String>();
+        }
+      }
+    }
+
+    community = [];
+    if (map.containsKey('community')) {
+      if (map['community'] != null) {
+        if (map['community'] is Map) {
+          Map cmap = map['community'];
+          cmap.forEach((k, v) => community.add(k));
+        } else if (map['community'] is List) {
+          community = (map['community'] as List).cast<String>();
         }
       }
     }

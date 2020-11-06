@@ -5,11 +5,7 @@
 .pub/
 
 build/
-pubspec.lock
 example/pubspec.lock
-.idea/ycapp_foundation.iml
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/modules.xml
-.idea/libraries/Flutter_Plugins.xml
-.idea/libraries/Dart_SDK.xml
+.idea/
+example/pubspec.lock
+pubspec.lock

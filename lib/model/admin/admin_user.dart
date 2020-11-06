@@ -25,9 +25,19 @@ class AdminUser {
     String id = map['id'];
     String email = map['email'];
     bool admin = map['admin'];
-    List<String> creator = map['creator'] ?? [];
-    List<String> twitch = map['twitch'] ?? [];
-    List<String> youtube = map['youtube'] ?? [];
+    List<String> creator = [];
+    List<String> twitch = [];
+    List<String> youtube = [];
+    if (map.containsKey('creator')) {
+      creator = (map['creator'] as List).cast<String>();
+    }
+    if (map.containsKey('twitch')) {
+      twitch = (map['twitch'] as List).cast<String>();
+    }
+    if (map.containsKey('youtube')) {
+      youtube = (map['youtube'] as List).cast<String>();
+    }
+
     bool jjSchedule, mainSchedule;
     if (map.containsKey('jjSchedule')) {
       jjSchedule = map['jjSchedule'];

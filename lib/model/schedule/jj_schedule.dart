@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
-import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJVodLink {
@@ -39,6 +38,7 @@ class JJVodLink {
 }
 
 class JJSlot {
+  String year;
   String id;
   int slot;
   int day;
@@ -54,7 +54,10 @@ class JJSlot {
   String youtubeUrl;
   List<JJVodLink> youtubeVODs = [];
   List<JJVodLink> twitchVODs = [];
+  List<JJVodLink> highlights = [];
   int colorOrientation;
+
+  int height;
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -71,119 +74,149 @@ class JJSlot {
         'youtubeUrl': youtubeUrl,
         'twitchVODs': twitchVODs.map((v) => v.toMap()).toList(),
         'youtubeVODs': youtubeVODs.map((v) => v.toMap()).toList(),
+        'highlights': highlights.map((v) => v.toMap()).toList(),
         'colorOrientation': colorOrientation,
         'border': _border?.value?.toRadixString(16),
       };
 
-  JJSlot.fromMap(Map map) {
+  JJSlot.fromMap(this.year, Map map) {
     setValues(map);
   }
 
   void setValues(Map map) {
-    if (map.containsKey('id')) {
-      this.id = map['id'];
+    try {
+      if (map.containsKey('start')) {
+        var timestamp = map['start'];
+        start = TZDateTime.from(
+          DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch),
+          getLocation('Europe/London'),
+        );
+      }
+    } catch (e) {
+      print('date error $e');
     }
-    if (map.containsKey('slot')) {
-      this.slot = map['slot'];
-    }
-    if (map.containsKey('start')) {
-      start =
-          TZDateTime.from(getDate(map['start']), getLocation('Europe/London'));
-      day = start.toUtc().day;
-    }
-    if (map.containsKey('title')) {
-      this.title = map['title'];
-    }
-    if (map.containsKey('subtitle')) {
-      this.subtitle = map['subtitle'];
-    }
-    if (map.containsKey('desc')) {
-      this.desc = map['desc'];
-    }
-    creator = [];
-    if (map.containsKey('creator')) {
+    try {
+      if (map.containsKey('id')) {
+        this.id = map['id'];
+      }
+      this.day = start.day;
       /*
-      print('${map['creator']}');
-      print('${map['creator'].runtimeType}');*/
-      List l = map['creator'];
-      creator = l.cast<String>();
-    }
-    if (map.containsKey('color')) {
-      var c = map['color'];
-      if (c is String) {
-        if (c.isEmpty) {
-          _color.add(YColors.primaryColorPallet[700]);
+      if (map.containsKey('day')) {
+        this.day = map['day'];
+      }*/
+      if (map.containsKey('slot')) {
+        this.slot = map['slot'];
+      }
+      if (map.containsKey('title')) {
+        this.title = map['title'];
+      }
+      if (map.containsKey('subtitle')) {
+        this.subtitle = map['subtitle'];
+      }
+      if (map.containsKey('desc')) {
+        this.desc = map['desc'];
+      }
+      creator = [];
+      if (map.containsKey('creator')) {
+        List l = map['creator'];
+        creator = l.cast<String>();
+      }
+
+      if (map.containsKey('length')) {
+        var v = map['length'];
+        if (v is int) {
+          length = v.toDouble();
         } else {
-          if (c.contains(',')) {
-            _color = c.split(',').map((s) {
-              if (s.startsWith('#')) {
-                s = s.substring(1);
-              }
-              if (s.length == 6) {
-                s = 'ff$s';
-              }
-              return Color(int.parse(s.toLowerCase(), radix: 16));
-            }).toList();
-          } else {
-            _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
-          }
+          length = v;
         }
-      } else if (map['color'] is List) {
-        List<String> hex = (map['color'] as List).cast<String>();
-        if (hex != null) {
-          if (hex.isNotEmpty) {
-            _color = hex
-                .map((c) {
-                  if (c.startsWith('#')) {
-                    c = c.substring(1);
-                  }
-                  if (c.length < 8) {
-                    c = 'ff$c';
-                  }
-                  if (c.length == 8) {
-                    return Color(int.parse(c, radix: 16));
-                  }
-                  return null;
-                })
-                .where((c) => c != null)
-                .toList();
+      } else {
+        length = 3;
+      }
+    } catch (e) {
+      print('basic error $e');
+    }
+
+    try {
+      if (map.containsKey('color')) {
+        var c = map['color'];
+        if (c is String) {
+          if (c.isEmpty) {
+            _color.add(YColors.primaryColorPallet[700]);
+          } else {
+            if (c.contains(',')) {
+              _color = c.split(',').map((s) {
+                if (s.startsWith('#')) {
+                  s = s.substring(1);
+                }
+                if (s.length == 6) {
+                  s = 'ff$s';
+                }
+                return Color(int.parse(s.toLowerCase(), radix: 16));
+              }).toList();
+            } else {
+              _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
+            }
           }
+        } else if (map['color'] is List) {
+          List<String> hex = (map['color'] as List).cast<String>();
+          if (hex != null) {
+            if (hex.isNotEmpty) {
+              _color = hex
+                  .map((c) {
+                    if (c.startsWith('#')) {
+                      c = c.substring(1);
+                    }
+                    if (c.length < 8) {
+                      c = 'ff$c';
+                    }
+                    if (c.length == 8) {
+                      return Color(int.parse(c, radix: 16));
+                    }
+                    return null;
+                  })
+                  .where((c) => c != null)
+                  .toList();
+            }
+          }
+        } else {
+          _color.add(YColors.primaryColorPallet[700]);
         }
       } else {
         _color.add(YColors.primaryColorPallet[700]);
       }
-    } else {
-      _color.add(YColors.primaryColorPallet[700]);
-    }
-    if (map.containsKey('border')) {
-      String c = map['border'];
-      if (c != null) {
-        if (c.startsWith('#')) {
-          c = c.substring(1);
-        }
-        if (c.length < 8) {
-          c = 'ff$c';
-        }
-        if (c.length == 8) {
-          this._border = Color(int.parse(c, radix: 16));
+      if (map.containsKey('border')) {
+        String c = map['border'];
+        if (c != null) {
+          if (c.startsWith('#')) {
+            c = c.substring(1);
+          }
+          if (c.length < 8) {
+            c = 'ff$c';
+          }
+          if (c.length == 8) {
+            this._border = Color(int.parse(c, radix: 16));
+          }
         }
       }
+
+      if (map.containsKey('colorOrientation')) {
+        colorOrientation = map['colorOrientation'] ?? 1;
+      }
+    } catch (e) {
+      print('color error $e');
     }
 
-    if (map.containsKey('colorOrientation')) {
-      colorOrientation = map['colorOrientation'] ?? 1;
-    }
-    if (map.containsKey('youtubeUrl')) {
-      youtubeUrl = map['youtubeUrl'] ?? '';
-    } else {
-      youtubeUrl = '';
-    }
-    if (map.containsKey('twitchUrl')) {
-      twitchUrl = map['twitchUrl'] ?? '';
-    } else {
-      twitchUrl = '';
-    }
     try {
+      if (map.containsKey('youtubeUrl')) {
+        youtubeUrl = map['youtubeUrl'] ?? '';
+      } else {
+        youtubeUrl = '';
+      }
+      if (map.containsKey('twitchUrl')) {
+        twitchUrl = map['twitchUrl'] ?? '';
+      } else {
+        twitchUrl = '';
+      }
       if (map.containsKey('youtubeVODs')) {
         var l = map['youtubeVODs'];
         youtubeVODs.clear();
@@ -200,21 +233,36 @@ class JJSlot {
           twitchVODs.add(vod);
         });
       }
-    } catch (e) {
-      print('$e');
-    }
-    if (map.containsKey('desc')) {
-      desc = map['desc'];
-    }
-    if (map.containsKey('length')) {
-      var v = map['length'];
-      if (v is int) {
-        length = v.toDouble();
-      } else {
-        length = v;
+      if (map.containsKey('highlights')) {
+        List l = map['highlights'];
+        highlights.clear();
+        l.forEach((m) {
+          JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Highlight VOD');
+          highlights.add(vod);
+        });
       }
-    } else {
-      length = 3;
+    } catch (e) {
+      print('vods error, $e');
+    }
+
+    try {
+      if (map.containsKey('desc')) {
+        desc = map['desc'];
+      }
+    } catch (e) {
+      print('desc error');
+    }
+
+    try {
+      if (map.containsKey('height')) {
+        height = map['height'];
+      } else {
+        height = (length * 60).toInt();
+      }
+    } catch (e) {
+      print('height error');
+
+      print('map[height]: ${map['height']} ');
     }
   }
 
@@ -251,7 +299,9 @@ class JJSlot {
 
   Color get border => _border != null
       ? _border
-      : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
+      : colors[0].isDark
+          ? colors[0].lighten(10)
+          : colors[0].darken(10);
 
   set border(Color color) => _border = color;
 
@@ -332,6 +382,7 @@ class JJSlot {
     return Color.fromARGB(a.round(), r.round(), g.round(), b.round());
   }
 
+  /*
   Decoration get decoration {
     if (_color.length == 1) {
       return null;
@@ -384,9 +435,10 @@ class JJSlot {
 
     return BoxDecoration(
       gradient:
-          LinearGradient(begin: begin, end: end, colors: _color, stops: stops),
+          LinearGradient(begin: begin, end: end, color: _color, stops: stops),
     );
   }
+  */
 
   bool get hasLinks {
     return hasYoutubeLink || hasTwitchLink;
@@ -422,6 +474,7 @@ class JJSlot {
 }
 
 class JJDay {
+  String year;
   int day;
 
   List<JJSlot> slots = [];
@@ -430,7 +483,7 @@ class JJDay {
     return DateTime.utc(2019, DateTime.december, day + 1);
   }
 
-  JJDay(this.day, this.slots);
+  JJDay(this.year, this.day, this.slots);
 
   void add(JJSlot slot) {
     slots.add(slot);
@@ -451,18 +504,25 @@ class JJDay {
   }
 
   List<JJTimes> get times {
-    List<JJTimes> list =
-        slots.map((s) => JJTimes(s.start.toUtc(), s.end.toUtc())).toList();
+    List<JJTimes> list = slots.map((s) => JJTimes(s.start, s.end)).toList();
     list.sort((a, b) => a.start.compareTo(b.start));
     return list;
+  }
+
+
+  TZDateTime get weekDay {
+    TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
+    TZDateTime tz = TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
+    return tz;
   }
 }
 
 class JJWeek {
+  String year;
   List<JJDay> days;
   final int week;
 
-  JJWeek(this.week) {
+  JJWeek(this.year, this.week) {
     this.days = [];
   }
 
@@ -503,13 +563,15 @@ class JJWeek {
 }
 
 class JJSchedule {
+  String year;
   List<JJDay> days;
   List<JJWeek> weeks;
   List<JJSlot> slots;
 
-  JJSchedule._();
+  JJSchedule._(this.year);
 
-  factory JJSchedule.withMaxWeekSize(List<JJSlot> slots, int maxWeekSize) {
+  factory JJSchedule.withMaxWeekSize(
+      String year, List<JJSlot> slots, int maxWeekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -518,18 +580,18 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
+      days.add(JJDay(year,i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
+    List<JJWeek> weeks = [JJWeek(year,0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= maxWeekSize) {
-        weeks.add(JJWeek(weeks.length));
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -540,35 +602,72 @@ class JJSchedule {
       }
     }
 
-    JJSchedule schedule = JJSchedule._();
+    JJSchedule schedule = JJSchedule._(year);
     schedule.slots = slots;
     schedule.days = days;
     schedule.weeks = weeks;
     return schedule;
   }
 
-  factory JJSchedule(List<JJSlot> slots) {
+  factory JJSchedule(String year, List<JJSlot> slots) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
       }
       return a.day - b.day;
     });
-    List<JJDay> days = [];
-    for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
-    }
+    List<JJDay> days = [
+      for (int i = 0; i < 31; i++) JJDay(year,i, []),
+    ];
+
     for (JJSlot slot in slots) {
-      days[slot.day - 1].slots.add(slot);
+      try {
+        days[slot.day - 1].slots.add(slot);
+      } catch (e) {
+        print('add slot to day error $e');
+      }
+    }
+    print('days length: ${days.length}');
+    List<JJWeek> weeks = [JJWeek(year,0)];
+    int firstDayOfTheMonth = slots.first.start.weekday;
+
+    int startAt = 0;
+    print('firstDayOfTheMonth:$firstDayOfTheMonth');
+
+    switch (firstDayOfTheMonth) {
+      case DateTime.monday:
+        startAt = 7;
+        break;
+      case DateTime.tuesday:
+        startAt = 6;
+        break;
+      case DateTime.wednesday:
+        startAt = 5;
+        break;
+      case DateTime.thursday:
+        startAt = 4;
+        break;
+      case DateTime.friday:
+        startAt = 10;
+        break;
+      case DateTime.saturday:
+        startAt = 9;
+        break;
+      case DateTime.sunday:
+        startAt = 8;
+        break;
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
-    for (JJDay day in days) {
+    for (int i = 0; i < startAt; i++) {
+      weeks.last.days.add(days[i]);
+    }
+    print('first week days length ${weeks.last.days.length}');
+
+    for (JJDay day in days.sublist(startAt)) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
-      if (d.length >= 7 &&
-          weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(weeks.length));
+      if (weeks.last.days.last.weekdayStart == DateTime.sunday) {
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -579,7 +678,7 @@ class JJSchedule {
       }
     }
 
-    JJSchedule schedule = JJSchedule._();
+    JJSchedule schedule = JJSchedule._(year);
     schedule.slots = slots;
     schedule.days = days;
     schedule.weeks = weeks;
@@ -595,19 +694,19 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(i, []));
+      days.add(JJDay(year,i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(0)];
+    List<JJWeek> weeks = [JJWeek(year,0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= 7 &&
           weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(weeks.length));
+        weeks.add(JJWeek(year,weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -633,18 +732,18 @@ class JJSchedule {
       });
       List<JJDay> days = [];
       for (int i = 0; i < 31; i++) {
-        days.add(JJDay(i, []));
+        days.add(JJDay(year,i, []));
       }
       for (JJSlot slot in slots) {
         days[slot.day - 1].slots.add(slot);
       }
 
-      List<JJWeek> weeks = [JJWeek(0)];
+      List<JJWeek> weeks = [JJWeek(year,0)];
       for (JJDay day in days) {
         JJWeek last = weeks.last;
         List<JJDay> d = last.days;
         if (d.length >= maxWeekSize) {
-          weeks.add(JJWeek(weeks.length));
+          weeks.add(JJWeek(year,weeks.length));
         }
         if (weeks.last.days.isEmpty) {
           weeks.last.days.add(day);
@@ -704,6 +803,13 @@ class JJSchedule {
     }
     return jjWeek;
   }
+
+  List<String> get creator => slots
+      .where((s) => s.creator != null && s.creator.isNotEmpty)
+      .map((s) => s.creator)
+      .expand((element) => element)
+      .toSet()
+      .toList();
 }
 
 class JJTimes {

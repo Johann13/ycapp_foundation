@@ -37,6 +37,10 @@ flutter:
         pluginClass: YcappFoundationPlugin
       ios:
         pluginClass: YcappFoundationPlugin
+  fonts:
+    - family: YcAppIcons
+      fonts:
+        - asset: fonts/YcAppIcons.ttf
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

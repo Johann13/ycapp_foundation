@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:ycapp_foundation/model/base_model.dart';
 import 'package:ycapp_foundation/model/creator/creator_images.dart';
 import 'package:ycapp_foundation/model/creator/creator_links.dart';
+import 'package:ycapp_foundation/model/date_util.dart';
 
 class Creator extends BaseModel {
   String creatorId;
@@ -27,6 +28,9 @@ class Creator extends BaseModel {
 
   List<String> podcast;
 
+  List<String> community;
+  String communityRole;
+
   Images images;
   String _channelPref;
 
@@ -40,6 +44,8 @@ class Creator extends BaseModel {
   int type;
 
   bool useRainbow;
+
+  DateTime lastLive;
 
   Creator.fromMap(Map map) {
     if (map.containsKey('creatorId')) {
@@ -217,6 +223,22 @@ class Creator extends BaseModel {
       }
     }
 
+    community = [];
+    if (map.containsKey('community')) {
+      if (map['community'] != null) {
+        if (map['community'] is Map) {
+          Map cmap = map['community'];
+          cmap.forEach((k, v) => community.add(k));
+        } else if (map['community'] is List) {
+          community = (map['community'] as List).cast<String>();
+        }
+      }
+    }
+
+    if (map.containsKey('communityRole')) {
+      communityRole = map['communityRole'];
+    }
+
     if (map.containsKey('channelImages')) {
       this.images = Images(map['channelImages']);
     }
@@ -228,6 +250,10 @@ class Creator extends BaseModel {
         links = [];
         list.forEach((item) => links.add(Link(item)));
       }
+    }
+
+    if (map.containsKey('lastLive')) {
+      lastLive = getDate(map['lastLive']);
     }
   }
 

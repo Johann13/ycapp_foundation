@@ -49,4 +49,16 @@ class YSort {
 
   static int sortCreatorByName(Creator a, Creator b) =>
       a.name.toUpperCase().compareTo(b.realName.toUpperCase());
+
+
+  static int sortCreatorByLastLive(Creator a, Creator b){
+    if (a.lastLive != null && b.lastLive != null) {
+      return b.lastLive.compareTo(a.lastLive);
+    } else if (a.lastLive != null) {
+      return -1;
+    } else if (b.lastLive != null) {
+      return 1;
+    }
+    return a.name.compareTo(b.name);
+  }
 }
