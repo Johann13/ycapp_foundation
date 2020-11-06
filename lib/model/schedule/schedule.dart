@@ -309,7 +309,7 @@ class ScheduleSlot {
       }
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
+        _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
@@ -349,7 +349,10 @@ class ScheduleSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -367,17 +370,19 @@ class ScheduleSlot {
 
   set colors(List<Color> list) => _color = list;
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColorPallet[500]
           : YColors.primaryColorPallet[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark ? colors[0].lighten(10) : colors[0].darken(10);
 
   set border(Color color) => _border = color;
 
@@ -414,7 +419,7 @@ class ScheduleSlot {
   }
 
   TZDateTime get end {
-    return nextStream.add(Duration(minutes: lengthMin)).toUtc();
+    return start.add(Duration(minutes: lengthMin)).toUtc();
   }
 
   bool get isStream {
@@ -427,8 +432,7 @@ class ScheduleSlot {
 
   TZDateTime get nextStream {
     TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
-    tz = tz.add(Duration(days: ((day - tz.weekday) % 7)));
-    return tz.toUtc();
+    return tz.add(Duration(days: ((day - tz.weekday) % 7)));
     //dateTime = dateTime.add(Duration(days: ((day - dateTime.weekday) % 7)));
     //return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, hour, min, 0, 0, 0);
   }
@@ -436,15 +440,13 @@ class ScheduleSlot {
   TZDateTime get nextStream2 {
     TZDateTime next = nextStream;
     if (now.day == next.day && !now.isBefore(nextStream)) {
-      next = next.add(Duration(days: 7));
+      return next.add(Duration(days: 7));
     }
-    return next.toUtc();
+    return next;
   }
 
   TZDateTime get start {
-    TZDateTime tz = TZDateTime(london, now.year, now.month, now.day, hour, min);
-    return tz.toUtc();
-    //return DateTime.utc(now.year, now.month, now.day, hour, min, 0, 0, 0);
+    return TZDateTime(london, now.year, now.month, now.day, hour, min);
   }
 
   bool get hasImage {
@@ -499,7 +501,14 @@ class ScheduleDay {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.slots == null) {
       return dateTime;
     }
@@ -519,6 +528,12 @@ class ScheduleDay {
   List<SlotTime> get slotTimes =>
       slots.map((s) => s.slotTime).where((s) => s.min == 0).toList();
 
+
+  TZDateTime get weekDay {
+    TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
+    TZDateTime tz = TZDateTime(getLocation('Europe/London'), now.year, now.month, now.day);
+    return tz.add(Duration(days: (((day + 1) - tz.weekday) % 7)));
+  }
 /*
   List<DateTime> get times11 => slotTimes
       .map((time) => DateTime.utc(2019, 1, 1, time.hour, time.min, 0, 0, 0))
@@ -572,7 +587,14 @@ class Schedule {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.days.isEmpty) {
       return dateTime;
     }
@@ -588,7 +610,7 @@ class Schedule {
 
   List<SlotTime> get slotTimes {
     List<SlotTime> s =
-        days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
+    days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
     s.sort((a, b) => a.hashCode - b.hashCode);
     return s;
   }
@@ -601,7 +623,7 @@ class Schedule {
       });
     DateTime first = s.first.slotTime.toUK;
     DateTime last =
-        s.last.slotTime.toUK.add(Duration(minutes: s.last.lengthMin));
+    s.last.slotTime.toUK.add(Duration(minutes: s.last.lengthMin));
     Duration duration = last.difference(first);
     int hm = duration.inMinutes;
     int timeCount = hm ~/ 180;
@@ -615,11 +637,15 @@ class Schedule {
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
               .add(Duration(hours: (i * 3)))
               .toUtc()
-              .add(DateTime.now().timeZoneOffset),
+              .add(DateTime
+              .now()
+              .timeZoneOffset),
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
               .add(Duration(hours: ((i + 1) * 3)))
               .toUtc()
-              .add(DateTime.now().timeZoneOffset),
+              .add(DateTime
+              .now()
+              .timeZoneOffset),
         ),
     ].toList();
     /*
@@ -647,7 +673,8 @@ class Schedule {
     return days.map((d) => d.slots.length).reduce(max);
   }
 
-  ScheduleSlot get currentSlot => slots.firstWhere((s) {
+  ScheduleSlot get currentSlot =>
+      slots.firstWhere((s) {
         return s.isStream;
       }, orElse: () {
         return null;
