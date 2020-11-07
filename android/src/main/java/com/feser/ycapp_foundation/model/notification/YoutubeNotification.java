@@ -21,6 +21,8 @@ import java.util.TimeZone;
 
 public class YoutubeNotification {
 
+    private final String TAG = "YoutubeNotification";
+
     private String id;
     private String channelId;
     private String channelName;
@@ -49,9 +51,11 @@ public class YoutubeNotification {
         publishedAt.setTime(Long.parseLong(map.get("publishedMills")));
         if (map.containsKey("creatorName")) {
             this.creatorNames = map.get("creatorNames");
+            Log.d(TAG, "creatorNames: " + creatorNames);
         }
         if (map.containsKey("creatorKeys")) {
             keyString = map.get("creatorKeys");
+            Log.d(TAG, "keyString: " + keyString);
             if (keyString != null) {
                 String[] keyArray = keyString.split(",");
                 this.creatorKeys = new ArrayList<>(Arrays.asList(keyArray));
@@ -60,13 +64,34 @@ public class YoutubeNotification {
         creatorList = new ArrayList<>();
         if (map.containsKey("creator")) {
             creatorListString = map.get("creator");
-            Log.d("YoutubeNotification", creatorListString);
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new StringReader(creatorListString));
-            reader.setLenient(true);
-            creatorList = gson.fromJson(reader, new TypeToken<List<YoutubeCreator>>() {
-            }.getType());
+            Log.d(TAG, creatorListString);
+            String[] l = creatorListString.replace("[", "").replace("]", "")
+                    .replace("},{", "};{")
+                    .split(";");
+            List<YoutubeCreator> list = new ArrayList<>();
+            for (String s : l) {
+                String[] a =
+                        s.replace("{", "").replace("}", "")
+                                .replace("name:", "")
+                                .replace("key:", "")
+                                .replace("'", "")
+                                .split(",");
+                Log.d(TAG, s);
+
+                Log.d(TAG, "" + a.toString());
+                YoutubeCreator c = new YoutubeCreator();
+                c.name = a[0].replace("name:", "");
+                c.key = a[1].replace("key:", "");
+                Log.d(TAG, c.name + " | " + c.key);
+                list.add(c);
+            }
+            Log.d(TAG, "size: " + list.size());
+            for (YoutubeCreator c : list) {
+                Log.d(TAG, c.name + " | " + c.key);
+            }
+            this.creatorList = list;
         }
+
         if (map.containsKey("duration")) {
             duration = map.get("duration");
         }
@@ -95,7 +120,7 @@ public class YoutubeNotification {
         creatorList = new ArrayList<>();
         if (intent.hasExtra("creator")) {
             creatorListString = intent.getStringExtra("creator");
-            Log.d("YoutubeNotification", creatorListString);
+            Log.d(TAG, creatorListString);
             Gson gson = new Gson();
             JsonReader reader = new JsonReader(new StringReader(creatorListString));
             reader.setLenient(true);
@@ -193,13 +218,38 @@ public class YoutubeNotification {
         Prefs prefs = new Prefs(context);
         List<String> creator = prefs.getCreator();
         String p = prefs.getString("youtube_notification_wiitv", "sub");
+        Log.d(TAG, p);
+        Log.d(TAG, creator.toString());
         prefs.destroy();
         StringBuilder s = new StringBuilder();
-        int n;
-        List<YoutubeCreator> temp = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        Log.d(TAG, "p.equals(\"sub\"): " + p.equals("sub"));
+        for (YoutubeCreator c : getCreatorList()) {
+            Log.d(TAG, "creator.contains(" + c.key + "): " + (creator.contains(c.key)));
+            if (p.equals("all") || (p.equals("sub") && creator.contains(c.key))) {
+                names.add(c.name);
+            }
+        }
+        Log.d(TAG, names.toString());
+        s.append("\nWith ");
+        int n = names.size();
+        boolean useAndMore = n < creatorList.size() && p.equals("all");
+        for (int i = 0; i < n; i++) {
+            s.append(names.get(i));
+            if (i == n - 2 && !useAndMore) {
+                s.append(" and ");
+            } else if (i < n - 1) {
+                s.append(", ");
+            }
+        }
+        if (useAndMore) {
+            s.append(" and more!");
+        }
+        return s.toString();
+
+
+        /*
         switch (p) {
-            case "disable":
-                return "";
             case "all":
                 s.append("\nWith ");
                 temp = getCreatorList();
@@ -238,7 +288,7 @@ public class YoutubeNotification {
                 return s.toString();
             default:
                 return "";
-        }
+        }*/
     }
 
     public int getNotificationId() {
@@ -275,27 +325,10 @@ public class YoutubeNotification {
 
 
     public class YoutubeCreator {
-        private String key;
-        private String name;
+        String key;
+        String name;
 
         public YoutubeCreator() {
-
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
         }
     }
 
