@@ -20,23 +20,21 @@ class YoutubeNotification {
 
   String duration;
 
-  YoutubeNotification(
-    this.id,
-    this.channelId,
-    this.channelName,
-    this.videoId,
-    this.videoTitle,
-    this.date,
-    this.publishedAt,
-    this.creatorNames,
-    this.keyString,
-    this.creatorKeys,
-    this.creatorList,
-    this.creatorListString,
-    this.duration,
-  );
+  YoutubeNotification(this.id,
+      this.channelId,
+      this.channelName,
+      this.videoId,
+      this.videoTitle,
+      this.date,
+      this.publishedAt,
+      this.creatorNames,
+      this.keyString,
+      this.creatorKeys,
+      this.creatorList,
+      this.creatorListString,
+      this.duration,);
 
-  factory YoutubeNotification.fromMap(Map<String, dynamic> map) {
+  factory YoutubeNotification.fromMap(Map<String, String> map) {
     String id = map['id'];
     String channelId = map['channelId'];
     String channelName = map['channelName'];
@@ -45,16 +43,18 @@ class YoutubeNotification {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(map['date']));
     DateTime publishedAt;
     if (map.containsKey('publishedMills')) {
-      publishedAt = DateTime.fromMillisecondsSinceEpoch(map['publishedMills']);
+      publishedAt =
+          DateTime.fromMillisecondsSinceEpoch(int.parse(map['publishedMills']));
     }
     String keyString = map['creatorKeys'] ?? '';
     String creatorNames = map['creatorNames'] ?? '';
-    List<String> creatorKeys = (map['creatorKeys'] ?? '').split(',');
+    List<String> creatorKeys = (keyString ?? '').split(',');
     String duration = map['duration'] ?? '';
     String creatorListString = map["creator"] ?? '';
-    List data = json.decode(creatorListString);
+    print(creatorListString);
+    List data = json.decode(creatorListString.replaceAll("'",'"'));
     List<YoutubeCreator> creatorList =
-        data.map((d) => YoutubeCreator(d['key'], d['name'])).toList();
+    data.map((d) => YoutubeCreator(d['key'], d['name'])).toList();
     return YoutubeNotification(
       id,
       channelId,
@@ -75,61 +75,58 @@ class YoutubeNotification {
   Future<String> get creatorNameText async {
     List<String> creator = await Prefs.getStringList('creatorSubscriptions');
     String p = await Prefs.getString("youtube_notification_wiitv", "sub");
-    int n;
     String s = '';
-    List<YoutubeCreator> temp = [];
-    switch (p) {
-      case "disable":
-        return "";
-      case "all":
-        s += '\nWith';
-        temp = creatorList;
-        n = temp.length;
-        for (int i = 0; i < n; i++) {
-          YoutubeCreator yc = temp[i];
-          s += yc.name;
-          if (i == n - 2) {
-            s += ' and ';
-          } else if (i < n - 1) {
-            s += ', ';
-          }
-        }
-        return s;
-      case "sub":
-        s += '\nWith';
-        for (YoutubeCreator yc in creatorList) {
-          if (creator.contains(yc.key)) {
-            temp.add(yc);
-          }
-        }
-        n = temp.length;
-        bool useAndMore = temp.length < creatorList.length;
-        for (int i = 0; i < n; i++) {
-          YoutubeCreator yc = temp[i];
-          s += yc.name;
-          if (i == n - 2 && !useAndMore) {
-            s += ' and ';
-          } else if (i < n - 1) {
-            s += ', ';
-          }
-        }
-        if (useAndMore) {
-          s += ' and more!';
-        }
-        return s;
-      default:
-        return '';
+    List<String> names = [];
+    for (YoutubeCreator c in creatorList) {
+      if (p == "all" || (p == "sub" && creator.contains(c.key))) {
+        names.add(c.name);
+      }
     }
+    s += "\nWith ";
+    int n = names.length;
+    bool useAndMore = n < creatorList.length && p == "all";
+    for (int i = 0; i < n; i++) {
+      s += names[i];
+      if (i == n - 2 && !useAndMore) {
+        s += " and ";
+      } else if (i < n - 1) {
+        s += ", ";
+      }
+    }
+    if (useAndMore) {
+      s += " and more!";
+    }
+    return s;
   }
 
   int get notificationId {
     if (publishedAt != null) {
       return ((date.millisecondsSinceEpoch ~/ 1000) +
-              (publishedAt.millisecondsSinceEpoch ~/ 1000)) ~/
+          (publishedAt.millisecondsSinceEpoch ~/ 1000)) ~/
           2;
     } else {
       return date.millisecondsSinceEpoch ~/ 1000;
     }
+  }
+
+  Map<String, String> toJson() {
+    return {
+      "id": id,
+      "channelId": channelId,
+      "channelName": channelName,
+      "duration": duration,
+      "videoId": videoId,
+      "videoTitle": videoTitle,
+      "date": '${DateTime
+          .now()
+          .millisecondsSinceEpoch}',
+      "publishedMills": '${DateTime
+          .now()
+          .millisecondsSinceEpoch}',
+      "creatorNames": creatorNames,
+      "creatorKeys": keyString,
+      "creator": creatorListString,
+    };
   }
 }
 
@@ -138,4 +135,6 @@ class YoutubeCreator {
   String name;
 
   YoutubeCreator(this.key, this.name);
+
+  Map<String, String> toJson() => {'name': name, 'key': key};
 }
