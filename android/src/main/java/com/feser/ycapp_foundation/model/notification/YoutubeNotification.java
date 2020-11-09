@@ -64,7 +64,7 @@ public class YoutubeNotification {
         creatorList = new ArrayList<>();
         if (map.containsKey("creator")) {
             creatorListString = map.get("creator");
-            Log.d(TAG, creatorListString);
+            Log.d(TAG,"creatorListString: "+ creatorListString);
             String[] l = creatorListString.replace("[", "").replace("]", "")
                     .replace("},{", "};{")
                     .split(";");
