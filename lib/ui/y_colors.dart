@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:tinycolor/tinycolor.dart' as t;
 
 class YColors {
+  @deprecated
   static const Color twitchPurple = const Color(0xff9146FF);
+  @deprecated
   static const Color twitchAccentPurple = const Color(0xFFbd90ff);
   static const Color twitchPurpleAlphaDark = const Color(0xcc9146FF);
   static const Color twitchPurpleAlpha = const Color(0x999146FF);
@@ -42,18 +44,56 @@ class YColors {
   static const Color youtubeRedAlphaLight = const Color(0x30ff0000);
   static const Color youtubeBlack = const Color(0xff282828);
 
-  static const Color accentColor =  const Color(0xffff8b23);
+  @deprecated
+  static Color get accentColorPallet => accentColor;
   static const Color accentColorAlphaDark = const Color(0xccff8b23);
   static const Color accentColorAlpha = const Color(0x99ff8b23);
   static const Color accentColorAlphaLight = const Color(0x30ff8b23);
 
-  static const Color primaryColor = const Color(0xff0094ff);
+  @deprecated
+  static Color get primaryColorPallet => primaryColor;
   static const Color primaryColorAlphaDark = const Color(0xcc0094ff);
   static const Color primaryColorAlpha = const Color(0x990094ff);
   static const Color primaryColorAlphaLight = const Color(0x300094ff);
 
+  @deprecated
   static const Color jingleJamLight = const Color(0xffe22659);
-  static const Color jingleJam = const Color(0xffdf0e47);
+
+  @deprecated
+  static Color get jingleJam => jingleJamPrimary;
+  static const MaterialColor jingleJamPrimary = const MaterialColor(
+    0xffdf0e47,
+    const <int, Color>{
+      50: const Color(0xFF6f55a84),
+      100: const Color(0xFFf44877),
+      200: const Color(0xFFf23569),
+      300: const Color(0xFFf1235b),
+      400: const Color(0xFFf0114e),
+      500: const Color(0xffdf0e47),
+      600: const Color(0xffcd0d41),
+      700: const Color(0xFFba0c3b),
+      800: const Color(0xFFa80b35),
+      900: const Color(0xFF95092f),
+    },
+  );
+
+  static const MaterialColor jingleJamAccent = const MaterialColor(
+    0xff223141,
+    const <int, Color>{
+      50: const Color(0xFF446281),
+      100: const Color(0xFF3d5875),
+      200: const Color(0xFF364e68),
+      300: const Color(0xFF2f445b),
+      400: const Color(0xFF293b4e),
+      500: const Color(0xff223141),
+      600: const Color(0xff1b2734),
+      700: const Color(0xFF151e27),
+      800: const Color(0xFF0e141a),
+      900: const Color(0xFF070a0d),
+    },
+  );
+
+  @deprecated
   static const Color jingleJamDark = const Color(0xffc80c3f);
 
   static const Color primaryTwitterColor = const Color(0xff1da1f2);
@@ -78,7 +118,7 @@ class YColors {
 
   static Color get bandcamp => Color(0xff629aa9);
 
-  static const MaterialColor primaryColorPallet = const MaterialColor(
+  static const MaterialColor primaryColor = const MaterialColor(
     0xff0094ff,
     const <int, Color>{
       50: const Color(0xFF62bdff),
@@ -94,6 +134,7 @@ class YColors {
     },
   );
 
+  @deprecated
   static const MaterialColor accentColorPalletOld = const MaterialColor(
     0xffff7b30,
     const <int, Color>{
@@ -110,12 +151,10 @@ class YColors {
     },
   );
 
-
-
-  static const MaterialColor accentColorPallet = const MaterialColor(
+  static const MaterialColor accentColor = const MaterialColor(
     0xffff8b23,
     const <int, Color>{
-      50: const Color( 0xFFffbf85),
+      50: const Color(0xFFffbf85),
       100: const Color(0xFFffb471),
       200: const Color(0xFFffaa5e),
       300: const Color(0xFFffa04a),

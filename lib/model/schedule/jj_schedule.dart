@@ -141,7 +141,7 @@ class JJSlot {
         var c = map['color'];
         if (c is String) {
           if (c.isEmpty) {
-            _color.add(YColors.primaryColorPallet[700]);
+            _color.add(YColors.primaryColor[700]);
           } else {
             if (c.contains(',')) {
               _color = c.split(',').map((s) {
@@ -179,10 +179,10 @@ class JJSlot {
             }
           }
         } else {
-          _color.add(YColors.primaryColorPallet[700]);
+          _color.add(YColors.primaryColor[700]);
         }
       } else {
-        _color.add(YColors.primaryColorPallet[700]);
+        _color.add(YColors.primaryColor[700]);
       }
       if (map.containsKey('border')) {
         String c = map['border'];
@@ -292,8 +292,8 @@ class JJSlot {
   Color get _b => border != null
       ? border
       : isStream
-          ? YColors.accentColorPallet[500]
-          : YColors.primaryColorPallet[500];
+          ? YColors.accentColor[500]
+          : YColors.primaryColor[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
