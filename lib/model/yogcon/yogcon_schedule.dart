@@ -121,9 +121,9 @@ class YCSlot extends YogconBase {
     if (isMainStage) {
       return YColors.twitchPallet;
     } else if (isOutdoorStage) {
-      return YColors.accentColorPallet;
+      return YColors.accentColor;
     }
-    return YColors.primaryColorPallet;
+    return YColors.primaryColor;
   }
 
   @override
