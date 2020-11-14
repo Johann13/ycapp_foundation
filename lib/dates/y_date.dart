@@ -41,7 +41,7 @@ class YDates {
           getLocation('Europe/London'),
           DateTime.now().year,
           11,
-          1,
+          24,
           17,
         )) &&
         now.isBefore(jjEnd);
