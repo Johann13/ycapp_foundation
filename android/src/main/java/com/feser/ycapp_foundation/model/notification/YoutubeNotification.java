@@ -34,6 +34,7 @@ public class YoutubeNotification {
 
     private String keyString;
     private List<String> creatorKeys;
+    private List<String> creatorNamesList;
     private List<YoutubeCreator> creatorList;
     private String creatorListString;
 
@@ -49,12 +50,30 @@ public class YoutubeNotification {
         date.setTime(Long.parseLong(map.get("date")));
         this.publishedAt = new Date();
         publishedAt.setTime(Long.parseLong(map.get("publishedMills")));
-        if (map.containsKey("creatorName")) {
+        if (map.containsKey("creatorNames")) {
             this.creatorNames = map.get("creatorNames");
             Log.d(TAG, "creatorNames: " + creatorNames);
+            if (creatorNames != null) {
+                String[] a = creatorNames.split(",");
+                this.creatorNamesList = new ArrayList<>(Arrays.asList(a));
+            }
+        } else if (map.containsKey("creatorName")) {
+            this.creatorNames = map.get("creatorName");
+            Log.d(TAG, "creatorName: " + creatorNames);
+            if (creatorNames != null) {
+                String[] a = creatorNames.split(",");
+                this.creatorNamesList = new ArrayList<>(Arrays.asList(a));
+            }
         }
         if (map.containsKey("creatorKeys")) {
             keyString = map.get("creatorKeys");
+            Log.d(TAG, "keyString: " + keyString);
+            if (keyString != null) {
+                String[] keyArray = keyString.split(",");
+                this.creatorKeys = new ArrayList<>(Arrays.asList(keyArray));
+            }
+        } else if (map.containsKey("creatorKey")) {
+            keyString = map.get("creatorKey");
             Log.d(TAG, "keyString: " + keyString);
             if (keyString != null) {
                 String[] keyArray = keyString.split(",");
@@ -64,7 +83,7 @@ public class YoutubeNotification {
         creatorList = new ArrayList<>();
         if (map.containsKey("creator")) {
             creatorListString = map.get("creator");
-            Log.d(TAG,"creatorListString: "+ creatorListString);
+            Log.d(TAG, "creatorListString: " + creatorListString);
             String[] l = creatorListString.replace("[", "").replace("]", "")
                     .replace("},{", "};{")
                     .split(";");
@@ -72,24 +91,45 @@ public class YoutubeNotification {
             for (String s : l) {
                 String[] a =
                         s.replace("{", "").replace("}", "")
+                                .replace("'", "")
+                                .replace("\"", "")
                                 .replace("name:", "")
                                 .replace("key:", "")
-                                .replace("'", "")
                                 .split(",");
                 Log.d(TAG, s);
-
-                Log.d(TAG, "" + a.toString());
-                YoutubeCreator c = new YoutubeCreator();
-                c.name = a[0].replace("name:", "");
-                c.key = a[1].replace("key:", "");
-                Log.d(TAG, c.name + " | " + c.key);
-                list.add(c);
+                if (a.length == 2) {
+                    YoutubeCreator c = new YoutubeCreator();
+                    if (a[0].startsWith("-")) {
+                        c.key = a[0];
+                        c.name = a[1];
+                    } else {
+                        c.key = a[1];
+                        c.name = a[0];
+                    }
+                    Log.d(TAG, c.name + " | " + c.key);
+                    list.add(c);
+                }
             }
             Log.d(TAG, "size: " + list.size());
             for (YoutubeCreator c : list) {
                 Log.d(TAG, c.name + " | " + c.key);
             }
             this.creatorList = list;
+        } else {
+            Log.d(TAG, "No Creator map");
+            if (creatorNamesList != null && creatorKeys != null) {
+                Log.d(TAG, "creatorNamesList != null && creatorKeys != null");
+                if (creatorNamesList.size() == creatorKeys.size()) {
+                    Log.d(TAG, "creatorNamesList.size() == creatorKeys.size()");
+                    for (int i = 0; i < creatorKeys.size(); i++) {
+                        String n = creatorNamesList.get(i);
+                        String k = creatorKeys.get(i);
+                        YoutubeCreator c = new YoutubeCreator(k, n);
+                        Log.d(TAG, c.name + " | " + c.key);
+                        creatorList.add(c);
+                    }
+                }
+            }
         }
 
         if (map.containsKey("duration")) {
@@ -97,52 +137,6 @@ public class YoutubeNotification {
         }
     }
 
-    public YoutubeNotification(Intent intent) {
-        this.id = intent.getStringExtra("id");
-        this.channelId = intent.getStringExtra("channelId");
-        this.channelName = intent.getStringExtra("channelName");
-        this.videoId = intent.getStringExtra("videoId");
-        this.videoTitle = intent.getStringExtra("videoTitle");
-        this.date = new Date();
-        date.setTime(Long.parseLong(intent.getStringExtra("date")));
-        this.publishedAt = new Date();
-        publishedAt.setTime(Long.parseLong(intent.getStringExtra("publishedMills")));
-        if (intent.hasExtra("creatorName")) {
-            this.creatorNames = intent.getStringExtra("creatorNames");
-        }
-        if (intent.hasExtra("creatorKeys")) {
-            keyString = intent.getStringExtra("creatorKeys");
-            if (keyString != null) {
-                String[] keyArray = keyString.split(",");
-                this.creatorKeys = new ArrayList<>(Arrays.asList(keyArray));
-            }
-        }
-        creatorList = new ArrayList<>();
-        if (intent.hasExtra("creator")) {
-            creatorListString = intent.getStringExtra("creator");
-            Log.d(TAG, creatorListString);
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new StringReader(creatorListString));
-            reader.setLenient(true);
-            creatorList = gson.fromJson(reader, new TypeToken<List<YoutubeCreator>>() {
-            }.getType());
-        }
-    }
-
-    public Intent toIntent() {
-        Intent intent = new Intent();
-        intent.putExtra("id", id);
-        intent.putExtra("channelId", channelId);
-        intent.putExtra("channelName", channelName);
-        intent.putExtra("videoId", videoId);
-        intent.putExtra("videoTitle", videoTitle);
-        intent.putExtra("date", date.getTime());
-        intent.putExtra("publishedAt", publishedAt.getTime());
-        intent.putExtra("creatorName", channelName);
-        intent.putExtra("creatorKeys", keyString);
-        intent.putExtra("creator", creatorListString);
-        return intent;
-    }
 
     public String getId() {
         return id;
@@ -246,49 +240,6 @@ public class YoutubeNotification {
             s.append(" and more!");
         }
         return s.toString();
-
-
-        /*
-        switch (p) {
-            case "all":
-                s.append("\nWith ");
-                temp = getCreatorList();
-                n = temp.size();
-                for (int i = 0; i < n; i++) {
-                    YoutubeCreator yc = temp.get(i);
-                    s.append(yc.getName());
-                    if (i == n - 2) {
-                        s.append(" and ");
-                    } else if (i < n - 1) {
-                        s.append(", ");
-                    }
-                }
-                return s.toString();
-            case "sub":
-                s.append("\nWith ");
-                for (YoutubeCreator yc : creatorList) {
-                    if (creator.contains(yc.getKey())) {
-                        temp.add(yc);
-                    }
-                }
-                n = temp.size();
-                boolean useAndMore = temp.size() < creatorList.size();
-                for (int i = 0; i < n; i++) {
-                    YoutubeCreator yc = temp.get(i);
-                    s.append(yc.getName());
-                    if (i == n - 2 && !useAndMore) {
-                        s.append(" and ");
-                    } else if (i < n - 1) {
-                        s.append(", ");
-                    }
-                }
-                if (useAndMore) {
-                    s.append(" and more!");
-                }
-                return s.toString();
-            default:
-                return "";
-        }*/
     }
 
     public int getNotificationId() {
@@ -329,6 +280,11 @@ public class YoutubeNotification {
         String name;
 
         public YoutubeCreator() {
+        }
+
+        public YoutubeCreator(String key, String name) {
+            this.key = key;
+            this.name = name;
         }
     }
 
