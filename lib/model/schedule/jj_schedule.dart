@@ -31,7 +31,8 @@ class JJVodLink {
     return _name;
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() =>
+      {
         'name': _name,
         'url': url,
       };
@@ -59,7 +60,8 @@ class JJSlot {
 
   int height;
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() =>
+      {
         'id': id,
         'slot': slot,
         'day': day,
@@ -163,17 +165,17 @@ class JJSlot {
             if (hex.isNotEmpty) {
               _color = hex
                   .map((c) {
-                    if (c.startsWith('#')) {
-                      c = c.substring(1);
-                    }
-                    if (c.length < 8) {
-                      c = 'ff$c';
-                    }
-                    if (c.length == 8) {
-                      return Color(int.parse(c, radix: 16));
-                    }
-                    return null;
-                  })
+                if (c.startsWith('#')) {
+                  c = c.substring(1);
+                }
+                if (c.length < 8) {
+                  c = 'ff$c';
+                }
+                if (c.length == 8) {
+                  return Color(int.parse(c, radix: 16));
+                }
+                return null;
+              })
                   .where((c) => c != null)
                   .toList();
             }
@@ -289,17 +291,19 @@ class JJSlot {
     return now.isBefore(end) && now.isAfter(start);
   }
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColor[500]
           : YColors.primaryColor[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark
           ? colors[0].lighten(10)
           : colors[0].darken(10);
 
@@ -316,7 +320,7 @@ class JJSlot {
       }*/
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
+        _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
@@ -368,7 +372,10 @@ class JJSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -512,7 +519,8 @@ class JJDay {
 
   TZDateTime get weekDay {
     TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
-    TZDateTime tz = TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
+    TZDateTime tz = TZDateTime(
+        getLocation('Europe/London'), now.year, now.month, day);
     return tz;
   }
 }
@@ -570,8 +578,8 @@ class JJSchedule {
 
   JJSchedule._(this.year);
 
-  factory JJSchedule.withMaxWeekSize(
-      String year, List<JJSlot> slots, int maxWeekSize) {
+  factory JJSchedule.withMaxWeekSize(String year, List<JJSlot> slots,
+      int maxWeekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -580,24 +588,62 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(year,i, []));
+      days.add(JJDay(year, i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(year,0)];
+    List<JJWeek> weeks = [JJWeek(year, 0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= maxWeekSize) {
-        weeks.add(JJWeek(year,weeks.length));
+        weeks.add(JJWeek(year, weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
       } else if (weeks.last.days.length < 7) {
         weeks.last.days.add(day);
       } else if (weeks.last.days.last.weekdayStart != DateTime.sunday) {
+        weeks.last.days.add(day);
+      }
+    }
+
+    JJSchedule schedule = JJSchedule._(year);
+    schedule.slots = slots;
+    schedule.days = days;
+    schedule.weeks = weeks;
+    return schedule;
+  }
+
+  factory JJSchedule.withWeekSize(String year, List<JJSlot> slots,
+      int weekSize) {
+    slots.sort((a, b) {
+      if (a.day == b.day) {
+        return a.slot - b.slot;
+      }
+      return a.day - b.day;
+    });
+    List<JJDay> days = [];
+    for (int i = 0; i < 31; i++) {
+      days.add(JJDay(year, i, []));
+    }
+    for (JJSlot slot in slots) {
+      days[slot.day - 1].slots.add(slot);
+    }
+
+    days.removeWhere((element) => element.slots.isEmpty);
+
+    List<JJWeek> weeks = [JJWeek(year, 0)];
+    for (JJDay day in days) {
+      JJWeek last = weeks.last;
+      List<JJDay> d = last.days;
+      if (weeks.last.days.length == weekSize) {
+        weeks.add(JJWeek(year, weeks.length));
+      }
+
+      if (weeks.last.days.length < weekSize) {
         weeks.last.days.add(day);
       }
     }
@@ -617,7 +663,7 @@ class JJSchedule {
       return a.day - b.day;
     });
     List<JJDay> days = [
-      for (int i = 0; i < 31; i++) JJDay(year,i, []),
+      for (int i = 0; i < 31; i++) JJDay(year, i, []),
     ];
 
     for (JJSlot slot in slots) {
@@ -627,8 +673,11 @@ class JJSchedule {
         print('add slot to day error $e');
       }
     }
+
+    days.removeWhere((element) => element.slots.isEmpty);
+
     print('days length: ${days.length}');
-    List<JJWeek> weeks = [JJWeek(year,0)];
+    List<JJWeek> weeks = [JJWeek(year, 0)];
     int firstDayOfTheMonth = slots.first.start.weekday;
 
     int startAt = 0;
@@ -667,7 +716,7 @@ class JJSchedule {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(year,weeks.length));
+        weeks.add(JJWeek(year, weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -694,19 +743,22 @@ class JJSchedule {
     });
     List<JJDay> days = [];
     for (int i = 0; i < 31; i++) {
-      days.add(JJDay(year,i, []));
+      days.add(JJDay(year, i, []));
     }
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
 
-    List<JJWeek> weeks = [JJWeek(year,0)];
+
+    days.removeWhere((element) => element.slots.isEmpty);
+
+    List<JJWeek> weeks = [JJWeek(year, 0)];
     for (JJDay day in days) {
       JJWeek last = weeks.last;
       List<JJDay> d = last.days;
       if (d.length >= 7 &&
           weeks.last.days.last.weekdayStart == DateTime.sunday) {
-        weeks.add(JJWeek(year,weeks.length));
+        weeks.add(JJWeek(year, weeks.length));
       }
       if (weeks.last.days.isEmpty) {
         weeks.last.days.add(day);
@@ -732,18 +784,18 @@ class JJSchedule {
       });
       List<JJDay> days = [];
       for (int i = 0; i < 31; i++) {
-        days.add(JJDay(year,i, []));
+        days.add(JJDay(year, i, []));
       }
       for (JJSlot slot in slots) {
         days[slot.day - 1].slots.add(slot);
       }
 
-      List<JJWeek> weeks = [JJWeek(year,0)];
+      List<JJWeek> weeks = [JJWeek(year, 0)];
       for (JJDay day in days) {
         JJWeek last = weeks.last;
         List<JJDay> d = last.days;
         if (d.length >= maxWeekSize) {
-          weeks.add(JJWeek(year,weeks.length));
+          weeks.add(JJWeek(year, weeks.length));
         }
         if (weeks.last.days.isEmpty) {
           weeks.last.days.add(day);
@@ -804,12 +856,13 @@ class JJSchedule {
     return jjWeek;
   }
 
-  List<String> get creator => slots
-      .where((s) => s.creator != null && s.creator.isNotEmpty)
-      .map((s) => s.creator)
-      .expand((element) => element)
-      .toSet()
-      .toList();
+  List<String> get creator =>
+      slots
+          .where((s) => s.creator != null && s.creator.isNotEmpty)
+          .map((s) => s.creator)
+          .expand((element) => element)
+          .toSet()
+          .toList();
 }
 
 class JJTimes {
@@ -818,5 +871,8 @@ class JJTimes {
 
   JJTimes(this.start, this.end);
 
-  int get hours => end.difference(start).inHours;
+  int get hours =>
+      end
+          .difference(start)
+          .inHours;
 }
