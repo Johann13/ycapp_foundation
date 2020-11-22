@@ -586,13 +586,14 @@ class JJSchedule {
       }
       return a.day - b.day;
     });
-    List<JJDay> days = [];
-    for (int i = 0; i < 31; i++) {
-      days.add(JJDay(year, i, []));
-    }
+    List<JJDay> days = [
+      for (int i = 0; i < 31; i++)
+        JJDay(year, i, [])
+    ];
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
+    days.removeWhere((element) => element.slots.isEmpty);
 
     List<JJWeek> weeks = [JJWeek(year, 0)];
     for (JJDay day in days) {
@@ -625,10 +626,10 @@ class JJSchedule {
       }
       return a.day - b.day;
     });
-    List<JJDay> days = [];
-    for (int i = 0; i < 31; i++) {
-      days.add(JJDay(year, i, []));
-    }
+    List<JJDay> days = [
+      for (int i = 0; i < 31; i++) JJDay(year, i, []),
+    ];
+
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
