@@ -81,13 +81,27 @@ public class YoutubeNotification {
             }
         }
         creatorList = new ArrayList<>();
-        if (map.containsKey("creator")) {
+
+        if (creatorNamesList != null && creatorKeys != null) {
+            Log.d(TAG, "creatorNamesList != null && creatorKeys != null");
+            if (creatorNamesList.size() == creatorKeys.size()) {
+                Log.d(TAG, "creatorNamesList.size() == creatorKeys.size()");
+                for (int i = 0; i < creatorKeys.size(); i++) {
+                    String n = creatorNamesList.get(i);
+                    String k = creatorKeys.get(i);
+                    YoutubeCreator c = new YoutubeCreator(k, n);
+                    Log.d(TAG, c.name + " | " + c.key);
+                    creatorList.add(c);
+                }
+            }
+        } else if (map.containsKey("creator")) {
             creatorListString = map.get("creator");
             Log.d(TAG, "creatorListString: " + creatorListString);
             String[] l = creatorListString.replace("[", "").replace("]", "")
                     .replace("},{", "};{")
                     .split(";");
             List<YoutubeCreator> list = new ArrayList<>();
+            Log.d(TAG, "l array: " + l);
             for (String s : l) {
                 String[] a =
                         s.replace("{", "").replace("}", "")
@@ -96,7 +110,7 @@ public class YoutubeNotification {
                                 .replace("name:", "")
                                 .replace("key:", "")
                                 .split(",");
-                Log.d(TAG, s);
+                Log.d(TAG, "s array: " + s);
                 if (a.length == 2) {
                     YoutubeCreator c = new YoutubeCreator();
                     if (a[0].startsWith("-")) {
@@ -117,19 +131,6 @@ public class YoutubeNotification {
             this.creatorList = list;
         } else {
             Log.d(TAG, "No Creator map");
-            if (creatorNamesList != null && creatorKeys != null) {
-                Log.d(TAG, "creatorNamesList != null && creatorKeys != null");
-                if (creatorNamesList.size() == creatorKeys.size()) {
-                    Log.d(TAG, "creatorNamesList.size() == creatorKeys.size()");
-                    for (int i = 0; i < creatorKeys.size(); i++) {
-                        String n = creatorNamesList.get(i);
-                        String k = creatorKeys.get(i);
-                        YoutubeCreator c = new YoutubeCreator(k, n);
-                        Log.d(TAG, c.name + " | " + c.key);
-                        creatorList.add(c);
-                    }
-                }
-            }
         }
 
         if (map.containsKey("duration")) {
@@ -209,6 +210,9 @@ public class YoutubeNotification {
     }
 
     public String getCreatorNameText(Context context) {
+        if (getCreatorList().isEmpty()) {
+            return "";
+        }
         Prefs prefs = new Prefs(context);
         List<String> creator = prefs.getCreator();
         String p = prefs.getString("youtube_notification_wiitv", "sub");
@@ -218,6 +222,7 @@ public class YoutubeNotification {
         StringBuilder s = new StringBuilder();
         List<String> names = new ArrayList<>();
         Log.d(TAG, "p.equals(\"sub\"): " + p.equals("sub"));
+
         for (YoutubeCreator c : getCreatorList()) {
             Log.d(TAG, "creator.contains(" + c.key + "): " + (creator.contains(c.key)));
             if (p.equals("all") || (p.equals("sub") && creator.contains(c.key))) {
