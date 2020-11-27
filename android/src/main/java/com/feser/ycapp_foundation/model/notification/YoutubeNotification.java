@@ -215,6 +215,9 @@ public class YoutubeNotification {
         }
         Prefs prefs = new Prefs(context);
         List<String> creator = prefs.getCreator();
+        if (creator.isEmpty()) {
+            return "";
+        }
         String p = prefs.getString("youtube_notification_wiitv", "sub");
         Log.d(TAG, p);
         Log.d(TAG, creator.toString());
