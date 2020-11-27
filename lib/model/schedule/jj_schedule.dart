@@ -677,12 +677,10 @@ class JJSchedule {
 
     days.removeWhere((element) => element.slots.isEmpty);
 
-    print('days length: ${days.length}');
     List<JJWeek> weeks = [JJWeek(year, 0)];
     int firstDayOfTheMonth = slots.first.start.weekday;
 
     int startAt = 0;
-    print('firstDayOfTheMonth:$firstDayOfTheMonth');
 
     switch (firstDayOfTheMonth) {
       case DateTime.monday:
@@ -711,7 +709,7 @@ class JJSchedule {
     for (int i = 0; i < startAt; i++) {
       weeks.last.days.add(days[i]);
     }
-    print('first week days length ${weeks.last.days.length}');
+
 
     for (JJDay day in days.sublist(startAt)) {
       JJWeek last = weeks.last;
