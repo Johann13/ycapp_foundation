@@ -232,6 +232,9 @@ public class YoutubeNotification {
         Log.d(TAG, names.toString());
         s.append("\nWith ");
         int n = names.size();
+        if (n == 0) {
+            return "";
+        }
         boolean useAndMore = n < creatorList.size() && p.equals("all");
         for (int i = 0; i < n; i++) {
             s.append(names.get(i));
