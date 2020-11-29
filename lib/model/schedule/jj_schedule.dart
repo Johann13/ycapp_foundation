@@ -126,7 +126,7 @@ class JJSlot {
       }
 
       if (map.containsKey('length')) {
-        dynamic v = map['length'] as String;
+        dynamic v = map['length'];
         if (v is int) {
           length = v.toDouble();
         } else {
