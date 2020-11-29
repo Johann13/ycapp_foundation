@@ -1,4 +1,5 @@
-import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 DateTime getDate(dynamic v) {
   if (v is Timestamp) {
