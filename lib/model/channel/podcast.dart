@@ -5,7 +5,7 @@ import 'package:ycapp_foundation/model/channel/channel.dart';
 class Podcast extends Channel {
   RssFeed rssFeed;
 
-  Podcast.fromMap(Map map) : super.fromMap(map);
+  Podcast.fromMap(Map<String, dynamic> map) : super.fromMap(map);
 
   Future<void> loadRssFeed() async {
     this.rssFeed = await _feed;

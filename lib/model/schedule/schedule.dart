@@ -16,7 +16,7 @@ class SlotTime {
   SlotTime(this.hour, this.min);
 
   @override
-  bool operator ==(other) {
+  bool operator ==(dynamic other) {
     if (other is! SlotTime) {
       return false;
     } else {
@@ -65,7 +65,7 @@ class ScheduleSlot {
   FeaturedStream featuredStream;
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'day': day,
       'slot': slot,
       'title': title,
@@ -107,32 +107,32 @@ class ScheduleSlot {
 
   ScheduleSlot.fromMap(String twitchId, Map map) {
     if (map.containsKey('twitchId')) {
-      this.twitchId = map['twitchId'];
+      this.twitchId = map['twitchId'] as String;
     } else {
       this.twitchId = twitchId;
     }
     if (map.containsKey('title')) {
-      title = map['title'];
+      title = map['title'] as String;
     }
     if (map.containsKey('notificationTitle')) {
-      notificationTitle = map['notificationTitle'];
+      notificationTitle = map['notificationTitle'] as String;
     } else {
       notificationTitle = '';
     }
     if (map.containsKey('game')) {
-      game = map['game'];
+      game = map['game'] as String;
     } else {
       game = '';
     }
     if (map.containsKey('subTitle')) {
-      subTitle = map['subTitle'];
+      subTitle = map['subTitle'] as String;
     }
     if (map.containsKey('creator')) {
-      List l = map['creator'];
-      creator = l.cast<String>();
+      List<String> l = map['creator'] as List<String>;
+      creator = l;
     }
     if (map.containsKey('color')) {
-      var c = map['color'];
+      dynamic c = map['color'] as String;
       if (c is String) {
         if (c.isEmpty) {
           _color.add(YColors.primaryColor[700]);
@@ -152,7 +152,7 @@ class ScheduleSlot {
           }
         }
       } else {
-        _color = (c as List).map((v) {
+        _color = (c as List<dynamic>).map((dynamic v) {
           if (v is int) {
             return Color(v);
           } else if (v is String) {
@@ -166,7 +166,7 @@ class ScheduleSlot {
       _color.add(YColors.primaryColor[700]);
     }
     if (map.containsKey('border')) {
-      String c = map['border'];
+      String c = map['border'] as String;
       if (c != null) {
         if (c.startsWith('#')) {
           c = c.substring(1);
@@ -181,16 +181,16 @@ class ScheduleSlot {
     }
 
     if (map.containsKey('day')) {
-      day = map['day'];
+      day = map['day'] as int;
     }
     if (map.containsKey('slot')) {
-      slot = map['slot'];
+      slot = map['slot'] as int;
     }
     if (map.containsKey('length')) {
-      length = map['length'];
+      length = map['length'] as int;
     }
     if (map.containsKey('lengthMin')) {
-      var lengthMin = map['lengthMin'];
+      dynamic lengthMin = map['lengthMin'] as String;
       if (lengthMin is double) {
         this.lengthMin = lengthMin.toInt();
       } else if (lengthMin is int) {
@@ -200,15 +200,15 @@ class ScheduleSlot {
       lengthMin = length * 60;
     }
     if (map.containsKey('height')) {
-      height = map['height'];
+      height = map['height'] as int;
     } else {
       height = lengthMin;
     }
     if (map.containsKey('hour')) {
-      hour = map['hour'];
+      hour = map['hour'] as int;
     }
     if (map.containsKey('min')) {
-      min = map['min'];
+      min = map['min'] as int;
     }
     if (map.containsKey('lastUpdate')) {
       lastUpdate = getDate(map['lastUpdate']);
@@ -217,13 +217,17 @@ class ScheduleSlot {
         map.containsKey('imageAuthor') &&
         map.containsKey('imageAuthorLink')) {
       scheduleImage = ScheduleImage(
-          map['image'], map['imageAuthorLink'], map['imageAuthor']);
+        map['image'] as String,
+        map['imageAuthorLink'] as String,
+        map['imageAuthor'] as String,
+      );
     }
     if (map.containsKey('showTitle')) {
-      _showTitle = map['showTitle'];
+      _showTitle = map['showTitle'] as bool;
     }
     if (map.containsKey('featuredStream') && map['featuredStream'] != null) {
-      featuredStream = FeaturedStream.fromMap(map['featuredStream']);
+      featuredStream =
+          FeaturedStream.fromMap(map['featuredStream'] as Map<String, dynamic>);
     }
   }
 
@@ -464,7 +468,7 @@ class ScheduleSlot {
   bool get isMainChannel => twitchId == '20786541';
 
   @override
-  bool operator ==(other) {
+  bool operator ==(dynamic other) {
     if (other is ScheduleSlot) {
       return other.title == title &&
           other.twitchId == twitchId &&
@@ -694,7 +698,11 @@ class ScheduleImage {
   }
 
   Map toMap() {
-    return {'url': url, 'authorLink': authorLink, 'authorName': authorName};
+    return <String, dynamic>{
+      'url': url,
+      'authorLink': authorLink,
+      'authorName': authorName
+    };
   }
 }
 
@@ -711,18 +719,18 @@ class FeaturedStream {
 
   FeaturedStream.fromMap(Map map) {
     if (map.containsKey('twitchId')) {
-      twitchId = map['twitchId'];
+      twitchId = map['twitchId'] as String;
     }
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
     if (map.containsKey('url')) {
-      url = map['url'];
+      url = map['url'] as String;
     }
   }
 
   Map toMap() {
-    return {
+    return <String, dynamic>{
       'twitchId': twitchId,
       'name': name,
       'url': url,
@@ -739,7 +747,7 @@ class FeaturedStream {
   int get hashCode => twitchId.hashCode;
 
   @override
-  bool operator ==(other) {
+  bool operator ==(dynamic other) {
     if (other is FeaturedStream) {
       return other.twitchId == this.twitchId &&
           other.name == this.name &&

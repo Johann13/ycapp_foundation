@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:tinycolor/tinycolor.dart' as t;
 
 class YColors {
+  YColors._();
+
   @deprecated
   static const Color twitchPurple = const Color(0xff9146FF);
   @deprecated
@@ -222,7 +224,7 @@ extension YColorExtension on Color {
       if (d <= 0.03928) {
         d = d / 12.92;
       } else {
-        d = Math.pow(((c + 0.055) / 1.055), 2.4);
+        d = Math.pow(((c + 0.055) / 1.055), 2.4).toDouble();
       }
       list2.add(d);
     }

@@ -20,19 +20,21 @@ class YoutubeNotification {
 
   String duration;
 
-  YoutubeNotification(this.id,
-      this.channelId,
-      this.channelName,
-      this.videoId,
-      this.videoTitle,
-      this.date,
-      this.publishedAt,
-      this.creatorNames,
-      this.keyString,
-      this.creatorKeys,
-      this.creatorList,
-      this.creatorListString,
-      this.duration,);
+  YoutubeNotification(
+    this.id,
+    this.channelId,
+    this.channelName,
+    this.videoId,
+    this.videoTitle,
+    this.date,
+    this.publishedAt,
+    this.creatorNames,
+    this.keyString,
+    this.creatorKeys,
+    this.creatorList,
+    this.creatorListString,
+    this.duration,
+  );
 
   factory YoutubeNotification.fromMap(Map<String, String> map) {
     String id = map['id'];
@@ -52,9 +54,15 @@ class YoutubeNotification {
     String duration = map['duration'] ?? '';
     String creatorListString = map["creator"] ?? '';
     print(creatorListString);
-    List data = json.decode(creatorListString.replaceAll("'",'"'));
-    List<YoutubeCreator> creatorList =
-    data.map((d) => YoutubeCreator(d['key'], d['name'])).toList();
+    List<Map<String, dynamic>> data =
+        json.decode(creatorListString.replaceAll("'", '"'))
+            as List<Map<String, dynamic>>;
+    List<YoutubeCreator> creatorList = data
+        .map((d) => YoutubeCreator(
+              d['key'] as String,
+              d['name'] as String,
+            ))
+        .toList();
     return YoutubeNotification(
       id,
       channelId,
@@ -102,7 +110,7 @@ class YoutubeNotification {
   int get notificationId {
     if (publishedAt != null) {
       return ((date.millisecondsSinceEpoch ~/ 1000) +
-          (publishedAt.millisecondsSinceEpoch ~/ 1000)) ~/
+              (publishedAt.millisecondsSinceEpoch ~/ 1000)) ~/
           2;
     } else {
       return date.millisecondsSinceEpoch ~/ 1000;
@@ -117,12 +125,8 @@ class YoutubeNotification {
       "duration": duration,
       "videoId": videoId,
       "videoTitle": videoTitle,
-      "date": '${DateTime
-          .now()
-          .millisecondsSinceEpoch}',
-      "publishedMills": '${DateTime
-          .now()
-          .millisecondsSinceEpoch}',
+      "date": '${DateTime.now().millisecondsSinceEpoch}',
+      "publishedMills": '${DateTime.now().millisecondsSinceEpoch}',
       "creatorNames": creatorNames,
       "creatorKeys": keyString,
       "creator": creatorListString,

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart';
+import 'package:ycapp_foundation/model/y_firestore_timestamp.dart';
 import 'package:ycapp_foundation/ui/y_colors.dart';
 
 class JJVodLink {
@@ -11,13 +12,13 @@ class JJVodLink {
 
   JJVodLink(this._name, this.url);
 
-  JJVodLink.fromMap(Map map, {String defaultName = 'VOD'}) {
+  JJVodLink.fromMap(Map<String, dynamic> map, {String defaultName = 'VOD'}) {
     this._defaultName = defaultName;
     if (map.containsKey('name')) {
-      _name = map['name'];
+      _name = map['name'] as String;
     }
     if (map.containsKey('url')) {
-      url = map['url'];
+      url = map['url'] as String;
     }
   }
 
@@ -31,8 +32,7 @@ class JJVodLink {
     return _name;
   }
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'name': _name,
         'url': url,
       };
@@ -60,8 +60,7 @@ class JJSlot {
 
   int height;
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'id': id,
         'slot': slot,
         'day': day,
@@ -88,7 +87,7 @@ class JJSlot {
   void setValues(Map map) {
     try {
       if (map.containsKey('start')) {
-        var timestamp = map['start'];
+        Timestamp timestamp = map['start'] as Timestamp;
         start = TZDateTime.from(
           DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch),
           getLocation('Europe/London'),
@@ -99,37 +98,37 @@ class JJSlot {
     }
     try {
       if (map.containsKey('id')) {
-        this.id = map['id'];
+        this.id = map['id'] as String;
       }
       this.day = start.day;
       /*
       if (map.containsKey('day')) {
-        this.day = map['day'];
+        this.day = map['day'] as String;
       }*/
       if (map.containsKey('slot')) {
-        this.slot = map['slot'];
+        this.slot = map['slot'] as int;
       }
       if (map.containsKey('title')) {
-        this.title = map['title'];
+        this.title = map['title'] as String;
       }
       if (map.containsKey('subtitle')) {
-        this.subtitle = map['subtitle'];
+        this.subtitle = map['subtitle'] as String;
       }
       if (map.containsKey('desc')) {
-        this.desc = map['desc'];
+        this.desc = map['desc'] as String;
       }
       creator = [];
       if (map.containsKey('creator')) {
-        List l = map['creator'];
+        List<String> l = map['creator'] as List<String>;
         creator = l.cast<String>();
       }
 
       if (map.containsKey('length')) {
-        var v = map['length'];
+        dynamic v = map['length'] as String;
         if (v is int) {
           length = v.toDouble();
         } else {
-          length = v;
+          length = v as double;
         }
       } else {
         length = 3;
@@ -140,7 +139,7 @@ class JJSlot {
 
     try {
       if (map.containsKey('color')) {
-        var c = map['color'];
+        dynamic c = map['color'] as String;
         if (c is String) {
           if (c.isEmpty) {
             _color.add(YColors.primaryColor[700]);
@@ -165,17 +164,17 @@ class JJSlot {
             if (hex.isNotEmpty) {
               _color = hex
                   .map((c) {
-                if (c.startsWith('#')) {
-                  c = c.substring(1);
-                }
-                if (c.length < 8) {
-                  c = 'ff$c';
-                }
-                if (c.length == 8) {
-                  return Color(int.parse(c, radix: 16));
-                }
-                return null;
-              })
+                    if (c.startsWith('#')) {
+                      c = c.substring(1);
+                    }
+                    if (c.length < 8) {
+                      c = 'ff$c';
+                    }
+                    if (c.length == 8) {
+                      return Color(int.parse(c, radix: 16));
+                    }
+                    return null;
+                  })
                   .where((c) => c != null)
                   .toList();
             }
@@ -187,7 +186,7 @@ class JJSlot {
         _color.add(YColors.primaryColor[700]);
       }
       if (map.containsKey('border')) {
-        String c = map['border'];
+        String c = map['border'] as String;
         if (c != null) {
           if (c.startsWith('#')) {
             c = c.substring(1);
@@ -202,7 +201,7 @@ class JJSlot {
       }
 
       if (map.containsKey('colorOrientation')) {
-        colorOrientation = map['colorOrientation'] ?? 1;
+        colorOrientation = map['colorOrientation'] as int ?? 1;
       }
     } catch (e) {
       print('color error $e');
@@ -210,17 +209,18 @@ class JJSlot {
 
     try {
       if (map.containsKey('youtubeUrl')) {
-        youtubeUrl = map['youtubeUrl'] ?? '';
+        youtubeUrl = map['youtubeUrl'] as String ?? '';
       } else {
         youtubeUrl = '';
       }
       if (map.containsKey('twitchUrl')) {
-        twitchUrl = map['twitchUrl'] ?? '';
+        twitchUrl = map['twitchUrl'] as String ?? '';
       } else {
         twitchUrl = '';
       }
       if (map.containsKey('youtubeVODs')) {
-        var l = map['youtubeVODs'];
+        List<Map<String, dynamic>> l =
+            map['youtubeVODs'] as List<Map<String, dynamic>>;
         youtubeVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Youtube VOD');
@@ -228,7 +228,8 @@ class JJSlot {
         });
       }
       if (map.containsKey('twitchVODs')) {
-        List l = map['twitchVODs'];
+        List<Map<String, dynamic>> l =
+            map['twitchVODs'] as List<Map<String, dynamic>>;
         twitchVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Twitch VOD');
@@ -236,7 +237,8 @@ class JJSlot {
         });
       }
       if (map.containsKey('highlights')) {
-        List l = map['highlights'];
+        List<Map<String, dynamic>> l =
+            map['highlights'] as List<Map<String, dynamic>>;
         highlights.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Highlight VOD');
@@ -249,7 +251,7 @@ class JJSlot {
 
     try {
       if (map.containsKey('desc')) {
-        desc = map['desc'];
+        desc = map['desc'] as String;
       }
     } catch (e) {
       print('desc error');
@@ -257,7 +259,7 @@ class JJSlot {
 
     try {
       if (map.containsKey('height')) {
-        height = map['height'];
+        height = map['height'] as int;
       } else {
         height = (length * 60).toInt();
       }
@@ -284,26 +286,24 @@ class JJSlot {
         (subtitle ?? '').toLowerCase().contains('yogscinema'));
   }
 
-  DateTime get end => start.add(Duration(hours: length.toInt()));
+  TZDateTime get end => start.add(Duration(hours: length.toInt()));
 
   bool get isStream {
     DateTime now = DateTime.now().toUtc();
     return now.isBefore(end) && now.isAfter(start);
   }
 
-  Color get _b =>
-      border != null
-          ? border
-          : isStream
+  Color get _b => border != null
+      ? border
+      : isStream
           ? YColors.accentColor[500]
           : YColors.primaryColor[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border =>
-      _border != null
-          ? _border
-          : colors[0].isDark
+  Color get border => _border != null
+      ? _border
+      : colors[0].isDark
           ? colors[0].lighten(10)
           : colors[0].darken(10);
 
@@ -320,7 +320,7 @@ class JJSlot {
       }*/
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-        _color.length)
+            _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
@@ -372,10 +372,7 @@ class JJSlot {
   }
 
   Color get mix {
-    double a = 0,
-        r = 0,
-        g = 0,
-        b = 0;
+    double a = 0, r = 0, g = 0, b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -516,11 +513,10 @@ class JJDay {
     return list;
   }
 
-
   TZDateTime get weekDay {
     TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
-    TZDateTime tz = TZDateTime(
-        getLocation('Europe/London'), now.year, now.month, day);
+    TZDateTime tz =
+        TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
     return tz;
   }
 }
@@ -578,18 +574,15 @@ class JJSchedule {
 
   JJSchedule._(this.year);
 
-  factory JJSchedule.withMaxWeekSize(String year, List<JJSlot> slots,
-      int maxWeekSize) {
+  factory JJSchedule.withMaxWeekSize(
+      String year, List<JJSlot> slots, int maxWeekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
       }
       return a.day - b.day;
     });
-    List<JJDay> days = [
-      for (int i = 0; i < 31; i++)
-        JJDay(year, i, [])
-    ];
+    List<JJDay> days = [for (int i = 0; i < 31; i++) JJDay(year, i, [])];
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
@@ -618,8 +611,8 @@ class JJSchedule {
     return schedule;
   }
 
-  factory JJSchedule.withWeekSize(String year, List<JJSlot> slots,
-      int weekSize) {
+  factory JJSchedule.withWeekSize(
+      String year, List<JJSlot> slots, int weekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -638,8 +631,6 @@ class JJSchedule {
 
     List<JJWeek> weeks = [JJWeek(year, 0)];
     for (JJDay day in days) {
-      JJWeek last = weeks.last;
-      List<JJDay> d = last.days;
       if (weeks.last.days.length == weekSize) {
         weeks.add(JJWeek(year, weeks.length));
       }
@@ -710,10 +701,7 @@ class JJSchedule {
       weeks.last.days.add(days[i]);
     }
 
-
     for (JJDay day in days.sublist(startAt)) {
-      JJWeek last = weeks.last;
-      List<JJDay> d = last.days;
       if (weeks.last.days.last.weekdayStart == DateTime.sunday) {
         weeks.add(JJWeek(year, weeks.length));
       }
@@ -747,7 +735,6 @@ class JJSchedule {
     for (JJSlot slot in slots) {
       days[slot.day - 1].slots.add(slot);
     }
-
 
     days.removeWhere((element) => element.slots.isEmpty);
 
@@ -840,7 +827,6 @@ class JJSchedule {
   JJWeek get currentWeek {
     DateTime now = DateTime.now();
     JJWeek jjWeek = weeks[0];
-    JJSlot first = slots.first;
     JJSlot last = slots.last;
     if (now.isAfter(last.end)) {
       return jjWeek;
@@ -855,13 +841,12 @@ class JJSchedule {
     return jjWeek;
   }
 
-  List<String> get creator =>
-      slots
-          .where((s) => s.creator != null && s.creator.isNotEmpty)
-          .map((s) => s.creator)
-          .expand((element) => element)
-          .toSet()
-          .toList();
+  List<String> get creator => slots
+      .where((s) => s.creator != null && s.creator.isNotEmpty)
+      .map((s) => s.creator)
+      .expand((element) => element)
+      .toSet()
+      .toList();
 }
 
 class JJTimes {
@@ -870,8 +855,5 @@ class JJTimes {
 
   JJTimes(this.start, this.end);
 
-  int get hours =>
-      end
-          .difference(start)
-          .inHours;
+  int get hours => end.difference(start).inHours;
 }

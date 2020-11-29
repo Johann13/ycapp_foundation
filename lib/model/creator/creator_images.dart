@@ -1,16 +1,16 @@
-
 class Images {
   TwitchImages twitchImages;
   YoutubeImages youtubeImages;
 
-  Images(Map map) {
-    this.twitchImages = TwitchImages(map['twitch']);
-    this.youtubeImages = YoutubeImages(map['youtube']);
+  Images(Map<String, dynamic> map) {
+    this.twitchImages = TwitchImages(map['twitch'] as Map<String, dynamic>);
+    this.youtubeImages = YoutubeImages(map['youtube'] as Map<String, dynamic>);
   }
-  Map toJson() => {
-    'twitch': twitchImages.toJson(),
-    'youtube': youtubeImages.toJson(),
-  };
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'twitch': twitchImages.toJson(),
+        'youtube': youtubeImages.toJson(),
+      };
 }
 
 class TwitchImages {
@@ -18,27 +18,29 @@ class TwitchImages {
   String profile;
 
   TwitchImages(Map map) {
-    this.banner = map['banner'];
-    this.profile = map['profile'];
+    this.banner = map['banner'] as String;
+    this.profile = map['profile'] as String;
   }
-  Map toJson() => {
-    'banner': banner,
-    'profile': profile,
-  };
+
+  Map<String,dynamic> toJson() => <String,dynamic>{
+        'banner': banner,
+        'profile': profile,
+      };
 }
 
 class YoutubeImages {
   YoutubeImage banner;
   YoutubeImage profile;
 
-  YoutubeImages(Map map) {
-    this.banner = YoutubeImage(map['banner']);
-    this.profile = YoutubeImage(map['profile']);
+  YoutubeImages(Map<String, dynamic> map) {
+    this.banner = YoutubeImage(map['banner'] as Map<String, dynamic>);
+    this.profile = YoutubeImage(map['profile'] as Map<String, dynamic>);
   }
-  Map toJson() => {
-    'banner': banner.toJson(),
-    'profile': profile.toJson(),
-  };
+
+  Map<String,dynamic> toJson() => <String, dynamic>{
+        'banner': banner.toJson(),
+        'profile': profile.toJson(),
+      };
 }
 
 class YoutubeImage {
@@ -47,13 +49,14 @@ class YoutubeImage {
   String high;
 
   YoutubeImage(Map map) {
-    this.low = map['low'];
-    this.medium = map['medium'];
-    this.high = map['high'];
+    this.low = map['low'] as String;
+    this.medium = map['medium'] as String;
+    this.high = map['high'] as String;
   }
-  Map toJson() => {
-    'low': low,
-    'medium': medium,
-    'high': high,
-  };
+
+  Map<String,dynamic> toJson() => <String, dynamic>{
+        'low': low,
+        'medium': medium,
+        'high': high,
+      };
 }

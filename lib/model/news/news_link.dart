@@ -1,5 +1,3 @@
-
-
 class NewsLink {
   String name;
   String _url;
@@ -7,17 +5,18 @@ class NewsLink {
 
   NewsLink.fromMap(Map map) {
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
     if (map.containsKey('url')) {
-      _url = map['url'];
+      _url = map['url'] as String;
     }
     if (map.containsKey('route')) {
-      _route = map['route'];
+      _route = map['route'] as String;
     }
   }
 
   String get url => _url;
+
   String get route => _route;
 
   bool get hasUrl => _url != null && _url.isNotEmpty;

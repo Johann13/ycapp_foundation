@@ -49,25 +49,25 @@ class Creator extends BaseModel {
 
   Creator.fromMap(Map map) {
     if (map.containsKey('creatorId')) {
-      this.creatorId = map['creatorId'];
+      this.creatorId = map['creatorId'] as String;
     }
     if (map.containsKey('name')) {
-      this._name = map['name'];
+      this._name = map['name'] as String;
     }
     if (map.containsKey('desc')) {
-      _desc = map['desc'];
+      _desc = map['desc'] as String;
     }
     if (map.containsKey('banner')) {
-      _banner = map['banner'];
+      _banner = map['banner'] as String;
     }
     if (map.containsKey('thumbnail')) {
-      _profile = map['thumbnail'];
+      _profile = map['thumbnail'] as String;
     }
     if (map.containsKey('visible')) {
-      this.visible = map['visible'];
+      this.visible = map['visible'] as bool;
     }
     if (map.containsKey('color1')) {
-      String c = map['color1'];
+      String c = map['color1'] as String;
       if (c.startsWith('#')) {
         c = c.substring(1);
       }
@@ -78,7 +78,7 @@ class Creator extends BaseModel {
         this.colorPrimary = Color(int.parse(c, radix: 16));
       }
     } else if (map.containsKey('colorPrimary')) {
-      String c = map['colorPrimary'];
+      String c = map['colorPrimary'] as String;
       if (c.startsWith('#')) {
         c = c.substring(1);
       }
@@ -91,7 +91,7 @@ class Creator extends BaseModel {
     }
 
     if (map.containsKey('color2')) {
-      String c = map['color2'];
+      String c = map['color2'] as String;
       if (c.startsWith('#')) {
         c = c.substring(1);
       }
@@ -102,7 +102,7 @@ class Creator extends BaseModel {
         this.colorAccent = Color(int.parse(c, radix: 16));
       }
     } else if (map.containsKey('colorSecondary')) {
-      String c = map['colorSecondary'];
+      String c = map['colorSecondary'] as String;
       if (c.startsWith('#')) {
         c = c.substring(1);
       }
@@ -146,33 +146,33 @@ class Creator extends BaseModel {
     }
 
     if (map.containsKey('youtubeCounter')) {
-      this.youtubeChannelCounter = map['youtubeCounter'];
+      this.youtubeChannelCounter = map['youtubeCounter'] as int;
     } else {
       this.youtubeChannelCounter = 0;
     }
     if (map.containsKey('twitchCounter')) {
-      this.twitchChannelCounter = map['twitchCounter'];
+      this.twitchChannelCounter = map['twitchCounter'] as int;
     } else {
       this.twitchChannelCounter = 0;
     }
     if (map.containsKey('creatorCounter')) {
-      this.creatorCounter = map['creatorCounter'];
+      this.creatorCounter = map['creatorCounter'] as int;
     } else {
       this.creatorCounter = 0;
     }
 
     if (map.containsKey('channelPref')) {
-      _channelPref = map['channelPref'];
+      _channelPref = map['channelPref'] as String;
     }
 
     if (map.containsKey('type')) {
-      type = map['type'];
+      type = map['type'] as int;
     } else {
       type = 1;
     }
 
     if (map.containsKey('useRainbow')) {
-      useRainbow = map['useRainbow'];
+      useRainbow = map['useRainbow'] as bool;
     } else {
       useRainbow = false;
     }
@@ -181,8 +181,8 @@ class Creator extends BaseModel {
     if (map.containsKey('youtube')) {
       if (map['youtube'] != null) {
         if (map['youtube'] is Map) {
-          Map ymap = map['youtube'];
-          ymap.forEach((k, v) => youtube.add(k));
+          Map<String, dynamic> ymap = map['youtube'] as Map<String, dynamic>;
+          ymap.keys.forEach((String k) => youtube.add(k));
         } else if (map['youtube'] is List) {
           youtube = (map['youtube'] as List).cast<String>();
         }
@@ -193,8 +193,8 @@ class Creator extends BaseModel {
     if (map.containsKey('twitch')) {
       if (map['twitch'] != null) {
         if (map['twitch'] is Map) {
-          Map tmap = map['twitch'];
-          tmap.forEach((k, v) => twitch.add(k));
+          Map<String, dynamic> tmap = map['twitch'] as Map<String, dynamic>;
+          tmap.keys.forEach((String k) => twitch.add(k));
         } else if (map['twitch'] is List) {
           twitch = (map['twitch'] as List).cast<String>();
         }
@@ -204,8 +204,8 @@ class Creator extends BaseModel {
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map cmap = map['creator'];
-          cmap.forEach((k, v) => creator.add(k));
+          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          cmap.keys.forEach((String k) => creator.add(k));
         } else if (map['creator'] is List) {
           creator = (map['creator'] as List).cast<String>();
         }
@@ -215,8 +215,8 @@ class Creator extends BaseModel {
     if (map.containsKey('podcast')) {
       if (map['podcast'] != null) {
         if (map['podcast'] is Map) {
-          Map cmap = map['podcast'];
-          cmap.forEach((k, v) => podcast.add(k));
+          Map<String, dynamic> cmap = map['podcast'] as Map<String, dynamic>;
+          cmap.keys.forEach((String k) => podcast.add(k));
         } else if (map['podcast'] is List) {
           podcast = (map['podcast'] as List).cast<String>();
         }
@@ -227,8 +227,8 @@ class Creator extends BaseModel {
     if (map.containsKey('community')) {
       if (map['community'] != null) {
         if (map['community'] is Map) {
-          Map cmap = map['community'];
-          cmap.forEach((k, v) => community.add(k));
+          Map<String, dynamic> cmap = map['community'] as Map<String, dynamic>;
+          cmap.keys.forEach((String k) => community.add(k));
         } else if (map['community'] is List) {
           community = (map['community'] as List).cast<String>();
         }
@@ -236,17 +236,18 @@ class Creator extends BaseModel {
     }
 
     if (map.containsKey('communityRole')) {
-      communityRole = map['communityRole'];
+      communityRole = map['communityRole'] as String;
     }
 
     if (map.containsKey('channelImages')) {
-      this.images = Images(map['channelImages']);
+      this.images = Images(map['channelImages'] as Map<String, dynamic>);
     }
 
     links = [];
     if (map.containsKey('links')) {
       if (map['links'] is List) {
-        List list = map['links'] as List;
+        List<Map<String, dynamic>> list =
+            map['links'] as List<Map<String, dynamic>>;
         links = [];
         list.forEach((item) => links.add(Link(item)));
       }
@@ -473,7 +474,7 @@ class Creator extends BaseModel {
   @override
   String get id => creatorId;
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'creatorId': creatorId,
         'name': _name,
         'desc': desc,

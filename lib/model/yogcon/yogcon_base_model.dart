@@ -1,14 +1,14 @@
 import 'package:ycapp_foundation/model/base_model.dart';
 
-abstract class YogconBase extends BaseModel{
+abstract class YogconBase extends BaseModel {
   int day;
   String _start;
   String _end;
 
   YogconBase.fromMap(Map map) {
-    _start = map['start'];
-    _end = map['end'];
-    day = map['day'];
+    _start = map['start'] as String;
+    _end = map['end'] as String;
+    day = map['day'] as int;
   }
 
   String get s => _start;
@@ -58,8 +58,8 @@ abstract class YogconBase extends BaseModel{
   String get id => '${day}_$_start';
 
   @override
-  Map toJson() {
-    return {
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
       'start': _start,
       'end': _end,
       'day': day,

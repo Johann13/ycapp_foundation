@@ -28,22 +28,23 @@ class TwitchNotification {
   );
 
   factory TwitchNotification.fromMap(Map<String, dynamic> map) {
-    String id = map["id"];
-    String channelId = map["channelId"];
-    String channelName = map["channelName"];
-    String gameId = map["gameId"];
-    String gameName = map["gameName"];
-    String gameBoxArtUrl = map["gameBoxArtUrl"];
-    String streamTitle = map["streamTitle"];
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(map["date"]));
+    String id = map["id"] as String;
+    String channelId = map["channelId"] as String;
+    String channelName = map["channelName"] as String;
+    String gameId = map["gameId"] as String;
+    String gameName = map["gameName"] as String;
+    String gameBoxArtUrl = map["gameBoxArtUrl"] as String;
+    String streamTitle = map["streamTitle"] as String;
+    DateTime date =
+        DateTime.fromMillisecondsSinceEpoch(int.parse(map["date"] as String));
     DateTime startedAt;
     if (map.containsKey("publishedMills")) {
-      startedAt =
-          DateTime.fromMillisecondsSinceEpoch(int.parse(map["publishedMills"]));
+      startedAt = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(map["publishedMills"] as String));
     }
-    String summary = map["summary"] ?? '';
-    String creatorNames = map["creatorNames"] ?? '';
-    List<String> creatorKeys = (map["creatorKeys"] ?? '').split(",");
+    String summary = map["summary"] as String ?? '';
+    String creatorNames = map["creatorNames"] as String ?? '';
+    List<String> creatorKeys = (map["creatorKeys"] as String ?? '').split(",");
     return TwitchNotification(
       id,
       channelId,

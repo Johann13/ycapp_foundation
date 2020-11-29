@@ -37,7 +37,7 @@ class Stats {
   List<StatCount<String>> get lang =>
       _lang.where((c) => c.count >= 0.02).toList();
 
-  List<StatCount> _calcCountry() {
+  List<StatCount<String>> _calcCountry() {
     Map<String, double> map = {};
     _user.forEach((u) {
       if (map.containsKey(u.country)) {

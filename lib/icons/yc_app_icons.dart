@@ -18,8 +18,8 @@ import 'package:flutter/widgets.dart';
 class YcAppIcons {
   YcAppIcons._();
 
-  static const _kFontFam = 'YcAppIcons';
-  static const _kFontPkg = null;
+  static const String _kFontFam = 'YcAppIcons';
+  static const String _kFontPkg = null;
 
   static const IconData jinglejam = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData yogs = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);

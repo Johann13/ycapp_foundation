@@ -57,31 +57,31 @@ class Ad extends BaseModel {
     this.visible,
   );
 
-  Ad.fromMap(Map map)
+  Ad.fromMap(Map<String,dynamic>map)
       : this(
-          map['id'],
-          map['type'] ?? 'other',
-          map['title'],
-          map['subtitle'],
-          ((map['day']) ?? [] as List).cast<int>(),
+          map['id'] as String,
+          map['type'] as String ?? 'other',
+          map['title'] as String,
+          map['subtitle'] as String,
+          ((map['day'] as List) ?? <int>[]).cast<int>(),
           map.containsKey('date') ? getDate(map['date']) : null,
           map.containsKey('showFrom') ? getDate(map['showFrom']) : null,
           map.containsKey('showTo') ? getDate(map['showTo']) : null,
-          map['smallImage'],
-          map['bigImage'],
-          map['link'],
+          map['smallImage'] as String,
+          map['bigImage'] as String,
+          map['link'] as String,
           map.containsKey('color')
               ? Color(
                   int.parse(
-                    map['color'],
+                    map['color'] as String,
                     radix: 16,
                   ),
                 )
               : null,
-          ((map['creator']) ?? [] as List).cast<String>(),
-          ((map['twitch']) ?? [] as List).cast<String>(),
-          ((map['youtube']) ?? [] as List).cast<String>(),
-          map['visible'],
+          (map['creator'] as List<String>) ?? <String>[],
+          (map['twitch'] as List<String>) ?? <String>[],
+          (map['youtube'] as List<String>) ?? <String>[],
+          map['visible'] as bool,
         );
 
   @override
@@ -133,7 +133,7 @@ class Ad extends BaseModel {
   set typeString(String s) => _type = s;
 
   @override
-  Map toJson() => {
+  Map<String,dynamic>toJson() => <String, dynamic>{
         'id': _id,
         'type': _type,
         'title': title,

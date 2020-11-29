@@ -21,10 +21,10 @@ class AdminUser {
     this._canSendNotifications,
   );
 
-  factory AdminUser(Map map) {
-    String id = map['id'];
-    String email = map['email'];
-    bool admin = map['admin'];
+  factory AdminUser(Map<String,dynamic>map) {
+    String id = map['id'] as String;
+    String email = map['email'] as String;
+    bool admin = map['admin'] as bool;
     List<String> creator = [];
     List<String> twitch = [];
     List<String> youtube = [];
@@ -40,19 +40,19 @@ class AdminUser {
 
     bool jjSchedule, mainSchedule;
     if (map.containsKey('jjSchedule')) {
-      jjSchedule = map['jjSchedule'];
+      jjSchedule = map['jjSchedule'] as bool;
     } else {
       jjSchedule = false;
     }
 
     if (map.containsKey('mainSchedule')) {
-      mainSchedule = map['mainSchedule'];
+      mainSchedule = map['mainSchedule'] as bool;
     } else {
       mainSchedule = false;
     }
     bool canSendNotifications;
     if (map.containsKey('canSendNotifications')) {
-      canSendNotifications = map['canSendNotifications'];
+      canSendNotifications = map['canSendNotifications'] as bool;
     } else {
       canSendNotifications = false;
     }
@@ -79,7 +79,7 @@ class AdminUser {
 class Access {
   List<CreatorAccess> creator;
 
-  Access(Map map) {}
+  Access(Map<String,dynamic>map) {}
 }
 
 class CreatorAccess {

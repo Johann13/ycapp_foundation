@@ -1,6 +1,6 @@
 import 'package:ycapp_foundation/model/base_model.dart';
 
-abstract class Channel extends BaseModel{
+abstract class Channel extends BaseModel {
   String channelId;
   String name;
   bool visible;
@@ -19,50 +19,51 @@ abstract class Channel extends BaseModel{
 
   int type;
 
-  Channel.fromMap(Map map) {
+  Channel.fromMap(Map<String,dynamic> map) {
     if (map.containsKey('channelId')) {
-      channelId = map['channelId'];
+      channelId = map['channelId'] as String;
     }
     if (map.containsKey('type')) {
-      type = map['type'];
+      type = map['type'] as int;
     }
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
     if (map.containsKey('visible')) {
-      visible = map['visible'];
+      visible = map['visible'] as bool;
     }
     if (map.containsKey('url')) {
-      url = map['url'];
+      url = map['url'] as String;
     }
     if (map.containsKey('youtubeCounter')) {
-      this.relatedYoutubeChannelCounter = map['youtubeCounter'];
+      this.relatedYoutubeChannelCounter = map['youtubeCounter'] as int;
     } else {
       this.relatedYoutubeChannelCounter = 0;
     }
     if (map.containsKey('twitchCounter')) {
-      this.relatedTwitchChannelCounter = map['twitchCounter'];
+      this.relatedTwitchChannelCounter = map['twitchCounter'] as int;
     } else {
       this.relatedTwitchChannelCounter = 0;
     }
     if (map.containsKey('creatorCounter')) {
-      this.creatorCounter = map['creatorCounter'];
+      this.creatorCounter = map['creatorCounter'] as int;
     } else {
       this.creatorCounter = 0;
     }
     if (map.containsKey('mainCreator')) {
       if (map['mainCreator'] != null) {
-        mainCreator = MainCreator.fromMap(map['mainCreator']);
+        mainCreator =
+            MainCreator.fromMap(map['mainCreator'] as Map<String, dynamic>);
       }
     }
     youtube = [];
     if (map.containsKey('youtube')) {
       if (map['youtube'] != null) {
         if (map['youtube'] is Map) {
-          Map ymap = map['youtube'];
-          ymap.forEach((k, v) => youtube.add(k));
+          Map<String, dynamic> ymap = map['youtube'] as Map<String, dynamic>;
+          ymap.keys.forEach((String k) => youtube.add(k));
         } else if (map['youtube'] is List) {
-          youtube = (map['youtube'] as List).cast<String>();
+          youtube = map['youtube'] as List<String>;
         }
       }
     }
@@ -71,10 +72,10 @@ abstract class Channel extends BaseModel{
     if (map.containsKey('twitch')) {
       if (map['twitch'] != null) {
         if (map['twitch'] is Map) {
-          Map tmap = map['twitch'];
-          tmap.forEach((k, v) => twitch.add(k));
-        } else if (map['twitch'] is List) {
-          twitch = (map['twitch'] as List).cast<String>();
+          Map<String, dynamic> tmap = map['twitch'] as Map<String, dynamic>;
+          tmap.keys.forEach((k) => twitch.add(k));
+        } else if (map['twitch'] is List<String>) {
+          twitch = map['twitch'] as List<String>;
         }
       }
     }
@@ -82,10 +83,10 @@ abstract class Channel extends BaseModel{
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map cmap = map['creator'];
-          cmap.forEach((k, v) => creator.add(k));
+          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          cmap.keys.forEach((k) => creator.add(k));
         } else if (map['creator'] is List) {
-          creator = (map['creator'] as List).cast<String>();
+          creator = map['creator'] as List<String>;
         }
       }
     }
@@ -93,10 +94,10 @@ abstract class Channel extends BaseModel{
     if (map.containsKey('podcast')) {
       if (map['podcast'] != null) {
         if (map['podcast'] is Map) {
-          Map cmap = map['podcast'];
-          cmap.forEach((k, v) => podcast.add(k));
+          Map<String, dynamic> cmap = map['podcast'] as Map<String, dynamic>;
+          cmap.keys.forEach((k) => podcast.add(k));
         } else if (map['podcast'] is List) {
-          podcast = (map['podcast'] as List).cast<String>();
+          podcast = map['podcast'] as List<String>;
         }
       }
     }
@@ -105,10 +106,10 @@ abstract class Channel extends BaseModel{
     if (map.containsKey('community')) {
       if (map['community'] != null) {
         if (map['community'] is Map) {
-          Map cmap = map['community'];
-          cmap.forEach((k, v) => community.add(k));
+          Map<String, dynamic> cmap = map['community'] as Map<String, dynamic>;
+          cmap.keys.forEach((k) => community.add(k));
         } else if (map['community'] is List) {
-          community = (map['community'] as List).cast<String>();
+          community = map['community'] as List<String>;
         }
       }
     }
@@ -117,38 +118,38 @@ abstract class Channel extends BaseModel{
   @override
   String get id => channelId;
 
-  Map toJson() => {
-    'channelId': channelId,
-    'name': name,
-    'visible': visible,
-    'url': url,
-    'creatorCounter': creatorCounter,
-    'relatedYoutubeChannelCounter': relatedYoutubeChannelCounter,
-    'relatedTwitchChannelCounter': relatedTwitchChannelCounter,
-    'mainCreator': mainCreator?.toJson(),
-    'creator': creator,
-    'youtube': youtube,
-    'twitch': twitch,
-    'type': type,
-  };
+  Map<String,dynamic> toJson() => <String, dynamic>{
+        'channelId': channelId,
+        'name': name,
+        'visible': visible,
+        'url': url,
+        'creatorCounter': creatorCounter,
+        'relatedYoutubeChannelCounter': relatedYoutubeChannelCounter,
+        'relatedTwitchChannelCounter': relatedTwitchChannelCounter,
+        'mainCreator': mainCreator?.toJson(),
+        'creator': creator,
+        'youtube': youtube,
+        'twitch': twitch,
+        'type': type,
+      };
 }
 
 class MainCreator {
   String creatorId;
   String name;
 
-  MainCreator.fromMap(Map<dynamic, dynamic> map) {
+  MainCreator.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('creatorId')) {
-      creatorId = map['creatorId'];
+      creatorId = map['creatorId'] as String;
     }
 
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
   }
 
-  Map toJson() => {
-    'creatorId': creatorId,
-    'name': name,
-  };
+  Map<String,dynamic> toJson() => <String, dynamic>{
+        'creatorId': creatorId,
+        'name': name,
+      };
 }

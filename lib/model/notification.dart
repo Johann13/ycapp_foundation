@@ -12,7 +12,7 @@ class InboxNotification {
   DateTime date;
   DateTime published;
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'id': id,
         'type': type.index,
         'channelId': channelId,
@@ -25,10 +25,10 @@ class InboxNotification {
 
   InboxNotification.fromMap(Map map) {
     if (map.containsKey('channelId')) {
-      channelId = map['channelId'];
+      channelId = map['channelId'] as String;
     }
     if (map.containsKey('channelName')) {
-      channelName = map['channelName'];
+      channelName = map['channelName'] as String;
     }
     if (map.containsKey('date')) {
       date = getDate(map['date']);
@@ -41,14 +41,14 @@ class InboxNotification {
       published = getDate(map['published']);
     }
     if (map.containsKey('title')) {
-      title = map['title'];
+      title = map['title'] as String;
     }
     if (map.containsKey('videoId')) {
-      videoId = map['videoId'];
+      videoId = map['videoId'] as String;
     }
     if (map.containsKey('type')) {
       if (map['type'] is String) {
-        String t = map['type'];
+        String t = map['type'] as String;
         if (t == 'TwitchChannelLive') {
           type = InboxNotificationType.Twitch;
         } else if (t == 'NewYoutubeVideo') {
@@ -57,7 +57,7 @@ class InboxNotification {
           type = InboxNotificationType.Other;
         }
       } else if (map['type'] is int) {
-        type = InboxNotificationType.values[map['type']];
+        type = InboxNotificationType.values[map['type'] as int];
       } else {
         type = InboxNotificationType.Other;
       }
@@ -65,7 +65,7 @@ class InboxNotification {
       type = InboxNotificationType.Other;
     }
     if (map.containsKey('id')) {
-      id = map['id'];
+      id = map['id'] as String;
     } else {
       id = '${date.millisecondsSinceEpoch}';
     }
@@ -86,27 +86,26 @@ class CustomNotification {
 
   CustomNotification.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('id')) {
-      print(map['id']);
-      id = map['id'];
+      id = map['id'] as int;
     }
     if (map.containsKey('interval')) {
-      interval = NotificationInterval.values[map['interval']];
+      interval = NotificationInterval.values[map['interval'] as int];
     }
     if (map.containsKey('type')) {
-      type = ChannelType.values[map['type']];
+      type = ChannelType.values[map['type'] as int];
     }
     if (map.containsKey('title')) {
-      title = map['title'];
+      title = map['title'] as String;
     }
     if (map.containsKey('body')) {
-      body = map['body'];
+      body = map['body'] as String;
     }
     if (map.containsKey('date')) {
       print(map['date']);
-      date = DateTime.fromMillisecondsSinceEpoch(map['date']);
+      date = DateTime.fromMillisecondsSinceEpoch(map['date'] as int);
     }
     if (map.containsKey('channelId')) {
-      channelId = map['channelId'];
+      channelId = map['channelId'] as String;
     }
   }
 
@@ -168,7 +167,7 @@ class CustomNotification {
       );
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'interval': interval.index,
       'type': type.index,

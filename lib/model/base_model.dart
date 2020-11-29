@@ -1,5 +1,5 @@
 abstract class BaseModel {
   String get id;
 
-  Map toJson();
+  Map<String,dynamic>toJson();
 }

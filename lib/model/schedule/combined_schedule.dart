@@ -10,7 +10,7 @@ class CombinedSchedule {
     return days.map((d) => d.toMap()).toList();
   }
 
-  CombinedSchedule.fromMap(List list) {
+  CombinedSchedule.fromMap(List<Map<String, Map<String, dynamic>>> list) {
     days = list.map((d) => CombinedScheduleDay.fromMap(d)).toList();
   }
 
@@ -149,12 +149,12 @@ class CombinedScheduleDay {
   int day;
 
   Map<String, dynamic> toMap() {
-    return slotMap.map((i, v) {
-      return MapEntry<String, dynamic>('$i', v.toMap());
-    });
+    return <String, dynamic>{
+      for (int i in slotMap.keys) '$i': slotMap[i].toMap(),
+    };
   }
 
-  CombinedScheduleDay.fromMap(Map<String, dynamic> map) {
+  CombinedScheduleDay.fromMap(Map<String, Map<String, dynamic>> map) {
     slotMap = map.map((i, v) {
       return MapEntry<int, CombinedScheduleSlot>(
           int.parse(i), CombinedScheduleSlot.fromMap(v));
@@ -230,10 +230,6 @@ class CombinedScheduleDay {
     while (now.weekday != day) {
       now = now.add(Duration(days: 1));
     }
-
-    DateTime dstStart = DateTime.utc(now.year, 3, 31);
-    DateTime dstEnd = DateTime.utc(now.year, 10, 27);
-    bool dst = now.isAfter(dstStart) && now.isBefore(dstEnd);
     for (int i = min; i <= max; i++) {
       DateTime d = DateTime.utc(now.year, now.month, now.day, i, 0, 0, 0);
       list.add(d);
@@ -247,17 +243,17 @@ class CombinedScheduleSlot {
   int hour;
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String,dynamic>{
       'slots': slots.map((s) => s.toMap()).toList(),
       'hour': hour,
     };
   }
 
   CombinedScheduleSlot.fromMap(Map<String, dynamic> map) {
-    _slots = (map['slots'] as List)
-        .map((s) => ScheduleSlot.fromMap(s['twitchId'], s))
+    _slots = (map['slots'] as List<Map<String, dynamic>>)
+        .map((s) => ScheduleSlot.fromMap(s['twitchId'] as String, s))
         .toList();
-    hour = map['hour'];
+    hour = map['hour'] as int;
   }
 
   CombinedScheduleSlot(this.hour);

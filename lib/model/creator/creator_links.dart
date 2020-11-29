@@ -1,4 +1,3 @@
-
 final List<String> linkTypes = [
   'merch',
   'twitter',
@@ -25,7 +24,6 @@ final Map<String, String> linkNames = {
   'other': 'Other',
 };
 
-
 class Link {
   String name;
   String type;
@@ -33,13 +31,13 @@ class Link {
 
   Link(Map map) {
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
     if (map.containsKey('type')) {
-      type = map['type'];
+      type = map['type'] as String;
     }
     if (map.containsKey('url')) {
-      url = map['url'];
+      url = map['url'] as String;
     }
   }
 
@@ -58,9 +56,10 @@ class Link {
         return '';
     }
   }
-  Map toJson() => {
-    'name': name,
-    'type': type,
-    'url': url,
-  };
+
+  Map<String,dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'type': type,
+        'url': url,
+      };
 }

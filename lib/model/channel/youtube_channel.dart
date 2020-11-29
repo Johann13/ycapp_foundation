@@ -10,35 +10,37 @@ class YoutubeChannel extends Channel {
   DateTime updatedStatsAt;
   Video latestVideo;
 
-  YoutubeChannel.fromMap(Map map) : super.fromMap(map) {
+  YoutubeChannel.fromMap(Map<String, dynamic> map) : super.fromMap(map) {
     if (map.containsKey('youtubeId')) {
-      youtubeId = map['youtubeId'];
+      youtubeId = map['youtubeId'] as String;
     }
     if (map.containsKey('updatedStatsAt')) {
       updatedStatsAt = getDate(map['updatedStatsAt']);
     }
     if (map.containsKey('snippet')) {
       if (map['snippet'] != null) {
-        snippet = Snippet.fromMap(map['snippet']);
+        snippet = Snippet.fromMap(map['snippet'] as Map<String, dynamic>);
       }
     }
     if (map.containsKey('statistics')) {
       if (map['statistics'] != null) {
-        statistics = Statistics.fromMap(map['statistics']);
+        statistics =
+            Statistics.fromMap(map['statistics'] as Map<String, dynamic>);
       }
     }
     if (map.containsKey('brandingSettings')) {
-      brandingSettings = BrandingSettings.fromMap(map['brandingSettings']);
+      brandingSettings = BrandingSettings.fromMap(
+          map['brandingSettings'] as Map<String, dynamic>);
     }
     if (map.containsKey('latestVideo')) {
       if (map['latestVideo'] != null) {
-        latestVideo = Video.fromMap(map['latestVideo']);
+        latestVideo = Video.fromMap(map['latestVideo'] as Map<String, dynamic>);
       }
     }
   }
 
-  Map toJson() => super.toJson()
-    ..addAll({
+  Map<String, dynamic> toJson() => super.toJson()
+    ..addAll(<String, dynamic>{
       'youtubeId': youtubeId,
       'snippet': snippet.toJson(),
       'statistics': statistics.toJson(),
@@ -57,23 +59,23 @@ class Statistics {
 
   Statistics.fromMap(Map<dynamic, dynamic> map) : assert(map != null) {
     if (map.containsKey('commentCount')) {
-      commentCount = map['commentCount'];
+      commentCount = map['commentCount'] as int;
     }
     if (map.containsKey('hiddenSubscriberCount')) {
-      hiddenSubscriberCount = map['hiddenSubscriberCount'];
+      hiddenSubscriberCount = map['hiddenSubscriberCount'] as bool;
     }
     if (map.containsKey('subscriberCount')) {
-      subscriberCount = map['subscriberCount'];
+      subscriberCount = map['subscriberCount'] as int;
     }
     if (map.containsKey('videoCount')) {
-      videoCount = map['videoCount'];
+      videoCount = map['videoCount'] as int;
     }
     if (map.containsKey('viewCount')) {
-      viewCount = map['viewCount'];
+      viewCount = map['viewCount'] as int;
     }
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'commentCount': commentCount,
         'hiddenSubscriberCount': hiddenSubscriberCount,
         'subscriberCount': subscriberCount,
@@ -90,24 +92,26 @@ class Snippet {
   Thumb mediumThumb;
   Thumb highThumb;
 
-  Snippet.fromMap(Map map) {
+  Snippet.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('desc')) {
-      this.desc = map['desc'];
+      this.desc = map['desc'] as String;
     }
     if (map.containsKey('publishedAt')) {
       this.publishedAt = getDate(map['publishedAt']);
     }
     if (map.containsKey('thumbnails')) {
-      Map tmap = map['thumbnails'];
+      Map<String, dynamic> tmap = map['thumbnails'] as Map<String, dynamic>;
       if (tmap != null) {
-        this.defaultThumb = Thumb.fromMap(tmap['default']);
-        this.mediumThumb = Thumb.fromMap(tmap['medium']);
-        this.highThumb = Thumb.fromMap(tmap['high']);
+        this.defaultThumb =
+            Thumb.fromMap(tmap['default'] as Map<String, dynamic>);
+        this.mediumThumb =
+            Thumb.fromMap(tmap['medium'] as Map<String, dynamic>);
+        this.highThumb = Thumb.fromMap(tmap['high'] as Map<String, dynamic>);
       }
     }
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'desc': desc,
         'thumbnails': {
           'default': defaultThumb.toJson(),
@@ -120,13 +124,13 @@ class Snippet {
 class BrandingSettings {
   BImage bImage;
 
-  BrandingSettings.fromMap(Map map) {
+  BrandingSettings.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('image')) {
-      bImage = BImage.fromMap(map['image']);
+      bImage = BImage.fromMap(map['image'] as Map<String, dynamic>);
     }
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'image': bImage.toJson(),
       };
 }
@@ -152,59 +156,62 @@ class BImage {
 
   String trackingImageUrl;
 
-  BImage.fromMap(Map map) {
+  BImage.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('bannerImageUrl')) {
-      bannerImageUrl = map['bannerImageUrl'];
+      bannerImageUrl = map['bannerImageUrl'] as String;
     }
 
     if (map.containsKey('bannerMobileExtraHdImageUrl')) {
-      bannerMobileExtraHdImageUrl = map['bannerMobileExtraHdImageUrl'];
+      bannerMobileExtraHdImageUrl =
+          map['bannerMobileExtraHdImageUrl'] as String;
     }
     if (map.containsKey('bannerMobileHdImageUrl')) {
-      bannerMobileHdImageUrl = map['bannerMobileHdImageUrl'];
+      bannerMobileHdImageUrl = map['bannerMobileHdImageUrl'] as String;
     }
     if (map.containsKey('bannerMobileImageUrl')) {
-      bannerMobileImageUrl = map['bannerMobileImageUrl'];
+      bannerMobileImageUrl = map['bannerMobileImageUrl'] as String;
     }
     if (map.containsKey('bannerMobileLowImageUrl')) {
-      bannerMobileLowImageUrl = map['bannerMobileLowImageUrl'];
+      bannerMobileLowImageUrl = map['bannerMobileLowImageUrl'] as String;
     }
     if (map.containsKey('bannerMobileMediumHdImageUrl')) {
-      bannerMobileMediumHdImageUrl = map['bannerMobileMediumHdImageUrl'];
+      bannerMobileMediumHdImageUrl =
+          map['bannerMobileMediumHdImageUrl'] as String;
     }
 
     if (map.containsKey('bannerTabletExtraHdImageUrl')) {
-      bannerTabletExtraHdImageUrl = map['bannerTabletExtraHdImageUrl'];
+      bannerTabletExtraHdImageUrl =
+          map['bannerTabletExtraHdImageUrl'] as String;
     }
     if (map.containsKey('bannerTabletHdImageUrl')) {
-      bannerTabletHdImageUrl = map['bannerTabletHdImageUrl'];
+      bannerTabletHdImageUrl = map['bannerTabletHdImageUrl'] as String;
     }
     if (map.containsKey('bannerTabletImageUrl')) {
-      bannerTabletImageUrl = map['bannerTabletImageUrl'];
+      bannerTabletImageUrl = map['bannerTabletImageUrl'] as String;
     }
     if (map.containsKey('bannerTabletLowImageUrl')) {
-      bannerTabletLowImageUrl = map['bannerTabletLowImageUrl'];
+      bannerTabletLowImageUrl = map['bannerTabletLowImageUrl'] as String;
     }
 
     if (map.containsKey('bannerTvHighImageUrl')) {
-      bannerImageUrl = map['bannerTvHighImageUrl'];
+      bannerImageUrl = map['bannerTvHighImageUrl'] as String;
     }
     if (map.containsKey('bannerTvImageUrl')) {
-      bannerTvImageUrl = map['bannerTvImageUrl'];
+      bannerTvImageUrl = map['bannerTvImageUrl'] as String;
     }
     if (map.containsKey('bannerTvLowImageUrl')) {
-      bannerTvLowImageUrl = map['bannerTvLowImageUrl'];
+      bannerTvLowImageUrl = map['bannerTvLowImageUrl'] as String;
     }
     if (map.containsKey('bannerTvMediumImageUrl')) {
-      bannerTvMediumImageUrl = map['bannerTvMediumImageUrl'];
+      bannerTvMediumImageUrl = map['bannerTvMediumImageUrl'] as String;
     }
 
     if (map.containsKey('trackingImageUrl')) {
-      trackingImageUrl = map['trackingImageUrl'];
+      trackingImageUrl = map['trackingImageUrl'] as String;
     }
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'bannerMobileExtraHdImageUrl': bannerMobileExtraHdImageUrl,
         'bannerMobileHdImageUrl': bannerMobileHdImageUrl,
         'bannerMobileImageUrl': bannerMobileImageUrl,
@@ -262,43 +269,52 @@ class Video {
 
   //Use only if you call the youtube api directly
   Video.fromJson(Map<String, dynamic> map) {
-    videoId = map['id']['videoId'];
-    youtubeId = map['snippet']['channelId'];
-    title = map['snippet']['title'];
-    desc = map['snippet']['description'];
+    videoId = map['id']['videoId'] as String;
+    youtubeId = map['snippet']['channelId'] as String;
+    title = map['snippet']['title'] as String;
+    desc = map['snippet']['description'] as String;
     publishedAt = getDate(map['snippet']['publishedAt']);
-    defaultThumb = Thumb.fromMap(map['snippet']['thumbnails']['default']);
-    mediumThumb = Thumb.fromMap(map['snippet']['thumbnails']['medium']);
-    highThumb = Thumb.fromMap(map['snippet']['thumbnails']['high']);
-    maxresThumb = Thumb.fromMap(map['snippet']['thumbnails']['maxresThumb']);
-    standardThumb =
-        Thumb.fromMap(map['snippet']['thumbnails']['standardThumb']);
+    defaultThumb = Thumb.fromMap(
+        map['snippet']['thumbnails']['default'] as Map<String, dynamic>);
+    mediumThumb = Thumb.fromMap(
+        map['snippet']['thumbnails']['medium'] as Map<String, dynamic>);
+    highThumb = Thumb.fromMap(
+        map['snippet']['thumbnails']['high'] as Map<String, dynamic>);
+    maxresThumb = Thumb.fromMap(
+        map['snippet']['thumbnails']['maxresThumb'] as Map<String, dynamic>);
+    standardThumb = Thumb.fromMap(
+        map['snippet']['thumbnails']['standardThumb'] as Map<String, dynamic>);
   }
 
-  Video.fromMap(Map<dynamic, dynamic> map) {
-    this.youtubeId = map['youtubeId'];
-    this.videoId = map['videoId'];
-    this.title = map['title'];
-    this.desc = map['desc'];
-    this.publishedAt = DateTime.fromMillisecondsSinceEpoch(map['publishedAt']);
-    duration = parseTime(map['duration']);
+  Video.fromMap(Map<String, dynamic> map) {
+    this.youtubeId = map['youtubeId'] as String;
+    this.videoId = map['videoId'] as String;
+    this.title = map['title'] as String;
+    this.desc = map['desc'] as String;
+    this.publishedAt =
+        DateTime.fromMillisecondsSinceEpoch(map['publishedAt'] as int);
+    duration = parseTime(map['duration'] as String);
 
     if (map.containsKey('thumbnails')) {
-      Map tmap = map['thumbnails'];
+      Map<String, dynamic> tmap = map['thumbnails'] as Map<String, dynamic>;
       if (tmap.containsKey('default')) {
-        this.defaultThumb = Thumb.fromMap(tmap['default']);
+        this.defaultThumb =
+            Thumb.fromMap(tmap['default'] as Map<String, dynamic>);
       }
       if (tmap.containsKey('high')) {
-        this.highThumb = Thumb.fromMap(tmap['high']);
+        this.highThumb = Thumb.fromMap(tmap['high'] as Map<String, dynamic>);
       }
       if (tmap.containsKey('maxres')) {
-        this.maxresThumb = Thumb.fromMap(tmap['maxres']);
+        this.maxresThumb =
+            Thumb.fromMap(tmap['maxres'] as Map<String, dynamic>);
       }
       if (tmap.containsKey('medium')) {
-        this.mediumThumb = Thumb.fromMap(tmap['medium']);
+        this.mediumThumb =
+            Thumb.fromMap(tmap['medium'] as Map<String, dynamic>);
       }
       if (tmap.containsKey('standard')) {
-        this.standardThumb = Thumb.fromMap(tmap['standard']);
+        this.standardThumb =
+            Thumb.fromMap(tmap['standard'] as Map<String, dynamic>);
       }
     }
     if (map.containsKey('creator')) {
@@ -427,7 +443,7 @@ class Video {
     }.toString();
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'youtubeId': youtubeId,
         'videoId': videoId,
         'title': title,
@@ -446,13 +462,13 @@ class Thumb {
   Thumb.fromMap(Map<dynamic, dynamic> map) {
     if (map != null) {
       if (map.containsKey('url')) {
-        url = map['url'];
+        url = map['url'] as String;
       }
       if (map.containsKey('height')) {
-        height = map['height'];
+        height = map['height'] as int;
       }
       if (map.containsKey('width')) {
-        width = map['width'];
+        width = map['width'] as int;
       }
     }
   }
@@ -463,5 +479,6 @@ class Thumb {
     return {url: url, height: height, width: width}.toString();
   }
 
-  Map toJson() => {'url': url, 'height': height, 'width': width};
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'url': url, 'height': height, 'width': width};
 }

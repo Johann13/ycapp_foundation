@@ -1,5 +1,6 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'package:http/http.dart' as http;
 
 enum Sort {
   New,
@@ -62,9 +63,13 @@ class RedditPosts {
     http.Response resp = await http.get(url);
 
     String body = resp.body;
-    var json = convert.json.decode(body);
-    List children = json['data']['children'];
-    List<Post> posts = children.map((e) => Post.fromMap(e['data'])).toList();
+    Map<String, dynamic> json =
+        convert.json.decode(body) as Map<String, dynamic>;
+    List<Map<String, dynamic>> children =
+        json['data']['children'] as List<Map<String, dynamic>>;
+    List<Post> posts = children
+        .map((e) => Post.fromMap(e['data'] as Map<String, dynamic>))
+        .toList();
     return RedditPosts(posts);
   }
 }
@@ -82,16 +87,16 @@ class Post {
     this.url,
   );
 
-  Post.fromMap(Map map)
+  Post.fromMap(Map<String, dynamic> map)
       : this(
-          map['title'],
-          map['selftext'],
+          map['title'] as String,
+          map['selftext'] as String,
           (map['selftext_html'] as String)
                   ?.replaceAll("<!-- SC_OFF -->", '')
                   ?.replaceAll("<!-- SC_ON -->", '')
                   ?.replaceAll("&lt;!-- SC_OFF --&gt;", '')
                   ?.replaceAll(";&lt;!-- SC_ON --&gt", '') ??
               '',
-          map['url'],
+          map['url'] as String,
         );
 }

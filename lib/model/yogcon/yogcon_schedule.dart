@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ycapp_foundation/model/base_model.dart';
-import 'package:ycapp_foundation/ui/y_colors.dart';
 import 'package:ycapp_foundation/model/yogcon/yogcon_base_model.dart';
+import 'package:ycapp_foundation/ui/y_colors.dart';
 
-class YCSchedule extends BaseModel{
+class YCSchedule extends BaseModel {
   YCDay sa;
   YCDay su;
 
@@ -15,23 +15,20 @@ class YCSchedule extends BaseModel{
   }
 
   List<YCSlot> get slots => [
-  ...
-  sa.slots,
-  ...
-  su.slots,
-  ];
+        ...sa.slots,
+        ...su.slots,
+      ];
 
   @override
   String get id => 'ycschedule';
 
   @override
-  Map toJson() {
-    return {
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
       'sa': sa.toJson(),
       'su': su.toJson(),
     };
   }
-
 }
 
 class YCDay extends YogconContainer<YCSlot> {
@@ -55,8 +52,7 @@ class YCDay extends YogconContainer<YCSlot> {
   YCSlot get last => slots.last;
 
   @override
-  int get length =>
-      max(main.length, max(out.length, mini.length));
+  int get length => max(main.length, max(out.length, mini.length));
 
   @override
   DateTime get start => first.start;
@@ -74,8 +70,8 @@ class YCDay extends YogconContainer<YCSlot> {
   String get id => 'ycscheduleday${first.day}';
 
   @override
-  Map toJson() {
-    return {
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
       'slots': slots.map((s) => s.toJson()).toList(),
     };
   }
@@ -87,31 +83,31 @@ class YCSlot extends YogconBase {
   List<String> creator;
   int stage;
 
-  YCSlot.fromMap(Map map) :super.fromMap(map) {
-    title = map['title'];
-    subTitle = map['subTitle'];
+  YCSlot.fromMap(Map map) : super.fromMap(map) {
+    title = map['title'] as String;
+    subTitle = map['subTitle'] as String;
     creator = [];
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map cmap = map['creator'];
-          cmap.forEach((k, v) => creator.add(k));
+          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          cmap.keys.forEach((String k) => creator.add(k));
         } else if (map['creator'] is List) {
           creator = (map['creator'] as List).cast<String>();
         }
       }
     }
-    stage = map['stage'];
+    stage = map['stage'] as int;
   }
 
   bool get isMainStage => stage == 1;
 
   bool get isOutdoorStage => stage == 2;
 
-  String get twitchId{
-    if(isMainStage){
+  String get twitchId {
+    if (isMainStage) {
       return '20786541';
-    }else if(isOutdoorStage){
+    } else if (isOutdoorStage) {
       return '416016021';
     }
     return null;
@@ -130,9 +126,9 @@ class YCSlot extends YogconBase {
   String get id => '${day}_${stage}_$s';
 
   @override
-  Map toJson() {
+  Map<String, dynamic> toJson() {
     return super.toJson()
-      ..addAll({
+      ..addAll(<String, dynamic>{
         'title': title,
         'subTitle': subTitle,
         'creator': creator,

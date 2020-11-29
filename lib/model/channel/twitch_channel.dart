@@ -8,19 +8,24 @@ class TwitchChannel extends Channel {
   TwitchGame game;
   TwitchGame prevGame;
 
-  TwitchChannel.fromMap(Map map)
-      : twitchData = TwitchData.fromMap(map['twitchData']),
+  TwitchChannel.fromMap(Map<String, dynamic> map)
+      : twitchData =
+            TwitchData.fromMap(map['twitchData'] as Map<String, dynamic>),
         super.fromMap(map) {
     map['stream'] == null
         ? stream = null
-        : stream = TwitchStream.fromMap(map['stream']);
+        : stream = TwitchStream.fromMap(map['stream'] as Map<String, dynamic>);
     map['prevStream'] == null
         ? prevStream = null
-        : prevStream = TwitchStream.fromMap(map['prevStream']);
-    map['game'] == null ? game = null : game = TwitchGame.fromMap(map['game']);
+        : prevStream =
+            TwitchStream.fromMap(map['prevStream'] as Map<String, dynamic>);
+    map['game'] == null
+        ? game = null
+        : game = TwitchGame.fromMap(map['game'] as Map<String, dynamic>);
     map['prevGame'] == null
         ? prevGame = null
-        : prevGame = TwitchGame.fromMap(map['prevGame']);
+        : prevGame =
+            TwitchGame.fromMap(map['prevGame'] as Map<String, dynamic>);
   }
 
   bool get isMainChannel => channelId == '20786541';
@@ -136,7 +141,7 @@ class TwitchChannel extends Channel {
     return '${toMap()}';
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'twitchData': twitchData?.toMap(),
         'stream': stream?.toMap(),
         'prevStream': prevStream?.toMap(),
@@ -144,8 +149,8 @@ class TwitchChannel extends Channel {
         'prevGame': prevGame?.toMap(),
       };
 
-  Map toJson() => super.toJson()
-    ..addAll({
+  Map<String,dynamic> toJson() => super.toJson()
+    ..addAll(<String, dynamic>{
       'twitchData': twitchData?.toMap(),
       'stream': stream?.toMap(),
       'prevStream': prevStream?.toMap(),
@@ -172,16 +177,16 @@ class TwitchData {
       return;
     }
     if (map.containsKey('twitchId')) {
-      this.twitchId = map['twitchId'];
+      this.twitchId = map['twitchId'] as String;
     }
     if (map.containsKey('name')) {
-      this.name = map['name'];
+      this.name = map['name'] as String;
     }
     if (map.containsKey('displayName')) {
-      this.displayName = map['displayName'];
+      this.displayName = map['displayName'] as String;
     }
     if (map.containsKey('description')) {
-      this.description = map['description'];
+      this.description = map['description'] as String;
     }
     if (map.containsKey('createdAt')) {
       this.createdAt = getDate(map['createdAt']);
@@ -190,19 +195,19 @@ class TwitchData {
       this.updatedAt = getDate(map['updatedAt']);
     }
     if (map.containsKey('profileImage')) {
-      this.profileImage = map['profileImage'];
+      this.profileImage = map['profileImage'] as String;
     }
     if (map.containsKey('offlineImage')) {
-      this.offlineImage = map['offlineImage'];
+      this.offlineImage = map['offlineImage'] as String;
     }
     if (map.containsKey('profileBanner')) {
-      this._profileBanner = map['profileBanner'];
+      this._profileBanner = map['profileBanner'] as String;
     }
     if (map.containsKey('viewCount')) {
-      this.viewCount = map['viewCount'];
+      this.viewCount = map['viewCount'] as int;
     }
     if (map.containsKey('followerCount')) {
-      this.followerCount = map['followerCount'];
+      this.followerCount = map['followerCount'] as int;
     }
   }
 
@@ -214,7 +219,7 @@ class TwitchData {
     }
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'twitchId': twitchId,
         'name': name,
         'displayName': displayName,
@@ -242,25 +247,25 @@ class TwitchStream {
   TwitchStream.fromMap(Map map) {
     if (map == null) return;
     if (map.containsKey('streamId')) {
-      streamId = map['streamId'];
+      streamId = map['streamId'] as String;
     }
     if (map.containsKey('gameId')) {
-      gameId = map['gameId'];
+      gameId = map['gameId'] as String;
     }
     if (map.containsKey('startedAt')) {
       startedAt = getDate(map['startedAt']);
     }
     if (map.containsKey('thumbnail')) {
-      _thumbnail = map['thumbnail'];
+      _thumbnail = map['thumbnail'] as String;
     }
     if (map.containsKey('title')) {
-      title = map['title'];
+      title = map['title'] as String;
     }
     if (map.containsKey('twitchId')) {
-      twitchId = map['twitchId'];
+      twitchId = map['twitchId'] as String;
     }
     if (map.containsKey('viewerCount')) {
-      viewerCount = map['viewerCount'];
+      viewerCount = map['viewerCount'] as int;
     }
     if (map.containsKey('endedAt')) {
       _endedAt = getDate(map['endedAt']);
@@ -293,8 +298,8 @@ class TwitchStream {
     DateTime today = DateTime.now();
     Duration duration = today.difference(startedAt);
 
-    int min = duration.inMinutes.remainder(60);
-    int h = duration.inHours.remainder(24);
+    int min = duration.inMinutes.remainder(60).toInt();
+    int h = duration.inHours.remainder(24).toInt();
 
     if (h == 0) {
       return '$min mins ago';
@@ -308,7 +313,7 @@ class TwitchStream {
     return "0$n";
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'streamId': streamId,
         'gameId': gameId,
         'startedAt': startedAt?.millisecondsSinceEpoch,
@@ -328,17 +333,17 @@ class TwitchGame {
   TwitchGame.fromMap(Map map) {
     if (map == null) return;
     if (map.containsKey('box_art_url')) {
-      thumbnail = map['box_art_url'];
+      thumbnail = map['box_art_url'] as String;
     }
     if (map.containsKey('id')) {
-      gameId = map['id'];
+      gameId = map['id'] as String;
     }
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'thumbnail': thumbnail,
         'gameId': gameId,
         'name': name,
@@ -357,17 +362,17 @@ class TwitchVideo {
 
   TwitchVideo.fromMap(Map map) {
     if (map.containsKey('duration')) {
-      this.duration = parseTime(map['duration']);
+      this.duration = parseTime(map['duration'] as String);
     }
     if (map.containsKey('publishedAt'))
-      this.publishedAt =
-          getDate(map['publishedAt']);
-    if (map.containsKey('thumbnail')) this._thumbnail = map['thumbnail'];
-    if (map.containsKey('title')) this.title = map['title'];
-    if (map.containsKey('twitchId')) this.twitchId = map['twitchId'];
-    if (map.containsKey('url')) this.url = map['url'];
-    if (map.containsKey('videoId')) this.videoId = map['videoId'];
-    if (map.containsKey('viewCount')) this.viewCount = map['viewCount'];
+      this.publishedAt = getDate(map['publishedAt']);
+    if (map.containsKey('thumbnail'))
+      this._thumbnail = map['thumbnail'] as String;
+    if (map.containsKey('title')) this.title = map['title'] as String;
+    if (map.containsKey('twitchId')) this.twitchId = map['twitchId'] as String;
+    if (map.containsKey('url')) this.url = map['url'] as String;
+    if (map.containsKey('videoId')) this.videoId = map['videoId'] as String;
+    if (map.containsKey('viewCount')) this.viewCount = map['viewCount'] as int;
   }
 
   String getThumbnail(int w, int h) {
@@ -422,7 +427,7 @@ class TwitchVideo {
         .replaceAll(',', ':');
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => <String, dynamic>{
         'duration': duration,
         'publishedAt': publishedAt.millisecondsSinceEpoch,
         'thumbnail': _thumbnail,
@@ -445,14 +450,14 @@ class TwitchClip {
 
   TwitchClip.fromMap(Map map) {
     if (map.containsKey('publishedAt'))
-      this.publishedAt =
-          getDate(map['publishedAt']);
-    if (map.containsKey('thumbnail')) this._thumbnail = map['thumbnail'];
-    if (map.containsKey('title')) this.title = map['title'];
-    if (map.containsKey('twitchId')) this.twitchId = map['twitchId'];
-    if (map.containsKey('url')) this.url = map['url'];
-    if (map.containsKey('videoId')) this.videoId = map['videoId'];
-    if (map.containsKey('viewCount')) this.viewCount = map['viewCount'];
+      this.publishedAt = getDate(map['publishedAt']);
+    if (map.containsKey('thumbnail'))
+      this._thumbnail = map['thumbnail'] as String;
+    if (map.containsKey('title')) this.title = map['title'] as String;
+    if (map.containsKey('twitchId')) this.twitchId = map['twitchId'] as String;
+    if (map.containsKey('url')) this.url = map['url'] as String;
+    if (map.containsKey('videoId')) this.videoId = map['videoId'] as String;
+    if (map.containsKey('viewCount')) this.viewCount = map['viewCount'] as int;
   }
 
   String getThumbnail(int w, int h) {
@@ -514,10 +519,10 @@ class TwitchFollows {
 
   TwitchFollows(Map map) {
     if (map.containsKey('total')) {
-      total = map['total'];
+      total = map['total'] as int;
     }
     if (map.containsKey('data')) {
-      List l = map['data'];
+      List<Map<String, dynamic>> l = map['data'] as List<Map<String, dynamic>>;
       list = l.map((d) => TwitchChannelFollow(d)).toList();
     }
   }
@@ -532,19 +537,19 @@ class TwitchChannelFollow {
 
   TwitchChannelFollow(Map map) {
     if (map.containsKey('id')) {
-      id = map['id'];
+      id = map['id'] as String;
     }
     if (map.containsKey('mainCreatorId')) {
-      mainCreatorId = map['mainCreatorId'];
+      mainCreatorId = map['mainCreatorId'] as String;
     }
     if (map.containsKey('name')) {
-      name = map['name'];
+      name = map['name'] as String;
     }
     if (map.containsKey('date')) {
       date = getDate(map['mills']);
     }
     if (map.containsKey('diff')) {
-      diff = map['diff'];
+      diff = map['diff'] as int;
     }
   }
 }

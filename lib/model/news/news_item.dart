@@ -1,4 +1,3 @@
-
 import 'package:ycapp_foundation/model/date_util.dart';
 import 'package:ycapp_foundation/model/news/news_link.dart';
 
@@ -25,33 +24,34 @@ class News {
 
   News.fromMap(Map map) {
     if (map.containsKey('id')) {
-      id = map['id'];
+      id = map['id'] as String;
     }
     if (map.containsKey('title')) {
-      title = map['title'];
+      title = map['title'] as String;
     }
     if (map.containsKey('shortText')) {
-      _shortText = map['shortText'];
+      _shortText = map['shortText'] as String;
     }
     if (map.containsKey('text')) {
-      text = map['text'];
+      text = map['text'] as String;
     }
     if (map.containsKey('image')) {
-      image = map['image'];
+      image = map['image'] as String;
     }
     if (map.containsKey('smallImage')) {
-      smallImage = map['smallImage'];
+      smallImage = map['smallImage'] as String;
     }
     if (map.containsKey('links')) {
-      List list = map['links'];
+      List<Map<String, dynamic>> list =
+          map['links'] as List<Map<String, dynamic>>;
       links = list.map((l) => NewsLink.fromMap(l)).toList();
     }
     if (map.containsKey('createdAt')) {
       createdAt = getDate(map['createdAt']);
     }
     if (map.containsKey('tags')) {
-      List list = map['tags'];
-      _tags = list.cast<String>();
+      List<String> list = map['tags'] as List<String>;
+      _tags = list;
     } else {
       _tags = [];
     }
