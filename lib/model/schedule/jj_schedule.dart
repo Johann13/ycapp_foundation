@@ -141,7 +141,7 @@ class JJSlot {
 
     try {
       if (map.containsKey('color')) {
-        dynamic c = map['color'] as String;
+        dynamic c = map['color'];
         if (c is String) {
           if (c.isEmpty) {
             _color.add(YColors.primaryColor[700]);
