@@ -120,7 +120,8 @@ class JJSlot {
       creator = [];
       if (map.containsKey('creator')) {
         print(map['creator'].runtimeType);
-        List<String> l = map['creator'] as List<String>;
+        List<String> l =
+            (map['creator'] as List).map((dynamic e) => e as String).toList();
         creator = l;
       }
 
@@ -161,7 +162,9 @@ class JJSlot {
           }
         } else if (map['color'] is List) {
           print('map[color]: ${map['color'].runtimeType}');
-          List<String> hex = (map['color'] as List).cast<String>();
+          List<String> hex =
+              (map['color'] as List).map((dynamic e) => e as String).toList();
+          ;
           if (hex != null) {
             if (hex.isNotEmpty) {
               _color = hex
@@ -223,7 +226,13 @@ class JJSlot {
       if (map.containsKey('youtubeVODs')) {
         print('map[youtubeVODs]: ${map['youtubeVODs'].runtimeType}');
         List<Map<String, dynamic>> l =
-            map['youtubeVODs'] as List<Map<String, dynamic>>;
+            (map['youtubeVODs'] as List).map((dynamic e) {
+          Map m = e as Map;
+          return <String, dynamic>{
+            'name': m['name'],
+            'url': m['url'],
+          };
+        }).toList();
         youtubeVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Youtube VOD');
@@ -232,7 +241,13 @@ class JJSlot {
       }
       if (map.containsKey('twitchVODs')) {
         List<Map<String, dynamic>> l =
-            map['twitchVODs'] as List<Map<String, dynamic>>;
+            (map['twitchVODs'] as List).map((dynamic e) {
+          Map m = e as Map;
+          return <String, dynamic>{
+            'name': m['name'],
+            'url': m['url'],
+          };
+        }).toList();
         twitchVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Twitch VOD');
@@ -241,7 +256,13 @@ class JJSlot {
       }
       if (map.containsKey('highlights')) {
         List<Map<String, dynamic>> l =
-            map['highlights'] as List<Map<String, dynamic>>;
+            (map['highlights'] as List).map((dynamic e) {
+          Map m = e as Map;
+          return <String, dynamic>{
+            'name': m['name'],
+            'url': m['url'],
+          };
+        }).toList();
         highlights.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Highlight VOD');
