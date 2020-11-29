@@ -119,8 +119,9 @@ class JJSlot {
       }
       creator = [];
       if (map.containsKey('creator')) {
+        print(map['creator'].runtimeType);
         List<String> l = map['creator'] as List<String>;
-        creator = l.cast<String>();
+        creator = l;
       }
 
       if (map.containsKey('length')) {
