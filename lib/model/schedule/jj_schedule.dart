@@ -160,6 +160,7 @@ class JJSlot {
             }
           }
         } else if (map['color'] is List) {
+          print('map[color]: ${map['color'].runtimeType}');
           List<String> hex = (map['color'] as List).cast<String>();
           if (hex != null) {
             if (hex.isNotEmpty) {
@@ -220,6 +221,7 @@ class JJSlot {
         twitchUrl = '';
       }
       if (map.containsKey('youtubeVODs')) {
+        print('map[youtubeVODs]: ${map['youtubeVODs'].runtimeType}');
         List<Map<String, dynamic>> l =
             map['youtubeVODs'] as List<Map<String, dynamic>>;
         youtubeVODs.clear();
