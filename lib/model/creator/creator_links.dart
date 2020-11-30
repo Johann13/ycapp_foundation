@@ -29,7 +29,7 @@ class Link {
   String type;
   String url;
 
-  Link(Map map) {
+  Link(Map<String, dynamic> map) {
     if (map.containsKey('name')) {
       name = map['name'] as String;
     }

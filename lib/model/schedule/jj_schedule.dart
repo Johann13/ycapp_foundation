@@ -82,11 +82,11 @@ class JJSlot {
         'height': height,
       };
 
-  JJSlot.fromMap(this.year, Map map) {
+  JJSlot.fromMap(this.year, Map<String, dynamic> map) {
     setValues(map);
   }
 
-  void setValues(Map map) {
+  void setValues(Map<String, dynamic> map) {
     try {
       if (map.containsKey('start')) {
         print('map[start]: ${map['start'].runtimeType}');

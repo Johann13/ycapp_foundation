@@ -21,7 +21,7 @@ class TwitchImages {
   String banner;
   String profile;
 
-  TwitchImages(Map map) {
+  TwitchImages(Map<String, dynamic> map) {
     this.banner = map['banner'] as String;
     this.profile = map['profile'] as String;
   }
@@ -56,7 +56,7 @@ class YoutubeImage {
   String medium;
   String high;
 
-  YoutubeImage(Map map) {
+  YoutubeImage(Map<String, dynamic> map) {
     this.low = map['low'] as String;
     this.medium = map['medium'] as String;
     this.high = map['high'] as String;

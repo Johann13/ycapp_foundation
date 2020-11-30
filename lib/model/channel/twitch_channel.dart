@@ -524,7 +524,7 @@ class TwitchFollows {
   int total;
   List<TwitchChannelFollow> list;
 
-  TwitchFollows(Map map) {
+  TwitchFollows(Map<String, dynamic> map) {
     if (map.containsKey('total')) {
       total = map['total'] as int;
     }
@@ -544,7 +544,7 @@ class TwitchChannelFollow {
   DateTime date;
   int diff;
 
-  TwitchChannelFollow(Map map) {
+  TwitchChannelFollow(Map<String, dynamic> map) {
     if (map.containsKey('id')) {
       id = map['id'] as String;
     }

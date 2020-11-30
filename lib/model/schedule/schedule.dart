@@ -105,7 +105,7 @@ class ScheduleSlot {
     this._color = [color ?? const Color(0xff2752ae)];
   }
 
-  ScheduleSlot.fromMap(String twitchId, Map map) {
+  ScheduleSlot.fromMap(String twitchId, Map<String, dynamic> map) {
     if (map.containsKey('twitchId')) {
       this.twitchId = map['twitchId'] as String;
     } else {
