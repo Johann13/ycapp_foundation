@@ -343,7 +343,8 @@ class Video {
       }
     }
     if (map.containsKey('creator')) {
-      creator = (map['creator'] as List).cast<String>().map((id) {
+      creator =
+          (map['creator'] as List).map((dynamic e) => e as String).map((id) {
         if (id.startsWith('-')) {
           return id;
         } else {
