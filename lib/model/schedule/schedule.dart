@@ -106,130 +106,171 @@ class ScheduleSlot {
   }
 
   ScheduleSlot.fromMap(String twitchId, Map<String, dynamic> map) {
-    if (map.containsKey('twitchId')) {
-      this.twitchId = map['twitchId'] as String;
-    } else {
-      this.twitchId = twitchId;
-    }
-    if (map.containsKey('title')) {
-      title = map['title'] as String;
-    }
-    if (map.containsKey('notificationTitle')) {
-      notificationTitle = map['notificationTitle'] as String;
-    } else {
-      notificationTitle = '';
-    }
-    if (map.containsKey('game')) {
-      game = map['game'] as String;
-    } else {
-      game = '';
-    }
-    if (map.containsKey('subTitle')) {
-      subTitle = map['subTitle'] as String;
-    }
-    if (map.containsKey('creator')) {
-      List<String> l =
-          (map['creator'] as List).map((dynamic e) => e as String).toList();
-      creator = l;
-    }
-    if (map.containsKey('color')) {
-      dynamic c = map['color'] as String;
-      if (c is String) {
-        if (c.isEmpty) {
-          _color.add(YColors.primaryColor[700]);
-        } else {
-          if (c.contains(',')) {
-            _color = c.split(',').map((s) {
-              if (s.startsWith('#')) {
-                s = s.substring(1);
-              }
-              if (s.length == 6) {
-                s = 'ff$s';
-              }
-              return Color(int.parse(s.toLowerCase(), radix: 16));
-            }).toList();
-          } else {
-            _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
-          }
-        }
+    try {
+      if (map.containsKey('twitchId')) {
+        this.twitchId = map['twitchId'] as String;
       } else {
-        _color = (c as List<dynamic>).map((dynamic v) {
-          if (v is int) {
-            return Color(v);
-          } else if (v is String) {
-            return Color(int.parse(v.toLowerCase(), radix: 16));
-          } else {
-            return YColors.primaryColor[700];
-          }
-        }).toList();
+        this.twitchId = twitchId;
       }
-    } else {
-      _color.add(YColors.primaryColor[700]);
-    }
-    if (map.containsKey('border')) {
-      String c = map['border'] as String;
-      if (c != null) {
-        if (c.startsWith('#')) {
-          c = c.substring(1);
-        }
-        if (c.length < 8) {
-          c = 'ff$c';
-        }
-        if (c.length == 8) {
-          this._border = Color(int.parse(c, radix: 16));
-        }
+      if (map.containsKey('title')) {
+        title = map['title'] as String;
       }
+      if (map.containsKey('notificationTitle')) {
+        notificationTitle = map['notificationTitle'] as String;
+      } else {
+        notificationTitle = '';
+      }
+      if (map.containsKey('game')) {
+        game = map['game'] as String;
+      } else {
+        game = '';
+      }
+      if (map.containsKey('subTitle')) {
+        subTitle = map['subTitle'] as String;
+      }
+    } catch (e) {
+      print('base error: $e');
+      print(map);
     }
 
-    if (map.containsKey('day')) {
-      day = map['day'] as int;
-    }
-    if (map.containsKey('slot')) {
-      slot = map['slot'] as int;
-    }
-    if (map.containsKey('length')) {
-      length = map['length'] as int;
-    }
-    if (map.containsKey('lengthMin')) {
-      dynamic lengthMin = map['lengthMin'] as String;
-      if (lengthMin is double) {
-        this.lengthMin = lengthMin.toInt();
-      } else if (lengthMin is int) {
-        this.lengthMin = lengthMin;
+    try {
+      if (map.containsKey('creator')) {
+        List<String> l =
+            (map['creator'] as List).map((dynamic e) => e as String).toList();
+        creator = l;
       }
-    } else {
-      lengthMin = length * 60;
+    } catch (e) {
+      print('creator error: $e');
+      print(map);
     }
-    if (map.containsKey('height')) {
-      height = map['height'] as int;
-    } else {
-      height = lengthMin;
+
+    try {
+      if (map.containsKey('color')) {
+        dynamic c = map['color'] as String;
+        if (c is String) {
+          if (c.isEmpty) {
+            _color.add(YColors.primaryColor[700]);
+          } else {
+            if (c.contains(',')) {
+              _color = c.split(',').map((s) {
+                if (s.startsWith('#')) {
+                  s = s.substring(1);
+                }
+                if (s.length == 6) {
+                  s = 'ff$s';
+                }
+                return Color(int.parse(s.toLowerCase(), radix: 16));
+              }).toList();
+            } else {
+              _color.add(Color(int.parse(c.toLowerCase(), radix: 16)));
+            }
+          }
+        } else {
+          _color = (c as List<dynamic>).map((dynamic v) {
+            if (v is int) {
+              return Color(v);
+            } else if (v is String) {
+              return Color(int.parse(v.toLowerCase(), radix: 16));
+            } else {
+              return YColors.primaryColor[700];
+            }
+          }).toList();
+        }
+      } else {
+        _color.add(YColors.primaryColor[700]);
+      }
+    } catch (e) {
+      print('color error: $e');
+      print(map);
     }
-    if (map.containsKey('hour')) {
-      hour = map['hour'] as int;
+
+    try {
+      if (map.containsKey('border')) {
+        String c = map['border'] as String;
+        if (c != null) {
+          if (c.startsWith('#')) {
+            c = c.substring(1);
+          }
+          if (c.length < 8) {
+            c = 'ff$c';
+          }
+          if (c.length == 8) {
+            this._border = Color(int.parse(c, radix: 16));
+          }
+        }
+      }
+    } catch (e) {
+      print('border error: $e');
+      print(map);
     }
-    if (map.containsKey('min')) {
-      min = map['min'] as int;
+
+    try {
+      if (map.containsKey('day')) {
+        day = map['day'] as int;
+      }
+      if (map.containsKey('slot')) {
+        slot = map['slot'] as int;
+      }
+      if (map.containsKey('length')) {
+        length = map['length'] as int;
+      }
+      if (map.containsKey('lengthMin')) {
+        dynamic lengthMin = map['lengthMin'] as String;
+        if (lengthMin is double) {
+          this.lengthMin = lengthMin.toInt();
+        } else if (lengthMin is int) {
+          this.lengthMin = lengthMin;
+        }
+      } else {
+        lengthMin = length * 60;
+      }
+      if (map.containsKey('height')) {
+        height = map['height'] as int;
+      } else {
+        height = lengthMin;
+      }
+      if (map.containsKey('hour')) {
+        hour = map['hour'] as int;
+      }
+      if (map.containsKey('min')) {
+        min = map['min'] as int;
+      }
+      if (map.containsKey('lastUpdate')) {
+        lastUpdate = getDate(map['lastUpdate']);
+      }
+    } catch (e) {
+      print('base error: $e');
+      print(map);
     }
-    if (map.containsKey('lastUpdate')) {
-      lastUpdate = getDate(map['lastUpdate']);
+
+    try {
+      if (map.containsKey('image') &&
+          map.containsKey('imageAuthor') &&
+          map.containsKey('imageAuthorLink')) {
+        scheduleImage = ScheduleImage(
+          map['image'] as String,
+          map['imageAuthorLink'] as String,
+          map['imageAuthor'] as String,
+        );
+      }
+    } catch (e) {
+      print('schedule image error $e');
+      print(map);
     }
-    if (map.containsKey('image') &&
-        map.containsKey('imageAuthor') &&
-        map.containsKey('imageAuthorLink')) {
-      scheduleImage = ScheduleImage(
-        map['image'] as String,
-        map['imageAuthorLink'] as String,
-        map['imageAuthor'] as String,
-      );
-    }
+
     if (map.containsKey('showTitle')) {
       _showTitle = map['showTitle'] as bool;
     }
-    if (map.containsKey('featuredStream') && map['featuredStream'] != null) {
-      featuredStream = FeaturedStream.fromMap(
-        Map<String, dynamic>.from(map['featuredStream'] as Map),
-      );
+
+    try {
+      if (map.containsKey('featuredStream') && map['featuredStream'] != null) {
+        featuredStream = FeaturedStream.fromMap(
+          Map<String, dynamic>.from(map['featuredStream'] as Map),
+        );
+      }
+    } catch (e) {
+      print('featuredStream error: $e');
+      print(map);
     }
   }
 
