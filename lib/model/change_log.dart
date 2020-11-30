@@ -13,7 +13,7 @@ class Changelog {
     this.desc,
   });
 
-  Changelog.fromMap(Map<String,dynamic>map) {
+  Changelog.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('id')) {
       id = map['id'] as int;
     }

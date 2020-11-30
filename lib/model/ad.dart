@@ -57,7 +57,7 @@ class Ad extends BaseModel {
     this.visible,
   );
 
-  Ad.fromMap(Map<String,dynamic>map)
+  Ad.fromMap(Map<String, dynamic> map)
       : this(
           map['id'] as String,
           map['type'] as String ?? 'other',
@@ -133,7 +133,7 @@ class Ad extends BaseModel {
   set typeString(String s) => _type = s;
 
   @override
-  Map<String,dynamic>toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': _id,
         'type': _type,
         'title': title,

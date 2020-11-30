@@ -118,7 +118,9 @@ class Creator extends BaseModel {
       if (map['colorsAppbar'] is List || map['colorsAppbar'] is String) {
         List<String> hex;
         if (map['colorsAppbar'] is List) {
-          hex = (map['colorsAppbar'] as List).cast<String>();
+          hex = (map['colorsAppbar'] as List)
+              .map((dynamic e) => e as String)
+              .toList();
         } else {
           hex = (map['colorsAppbar'] as String).split(',').toList();
         }
@@ -181,10 +183,12 @@ class Creator extends BaseModel {
     if (map.containsKey('youtube')) {
       if (map['youtube'] != null) {
         if (map['youtube'] is Map) {
-          Map<String, dynamic> ymap = map['youtube'] as Map<String, dynamic>;
+          Map<String, dynamic> ymap =
+              Map<String, dynamic>.from(map['youtube'] as Map);
           ymap.keys.forEach((String k) => youtube.add(k));
         } else if (map['youtube'] is List) {
-          youtube = (map['youtube'] as List).cast<String>();
+          youtube =
+              (map['youtube'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -193,10 +197,12 @@ class Creator extends BaseModel {
     if (map.containsKey('twitch')) {
       if (map['twitch'] != null) {
         if (map['twitch'] is Map) {
-          Map<String, dynamic> tmap = map['twitch'] as Map<String, dynamic>;
+          Map<String, dynamic> tmap =
+              Map<String, dynamic>.from(map['twitch'] as Map);
           tmap.keys.forEach((String k) => twitch.add(k));
         } else if (map['twitch'] is List) {
-          twitch = (map['twitch'] as List).cast<String>();
+          twitch =
+              (map['twitch'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -204,10 +210,12 @@ class Creator extends BaseModel {
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['creator'] as Map);
           cmap.keys.forEach((String k) => creator.add(k));
         } else if (map['creator'] is List) {
-          creator = (map['creator'] as List).cast<String>();
+          creator =
+              (map['creator'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -215,10 +223,12 @@ class Creator extends BaseModel {
     if (map.containsKey('podcast')) {
       if (map['podcast'] != null) {
         if (map['podcast'] is Map) {
-          Map<String, dynamic> cmap = map['podcast'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['podcast'] as Map);
           cmap.keys.forEach((String k) => podcast.add(k));
         } else if (map['podcast'] is List) {
-          podcast = (map['podcast'] as List).cast<String>();
+          podcast =
+              (map['podcast'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -227,10 +237,13 @@ class Creator extends BaseModel {
     if (map.containsKey('community')) {
       if (map['community'] != null) {
         if (map['community'] is Map) {
-          Map<String, dynamic> cmap = map['community'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['community'] as Map);
           cmap.keys.forEach((String k) => community.add(k));
         } else if (map['community'] is List) {
-          community = (map['community'] as List).cast<String>();
+          community = (map['community'] as List)
+              .map((dynamic e) => e as String)
+              .toList();
         }
       }
     }
@@ -240,14 +253,17 @@ class Creator extends BaseModel {
     }
 
     if (map.containsKey('channelImages')) {
-      this.images = Images(map['channelImages'] as Map<String, dynamic>);
+      this.images = Images(
+        Map<String, dynamic>.from(map['channelImages'] as Map),
+      );
     }
 
     links = [];
     if (map.containsKey('links')) {
       if (map['links'] is List) {
-        List<Map<String, dynamic>> list =
-            map['links'] as List<Map<String, dynamic>>;
+        List<Map<String, dynamic>> list = (map['links'] as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList();
         links = [];
         list.forEach((item) => links.add(Link(item)));
       }

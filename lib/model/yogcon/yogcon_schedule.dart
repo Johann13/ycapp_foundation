@@ -90,10 +90,12 @@ class YCSlot extends YogconBase {
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['creator'] as Map);
           cmap.keys.forEach((String k) => creator.add(k));
         } else if (map['creator'] is List) {
-          creator = (map['creator'] as List).cast<String>();
+          creator =
+              (map['creator'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }

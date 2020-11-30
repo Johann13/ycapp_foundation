@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/widgets.dart';
 
-class Question{
-
+class Question {
   int pos;
   String type;
   String question;
@@ -17,11 +14,8 @@ class Question{
     @required this.answers,
     this.imageUrl,
   });
-
 }
 
-class Game{
+class Game {
   List<Question> questions;
-
-
 }

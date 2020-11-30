@@ -49,6 +49,7 @@ class JJSlot {
   String subtitle;
   String desc;
   List<Color> _color = [];
+  List<Color> color2 = [];
   Color _border;
   List<String> creator;
   String twitchUrl;
@@ -57,19 +58,19 @@ class JJSlot {
   List<JJVodLink> twitchVODs = [];
   List<JJVodLink> highlights = [];
   int colorOrientation;
-
   int height;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'id': id,
         'slot': slot,
         'day': day,
-        'start': start, //Timestamp.fromDate(start),
+        'start': Timestamp.fromDate(start),
         'length': length,
         'title': title ?? '',
         'subtitle': subtitle ?? '',
         'desc': desc ?? '',
         'color': _color.map((c) => c.value.toRadixString(16)).toList(),
+        'colo2r': color2.map((c) => c.value.toRadixString(16)).toList(),
         'creator': creator,
         'twitchUrl': twitchUrl,
         'youtubeUrl': youtubeUrl,
@@ -78,6 +79,7 @@ class JJSlot {
         'highlights': highlights.map((v) => v.toMap()).toList(),
         'colorOrientation': colorOrientation,
         'border': _border?.value?.toRadixString(16),
+        'height': height,
       };
 
   JJSlot.fromMap(this.year, Map map) {
@@ -87,9 +89,11 @@ class JJSlot {
   void setValues(Map map) {
     try {
       if (map.containsKey('start')) {
+        print('map[start]: ${map['start'].runtimeType}');
         Timestamp timestamp = map['start'] as Timestamp;
+
         start = TZDateTime.from(
-          DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch),
+          timestamp.toDate(),
           getLocation('Europe/London'),
         );
       }
@@ -127,6 +131,7 @@ class JJSlot {
 
       if (map.containsKey('length')) {
         dynamic v = map['length'];
+        print('v:$v');
         if (v is int) {
           length = v.toDouble();
         } else {
@@ -164,7 +169,7 @@ class JJSlot {
           print('map[color]: ${map['color'].runtimeType}');
           List<String> hex =
               (map['color'] as List).map((dynamic e) => e as String).toList();
-          ;
+
           if (hex != null) {
             if (hex.isNotEmpty) {
               _color = hex
@@ -208,8 +213,29 @@ class JJSlot {
       if (map.containsKey('colorOrientation')) {
         colorOrientation = map['colorOrientation'] as int ?? 1;
       }
+
+      if (map.containsKey('color2')) {
+        List<String> hex =
+            (map['color2'] as List).map((dynamic e) => e as String).toList();
+        List<Color> l = hex
+            .map((c) {
+              if (c.startsWith('#')) {
+                c = c.substring(1);
+              }
+              if (c.length < 8) {
+                c = 'ff$c';
+              }
+              if (c.length == 8) {
+                return Color(int.parse(c, radix: 16));
+              }
+              return null;
+            })
+            .where((c) => c != null)
+            .toList();
+        color2 = l;
+      }
     } catch (e) {
-      print('color error $e');
+      print('color error2 $e');
     }
 
     try {
@@ -225,14 +251,9 @@ class JJSlot {
       }
       if (map.containsKey('youtubeVODs')) {
         print('map[youtubeVODs]: ${map['youtubeVODs'].runtimeType}');
-        List<Map<String, dynamic>> l =
-            (map['youtubeVODs'] as List).map((dynamic e) {
-          Map m = e as Map;
-          return <String, dynamic>{
-            'name': m['name'],
-            'url': m['url'],
-          };
-        }).toList();
+        List<Map<String, dynamic>> l = (map['youtubeVODs'] as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList();
         youtubeVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Youtube VOD');
@@ -240,14 +261,9 @@ class JJSlot {
         });
       }
       if (map.containsKey('twitchVODs')) {
-        List<Map<String, dynamic>> l =
-            (map['twitchVODs'] as List).map((dynamic e) {
-          Map m = e as Map;
-          return <String, dynamic>{
-            'name': m['name'],
-            'url': m['url'],
-          };
-        }).toList();
+        List<Map<String, dynamic>> l = (map['twitchVODs'] as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList();
         twitchVODs.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Twitch VOD');
@@ -255,14 +271,9 @@ class JJSlot {
         });
       }
       if (map.containsKey('highlights')) {
-        List<Map<String, dynamic>> l =
-            (map['highlights'] as List).map((dynamic e) {
-          Map m = e as Map;
-          return <String, dynamic>{
-            'name': m['name'],
-            'url': m['url'],
-          };
-        }).toList();
+        List<Map<String, dynamic>> l = (map['highlights'] as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList();
         highlights.clear();
         l.forEach((m) {
           JJVodLink vod = JJVodLink.fromMap(m, defaultName: 'Highlight VOD');
@@ -289,8 +300,6 @@ class JJSlot {
       }
     } catch (e) {
       print('height error');
-
-      print('map[height]: ${map['height']} ');
     }
   }
 

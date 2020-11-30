@@ -42,8 +42,9 @@ class News {
       smallImage = map['smallImage'] as String;
     }
     if (map.containsKey('links')) {
-      List<Map<String, dynamic>> list =
-          map['links'] as List<Map<String, dynamic>>;
+      List<Map<String, dynamic>> list = (map['links'] as List)
+          .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+          .toList();
       links = list.map((l) => NewsLink.fromMap(l)).toList();
     }
     if (map.containsKey('createdAt')) {

@@ -2,34 +2,39 @@ import 'package:time_machine/time_machine.dart';
 import 'package:timezone/timezone.dart';
 
 class YDates {
+  YDates._();
+
+  static final String localTimezone = '${DateTimeZone.local}';
+  static final String ukTimezone = 'Europe/London';
+
   static final TZDateTime jjStartUK = TZDateTime(
-    getLocation('Europe/London'),
+    getLocation(ukTimezone),
     DateTime.now().year,
     12,
     1,
     17,
   );
   static final TZDateTime jjEndUK = TZDateTime(
-    getLocation('Europe/London'),
+    getLocation(ukTimezone),
     DateTime.now().year + 1,
     1,
     1,
   );
   static final TZDateTime jjEnd = TZDateTime.from(
     jjEndUK,
-    getLocation('${DateTimeZone.local}'),
+    getLocation(localTimezone),
   );
   static final TZDateTime jjStart = TZDateTime.from(
     jjStartUK,
-    getLocation('${DateTimeZone.local}'),
+    getLocation(localTimezone),
   );
 
   static TZDateTime get now => TZDateTime.now(
-        getLocation('${DateTimeZone.local}'),
+        getLocation(localTimezone),
       );
 
   static TZDateTime get nowUK => TZDateTime.now(
-        getLocation('Europe/London'),
+        getLocation(ukTimezone),
       );
 
   static bool get isJJ {
@@ -38,7 +43,7 @@ class YDates {
 
   static bool get useJJTheme {
     return now.isAfter(TZDateTime(
-          getLocation('Europe/London'),
+          getLocation(ukTimezone),
           DateTime.now().year,
           11,
           24,

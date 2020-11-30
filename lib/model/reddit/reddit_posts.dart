@@ -64,11 +64,12 @@ class RedditPosts {
 
     String body = resp.body;
     Map<String, dynamic> json =
-        convert.json.decode(body) as Map<String, dynamic>;
-    List<Map<String, dynamic>> children =
-        json['data']['children'] as List<Map<String, dynamic>>;
+        Map<String, dynamic>.from(convert.json.decode(body) as Map);
+    List<Map> children = json['data']['children'] as List<Map>;
     List<Post> posts = children
-        .map((e) => Post.fromMap(e['data'] as Map<String, dynamic>))
+        .map((e) => Post.fromMap(
+              Map<String, dynamic>.from(e['data'] as Map),
+            ))
         .toList();
     return RedditPosts(posts);
   }

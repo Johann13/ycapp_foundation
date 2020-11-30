@@ -19,22 +19,28 @@ class YoutubeChannel extends Channel {
     }
     if (map.containsKey('snippet')) {
       if (map['snippet'] != null) {
-        snippet = Snippet.fromMap(map['snippet'] as Map<String, dynamic>);
+        snippet = Snippet.fromMap(
+          Map<String, dynamic>.from(map['snippet'] as Map),
+        );
       }
     }
     if (map.containsKey('statistics')) {
       if (map['statistics'] != null) {
-        statistics =
-            Statistics.fromMap(map['statistics'] as Map<String, dynamic>);
+        statistics = Statistics.fromMap(
+          Map<String, dynamic>.from(map['statistics'] as Map),
+        );
       }
     }
     if (map.containsKey('brandingSettings')) {
       brandingSettings = BrandingSettings.fromMap(
-          map['brandingSettings'] as Map<String, dynamic>);
+        Map<String, dynamic>.from(map['brandingSettings'] as Map),
+      );
     }
     if (map.containsKey('latestVideo')) {
       if (map['latestVideo'] != null) {
-        latestVideo = Video.fromMap(map['latestVideo'] as Map<String, dynamic>);
+        latestVideo = Video.fromMap(
+          Map<String, dynamic>.from(map['latestVideo'] as Map),
+        );
       }
     }
   }
@@ -100,13 +106,18 @@ class Snippet {
       this.publishedAt = getDate(map['publishedAt']);
     }
     if (map.containsKey('thumbnails')) {
-      Map<String, dynamic> tmap = map['thumbnails'] as Map<String, dynamic>;
+      Map<String, dynamic> tmap =
+          Map<String, dynamic>.from(map['thumbnails'] as Map);
       if (tmap != null) {
-        this.defaultThumb =
-            Thumb.fromMap(tmap['default'] as Map<String, dynamic>);
-        this.mediumThumb =
-            Thumb.fromMap(tmap['medium'] as Map<String, dynamic>);
-        this.highThumb = Thumb.fromMap(tmap['high'] as Map<String, dynamic>);
+        this.defaultThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['default'] as Map),
+        );
+        this.mediumThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['medium'] as Map),
+        );
+        this.highThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['high'] as Map),
+        );
       }
     }
   }
@@ -126,7 +137,7 @@ class BrandingSettings {
 
   BrandingSettings.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('image')) {
-      bImage = BImage.fromMap(map['image'] as Map<String, dynamic>);
+      bImage = BImage.fromMap(Map<String, dynamic>.from(map['image'] as Map));
     }
   }
 
@@ -275,15 +286,22 @@ class Video {
     desc = map['snippet']['description'] as String;
     publishedAt = getDate(map['snippet']['publishedAt']);
     defaultThumb = Thumb.fromMap(
-        map['snippet']['thumbnails']['default'] as Map<String, dynamic>);
+      Map<String, dynamic>.from(map['snippet']['thumbnails']['default'] as Map),
+    );
     mediumThumb = Thumb.fromMap(
-        map['snippet']['thumbnails']['medium'] as Map<String, dynamic>);
+      Map<String, dynamic>.from(map['snippet']['thumbnails']['medium'] as Map),
+    );
     highThumb = Thumb.fromMap(
-        map['snippet']['thumbnails']['high'] as Map<String, dynamic>);
+      Map<String, dynamic>.from(map['snippet']['thumbnails']['high'] as Map),
+    );
     maxresThumb = Thumb.fromMap(
-        map['snippet']['thumbnails']['maxresThumb'] as Map<String, dynamic>);
+      Map<String, dynamic>.from(
+          map['snippet']['thumbnails']['maxresThumb'] as Map),
+    );
     standardThumb = Thumb.fromMap(
-        map['snippet']['thumbnails']['standardThumb'] as Map<String, dynamic>);
+      Map<String, dynamic>.from(
+          map['snippet']['thumbnails']['standardThumb'] as Map),
+    );
   }
 
   Video.fromMap(Map<String, dynamic> map) {
@@ -296,25 +314,32 @@ class Video {
     duration = parseTime(map['duration'] as String);
 
     if (map.containsKey('thumbnails')) {
-      Map<String, dynamic> tmap = map['thumbnails'] as Map<String, dynamic>;
+      Map<String, dynamic> tmap =
+          Map<String, dynamic>.from(map['thumbnails'] as Map);
       if (tmap.containsKey('default')) {
-        this.defaultThumb =
-            Thumb.fromMap(tmap['default'] as Map<String, dynamic>);
+        this.defaultThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['default'] as Map),
+        );
       }
       if (tmap.containsKey('high')) {
-        this.highThumb = Thumb.fromMap(tmap['high'] as Map<String, dynamic>);
+        this.highThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['high'] as Map),
+        );
       }
       if (tmap.containsKey('maxres')) {
-        this.maxresThumb =
-            Thumb.fromMap(tmap['maxres'] as Map<String, dynamic>);
+        this.maxresThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['maxres'] as Map),
+        );
       }
       if (tmap.containsKey('medium')) {
-        this.mediumThumb =
-            Thumb.fromMap(tmap['medium'] as Map<String, dynamic>);
+        this.mediumThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['medium'] as Map),
+        );
       }
       if (tmap.containsKey('standard')) {
-        this.standardThumb =
-            Thumb.fromMap(tmap['standard'] as Map<String, dynamic>);
+        this.standardThumb = Thumb.fromMap(
+          Map<String, dynamic>.from(tmap['standard'] as Map),
+        );
       }
     }
     if (map.containsKey('creator')) {

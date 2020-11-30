@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/widgets.dart';
 import 'package:ycapp_foundation/model/creator/creator.dart';
 import 'package:ycapp_foundation/ui/loader/base/y_builder.dart';

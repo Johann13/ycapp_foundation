@@ -3,6 +3,8 @@ import 'package:ycapp_foundation/model/channel/youtube_channel.dart';
 import 'package:ycapp_foundation/model/creator/creator.dart';
 
 class YSort {
+  YSort._();
+
   static int sortTwitchChannelByLastLive(TwitchChannel a, TwitchChannel b) {
     if (a.isLive && b.isLive) {
       if (a.isCinema) {
@@ -50,8 +52,7 @@ class YSort {
   static int sortCreatorByName(Creator a, Creator b) =>
       a.name.toUpperCase().compareTo(b.realName.toUpperCase());
 
-
-  static int sortCreatorByLastLive(Creator a, Creator b){
+  static int sortCreatorByLastLive(Creator a, Creator b) {
     if (a.lastLive != null && b.lastLive != null) {
       return b.lastLive.compareTo(a.lastLive);
     } else if (a.lastLive != null) {

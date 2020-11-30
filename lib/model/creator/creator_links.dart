@@ -57,7 +57,7 @@ class Link {
     }
   }
 
-  Map<String,dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'name': name,
         'type': type,
         'url': url,

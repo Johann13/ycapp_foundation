@@ -19,7 +19,7 @@ abstract class Channel extends BaseModel {
 
   int type;
 
-  Channel.fromMap(Map<String,dynamic> map) {
+  Channel.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('channelId')) {
       channelId = map['channelId'] as String;
     }
@@ -52,15 +52,17 @@ abstract class Channel extends BaseModel {
     }
     if (map.containsKey('mainCreator')) {
       if (map['mainCreator'] != null) {
-        mainCreator =
-            MainCreator.fromMap(map['mainCreator'] as Map<String, dynamic>);
+        Map<String, dynamic> m =
+            Map<String, dynamic>.from(map['mainCreator'] as Map);
+        mainCreator = MainCreator.fromMap(m);
       }
     }
     youtube = [];
     if (map.containsKey('youtube')) {
       if (map['youtube'] != null) {
         if (map['youtube'] is Map) {
-          Map<String, dynamic> ymap = map['youtube'] as Map<String, dynamic>;
+          Map<String, dynamic> ymap =
+              Map<String, dynamic>.from(map['youtube'] as Map);
           ymap.keys.forEach((String k) => youtube.add(k));
         } else if (map['youtube'] is List) {
           youtube = map['youtube'] as List<String>;
@@ -72,7 +74,8 @@ abstract class Channel extends BaseModel {
     if (map.containsKey('twitch')) {
       if (map['twitch'] != null) {
         if (map['twitch'] is Map) {
-          Map<String, dynamic> tmap = map['twitch'] as Map<String, dynamic>;
+          Map<String, dynamic> tmap =
+              Map<String, dynamic>.from(map['twitch'] as Map);
           tmap.keys.forEach((k) => twitch.add(k));
         } else if (map['twitch'] is List<String>) {
           twitch = map['twitch'] as List<String>;
@@ -83,7 +86,8 @@ abstract class Channel extends BaseModel {
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['creator'] as Map);
           cmap.keys.forEach((k) => creator.add(k));
         } else if (map['creator'] is List) {
           creator = map['creator'] as List<String>;
@@ -94,7 +98,8 @@ abstract class Channel extends BaseModel {
     if (map.containsKey('podcast')) {
       if (map['podcast'] != null) {
         if (map['podcast'] is Map) {
-          Map<String, dynamic> cmap = map['podcast'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['podcast'] as Map);
           cmap.keys.forEach((k) => podcast.add(k));
         } else if (map['podcast'] is List) {
           podcast = map['podcast'] as List<String>;
@@ -106,7 +111,8 @@ abstract class Channel extends BaseModel {
     if (map.containsKey('community')) {
       if (map['community'] != null) {
         if (map['community'] is Map) {
-          Map<String, dynamic> cmap = map['community'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['community'] as Map);
           cmap.keys.forEach((k) => community.add(k));
         } else if (map['community'] is List) {
           community = map['community'] as List<String>;
@@ -118,7 +124,7 @@ abstract class Channel extends BaseModel {
   @override
   String get id => channelId;
 
-  Map<String,dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'channelId': channelId,
         'name': name,
         'visible': visible,
@@ -148,7 +154,7 @@ class MainCreator {
     }
   }
 
-  Map<String,dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'creatorId': creatorId,
         'name': name,
       };

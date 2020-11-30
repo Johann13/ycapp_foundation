@@ -8,7 +8,9 @@ class User extends BaseModel {
   UserData data;
 
   User.fromMap(Map<String, dynamic> map) {
-    data = UserData.fromMap(map['data'] as Map<String, dynamic>);
+    data = UserData.fromMap(
+      Map<String, dynamic>.from(map['data'] as Map),
+    );
     _id = map['id'] as String;
     country = map['country'] as String;
     lang = map['language'] as String;

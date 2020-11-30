@@ -243,14 +243,15 @@ class CombinedScheduleSlot {
   int hour;
 
   Map<String, dynamic> toMap() {
-    return <String,dynamic>{
+    return <String, dynamic>{
       'slots': slots.map((s) => s.toMap()).toList(),
       'hour': hour,
     };
   }
 
   CombinedScheduleSlot.fromMap(Map<String, dynamic> map) {
-    _slots = (map['slots'] as List<Map<String, dynamic>>)
+    _slots = (map['slots'] as List)
+        .map((dynamic e) => Map<String, dynamic>.from(e as Map))
         .map((s) => ScheduleSlot.fromMap(s['twitchId'] as String, s))
         .toList();
     hour = map['hour'] as int;

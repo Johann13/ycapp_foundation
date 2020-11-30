@@ -3,8 +3,12 @@ class Images {
   YoutubeImages youtubeImages;
 
   Images(Map<String, dynamic> map) {
-    this.twitchImages = TwitchImages(map['twitch'] as Map<String, dynamic>);
-    this.youtubeImages = YoutubeImages(map['youtube'] as Map<String, dynamic>);
+    this.twitchImages = TwitchImages(
+      Map<String, dynamic>.from(map['twitch'] as Map),
+    );
+    this.youtubeImages = YoutubeImages(
+      Map<String, dynamic>.from(map['youtube'] as Map),
+    );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -22,7 +26,7 @@ class TwitchImages {
     this.profile = map['profile'] as String;
   }
 
-  Map<String,dynamic> toJson() => <String,dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'banner': banner,
         'profile': profile,
       };
@@ -33,11 +37,15 @@ class YoutubeImages {
   YoutubeImage profile;
 
   YoutubeImages(Map<String, dynamic> map) {
-    this.banner = YoutubeImage(map['banner'] as Map<String, dynamic>);
-    this.profile = YoutubeImage(map['profile'] as Map<String, dynamic>);
+    this.banner = YoutubeImage(
+      Map<String, dynamic>.from(map['banner'] as Map),
+    );
+    this.profile = YoutubeImage(
+      Map<String, dynamic>.from(map['profile'] as Map),
+    );
   }
 
-  Map<String,dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'banner': banner.toJson(),
         'profile': profile.toJson(),
       };
@@ -54,7 +62,7 @@ class YoutubeImage {
     this.high = map['high'] as String;
   }
 
-  Map<String,dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'low': low,
         'medium': medium,
         'high': high,

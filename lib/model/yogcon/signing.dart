@@ -6,8 +6,12 @@ class YCSigning extends BaseModel {
   SigningDay su;
 
   YCSigning.fromMap(Map<String, dynamic> map) {
-    sa = SigningDay.fromMap(map['sa'] as Map<String, dynamic>);
-    su = SigningDay.fromMap(map['su'] as Map<String, dynamic>);
+    sa = SigningDay.fromMap(
+      Map<String, dynamic>.from(map['sa'] as Map),
+    );
+    su = SigningDay.fromMap(
+      Map<String, dynamic>.from(map['su'] as Map),
+    );
   }
 
   YCSigning(List<Signing> list) {
@@ -32,8 +36,12 @@ class Signing extends YogconBase {
   SigningTable b;
 
   Signing.fromMap(Map map) : super.fromMap(map) {
-    a = SigningTable.fromMap(map['a'] as Map<String, dynamic>);
-    b = SigningTable.fromMap(map['b'] as Map<String, dynamic>);
+    a = SigningTable.fromMap(
+      Map<String, dynamic>.from(map['a'] as Map),
+    );
+    b = SigningTable.fromMap(
+      Map<String, dynamic>.from(map['b'] as Map),
+    );
   }
 
   @override
@@ -50,7 +58,9 @@ class SigningDay extends YogconContainer<Signing> {
   List<Signing> signings;
 
   SigningDay.fromMap(Map<String, dynamic> map) {
-    signings = (map['signings'] as List<Map<String, dynamic>>)
+    signings = ((map['signings'] as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList())
         .map((m) => Signing.fromMap(m))
         .toList();
   }
@@ -101,10 +111,12 @@ class SigningTable extends BaseModel {
     if (map.containsKey('creator')) {
       if (map['creator'] != null) {
         if (map['creator'] is Map) {
-          Map<String, dynamic> cmap = map['creator'] as Map<String, dynamic>;
+          Map<String, dynamic> cmap =
+              Map<String, dynamic>.from(map['creator'] as Map);
           cmap.keys.forEach((String k) => creator.add(k));
         } else if (map['creator'] is List) {
-          creator = (map['creator'] as List).cast<String>();
+          creator =
+              (map['creator'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }

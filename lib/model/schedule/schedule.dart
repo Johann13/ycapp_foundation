@@ -226,8 +226,9 @@ class ScheduleSlot {
       _showTitle = map['showTitle'] as bool;
     }
     if (map.containsKey('featuredStream') && map['featuredStream'] != null) {
-      featuredStream =
-          FeaturedStream.fromMap(map['featuredStream'] as Map<String, dynamic>);
+      featuredStream = FeaturedStream.fromMap(
+        Map<String, dynamic>.from(map['featuredStream'] as Map),
+      );
     }
   }
 

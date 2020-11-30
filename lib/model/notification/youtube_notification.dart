@@ -55,8 +55,9 @@ class YoutubeNotification {
     String creatorListString = map["creator"] ?? '';
     print(creatorListString);
     List<Map<String, dynamic>> data =
-        json.decode(creatorListString.replaceAll("'", '"'))
-            as List<Map<String, dynamic>>;
+        (json.decode(creatorListString.replaceAll("'", '"')) as List)
+            .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+            .toList();
     List<YoutubeCreator> creatorList = data
         .map((d) => YoutubeCreator(
               d['key'] as String,

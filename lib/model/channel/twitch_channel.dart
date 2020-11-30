@@ -9,23 +9,30 @@ class TwitchChannel extends Channel {
   TwitchGame prevGame;
 
   TwitchChannel.fromMap(Map<String, dynamic> map)
-      : twitchData =
-            TwitchData.fromMap(map['twitchData'] as Map<String, dynamic>),
+      : twitchData = TwitchData.fromMap(
+          Map<String, dynamic>.from(map['twitchData'] as Map),
+        ),
         super.fromMap(map) {
     map['stream'] == null
         ? stream = null
-        : stream = TwitchStream.fromMap(map['stream'] as Map<String, dynamic>);
+        : stream = TwitchStream.fromMap(
+            Map<String, dynamic>.from(map['stream'] as Map),
+          );
     map['prevStream'] == null
         ? prevStream = null
-        : prevStream =
-            TwitchStream.fromMap(map['prevStream'] as Map<String, dynamic>);
+        : prevStream = TwitchStream.fromMap(
+            Map<String, dynamic>.from(map['prevStream'] as Map),
+          );
     map['game'] == null
         ? game = null
-        : game = TwitchGame.fromMap(map['game'] as Map<String, dynamic>);
+        : game = TwitchGame.fromMap(
+            Map<String, dynamic>.from(map['game'] as Map),
+          );
     map['prevGame'] == null
         ? prevGame = null
-        : prevGame =
-            TwitchGame.fromMap(map['prevGame'] as Map<String, dynamic>);
+        : prevGame = TwitchGame.fromMap(
+            Map<String, dynamic>.from(map['prevGame'] as Map),
+          );
   }
 
   bool get isMainChannel => channelId == '20786541';
@@ -149,7 +156,7 @@ class TwitchChannel extends Channel {
         'prevGame': prevGame?.toMap(),
       };
 
-  Map<String,dynamic> toJson() => super.toJson()
+  Map<String, dynamic> toJson() => super.toJson()
     ..addAll(<String, dynamic>{
       'twitchData': twitchData?.toMap(),
       'stream': stream?.toMap(),
@@ -522,7 +529,9 @@ class TwitchFollows {
       total = map['total'] as int;
     }
     if (map.containsKey('data')) {
-      List<Map<String, dynamic>> l = map['data'] as List<Map<String, dynamic>>;
+      List<Map<String, dynamic>> l = (map['data'] as List)
+          .map((dynamic e) => Map<String, dynamic>.from(e as Map))
+          .toList();
       list = l.map((d) => TwitchChannelFollow(d)).toList();
     }
   }
