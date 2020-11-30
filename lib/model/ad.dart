@@ -63,7 +63,9 @@ class Ad extends BaseModel {
           map['type'] as String ?? 'other',
           map['title'] as String,
           map['subtitle'] as String,
-          ((map['day'] as List) ?? <int>[]).cast<int>(),
+          ((map['day'] as List) ?? <int>[])
+              .map((dynamic e) => e as int)
+              .toList(),
           map.containsKey('date') ? getDate(map['date']) : null,
           map.containsKey('showFrom') ? getDate(map['showFrom']) : null,
           map.containsKey('showTo') ? getDate(map['showTo']) : null,
