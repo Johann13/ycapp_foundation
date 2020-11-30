@@ -108,7 +108,12 @@ class ScheduleSlot {
   ScheduleSlot.fromMap(String twitchId, Map<String, dynamic> map) {
     try {
       if (map.containsKey('twitchId')) {
-        this.twitchId = map['twitchId'] as String;
+        dynamic twitchId = map['twitchId'];
+        if (twitchId is int) {
+          this.twitchId = '$twitchId';
+        } else {
+          this.twitchId = map['twitchId'] as String;
+        }
       } else {
         this.twitchId = twitchId;
       }
@@ -130,7 +135,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('base error: $e');
-      print(map);
     }
 
     try {
@@ -141,7 +145,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('creator error: $e');
-      print(map);
     }
 
     try {
@@ -181,7 +184,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('color error: $e');
-      print(map);
     }
 
     try {
@@ -201,7 +203,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('border error: $e');
-      print(map);
     }
 
     try {
@@ -215,7 +216,7 @@ class ScheduleSlot {
         length = map['length'] as int;
       }
       if (map.containsKey('lengthMin')) {
-        dynamic lengthMin = map['lengthMin'] as String;
+        dynamic lengthMin = map['lengthMin'] as int;
         if (lengthMin is double) {
           this.lengthMin = lengthMin.toInt();
         } else if (lengthMin is int) {
@@ -239,8 +240,7 @@ class ScheduleSlot {
         lastUpdate = getDate(map['lastUpdate']);
       }
     } catch (e) {
-      print('base error: $e');
-      print(map);
+      print('base2 error: $e');
     }
 
     try {
@@ -255,7 +255,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('schedule image error $e');
-      print(map);
     }
 
     if (map.containsKey('showTitle')) {
@@ -270,7 +269,6 @@ class ScheduleSlot {
       }
     } catch (e) {
       print('featuredStream error: $e');
-      print(map);
     }
   }
 

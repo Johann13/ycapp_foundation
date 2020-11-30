@@ -89,7 +89,6 @@ class JJSlot {
   void setValues(Map<String, dynamic> map) {
     try {
       if (map.containsKey('start')) {
-        print('map[start]: ${map['start'].runtimeType}');
         Timestamp timestamp = map['start'] as Timestamp;
 
         start = TZDateTime.from(
@@ -123,7 +122,6 @@ class JJSlot {
       }
       creator = [];
       if (map.containsKey('creator')) {
-        print(map['creator'].runtimeType);
         List<String> l =
             (map['creator'] as List).map((dynamic e) => e as String).toList();
         creator = l;
@@ -131,7 +129,6 @@ class JJSlot {
 
       if (map.containsKey('length')) {
         dynamic v = map['length'];
-        print('v:$v');
         if (v is int) {
           length = v.toDouble();
         } else {
@@ -166,7 +163,6 @@ class JJSlot {
             }
           }
         } else if (map['color'] is List) {
-          print('map[color]: ${map['color'].runtimeType}');
           List<String> hex =
               (map['color'] as List).map((dynamic e) => e as String).toList();
 
@@ -250,7 +246,6 @@ class JJSlot {
         twitchUrl = '';
       }
       if (map.containsKey('youtubeVODs')) {
-        print('map[youtubeVODs]: ${map['youtubeVODs'].runtimeType}');
         List<Map<String, dynamic>> l = (map['youtubeVODs'] as List)
             .map((dynamic e) => Map<String, dynamic>.from(e as Map))
             .toList();
