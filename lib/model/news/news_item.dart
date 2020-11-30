@@ -51,7 +51,8 @@ class News {
       createdAt = getDate(map['createdAt']);
     }
     if (map.containsKey('tags')) {
-      List<String> list = map['tags'] as List<String>;
+      List<String> list =
+          (map['tags'] as List).map((dynamic e) => e as String).toList();
       _tags = list;
     } else {
       _tags = [];

@@ -65,7 +65,8 @@ abstract class Channel extends BaseModel {
               Map<String, dynamic>.from(map['youtube'] as Map);
           ymap.keys.forEach((String k) => youtube.add(k));
         } else if (map['youtube'] is List) {
-          youtube = map['youtube'] as List<String>;
+          youtube =
+              (map['youtube'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -77,8 +78,9 @@ abstract class Channel extends BaseModel {
           Map<String, dynamic> tmap =
               Map<String, dynamic>.from(map['twitch'] as Map);
           tmap.keys.forEach((k) => twitch.add(k));
-        } else if (map['twitch'] is List<String>) {
-          twitch = map['twitch'] as List<String>;
+        } else if (map['twitch'] is List) {
+          twitch =
+              (map['twitch'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -90,7 +92,8 @@ abstract class Channel extends BaseModel {
               Map<String, dynamic>.from(map['creator'] as Map);
           cmap.keys.forEach((k) => creator.add(k));
         } else if (map['creator'] is List) {
-          creator = map['creator'] as List<String>;
+          creator =
+              (map['creator'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -102,7 +105,8 @@ abstract class Channel extends BaseModel {
               Map<String, dynamic>.from(map['podcast'] as Map);
           cmap.keys.forEach((k) => podcast.add(k));
         } else if (map['podcast'] is List) {
-          podcast = map['podcast'] as List<String>;
+          podcast =
+              (map['podcast'] as List).map((dynamic e) => e as String).toList();
         }
       }
     }
@@ -115,7 +119,9 @@ abstract class Channel extends BaseModel {
               Map<String, dynamic>.from(map['community'] as Map);
           cmap.keys.forEach((k) => community.add(k));
         } else if (map['community'] is List) {
-          community = map['community'] as List<String>;
+          community = (map['community'] as List)
+              .map((dynamic e) => e as String)
+              .toList();
         }
       }
     }

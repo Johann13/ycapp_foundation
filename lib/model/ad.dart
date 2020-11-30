@@ -80,9 +80,15 @@ class Ad extends BaseModel {
                   ),
                 )
               : null,
-          (map['creator'] as List<String>) ?? <String>[],
-          (map['twitch'] as List<String>) ?? <String>[],
-          (map['youtube'] as List<String>) ?? <String>[],
+          ((map['creator'] as List) ?? <String>[])
+              .map((dynamic e) => e as String)
+              .toList(),
+          ((map['twitch'] as List) ?? <String>[])
+              .map((dynamic e) => e as String)
+              .toList(),
+          ((map['youtube'] as List) ?? <String>[])
+              .map((dynamic e) => e as String)
+              .toList(),
           map['visible'] as bool,
         );
 

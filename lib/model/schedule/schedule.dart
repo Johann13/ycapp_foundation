@@ -128,7 +128,8 @@ class ScheduleSlot {
       subTitle = map['subTitle'] as String;
     }
     if (map.containsKey('creator')) {
-      List<String> l = map['creator'] as List<String>;
+      List<String> l =
+          (map['creator'] as List).map((dynamic e) => e as String).toList();
       creator = l;
     }
     if (map.containsKey('color')) {
