@@ -23,7 +23,7 @@ class InboxNotification {
         'published': published.millisecondsSinceEpoch,
       };
 
-  InboxNotification.fromMap(Map map) {
+  InboxNotification.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('channelId')) {
       channelId = map['channelId'] as String;
     }

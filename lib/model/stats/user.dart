@@ -38,7 +38,7 @@ class UserData extends BaseModel {
   List<String> twitch;
   List<String> youtube;
 
-  UserData.fromMap(Map map) {
+  UserData.fromMap(Map<String, dynamic> map) {
     creator = (map['creator'] as List).map((dynamic e) => e as String).toList();
     twitch = (map['twitch'] as List).map((dynamic e) => e as String).toList();
     youtube = (map['youtube'] as List).map((dynamic e) => e as String).toList();

@@ -47,7 +47,7 @@ class Creator extends BaseModel {
 
   DateTime lastLive;
 
-  Creator.fromMap(Map map) {
+  Creator.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('creatorId')) {
       this.creatorId = map['creatorId'] as String;
     }

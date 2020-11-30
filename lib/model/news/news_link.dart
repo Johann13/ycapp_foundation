@@ -3,7 +3,7 @@ class NewsLink {
   String _url;
   String _route;
 
-  NewsLink.fromMap(Map map) {
+  NewsLink.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('name')) {
       name = map['name'] as String;
     }

@@ -719,7 +719,7 @@ class FeaturedStream {
     this.url = channel.url;
   }
 
-  FeaturedStream.fromMap(Map map) {
+  FeaturedStream.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('twitchId')) {
       twitchId = map['twitchId'] as String;
     }

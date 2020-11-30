@@ -5,7 +5,7 @@ abstract class YogconBase extends BaseModel {
   String _start;
   String _end;
 
-  YogconBase.fromMap(Map map) {
+  YogconBase.fromMap(Map<String, dynamic> map) {
     _start = map['start'] as String;
     _end = map['end'] as String;
     day = map['day'] as int;

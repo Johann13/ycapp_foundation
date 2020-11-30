@@ -35,7 +35,7 @@ class Signing extends YogconBase {
   SigningTable a;
   SigningTable b;
 
-  Signing.fromMap(Map map) : super.fromMap(map) {
+  Signing.fromMap(Map<String, dynamic> map) : super.fromMap(map) {
     a = SigningTable.fromMap(
       Map<String, dynamic>.from(map['a'] as Map),
     );
@@ -105,7 +105,7 @@ class SigningTable extends BaseModel {
   List<String> creator;
   String title;
 
-  SigningTable.fromMap(Map map) {
+  SigningTable.fromMap(Map<String, dynamic> map) {
     title = map['title'] as String;
     creator = [];
     if (map.containsKey('creator')) {

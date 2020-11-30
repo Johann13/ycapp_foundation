@@ -4,7 +4,7 @@ class Poll {
   String url;
   DateTime createdAt;
 
-  Poll.fromMap(Map map) {
+  Poll.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('id')) {
       id = map['id'] as String;
     }

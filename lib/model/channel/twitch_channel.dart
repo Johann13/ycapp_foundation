@@ -179,7 +179,7 @@ class TwitchData {
   int viewCount;
   int followerCount;
 
-  TwitchData.fromMap(Map map) {
+  TwitchData.fromMap(Map<String, dynamic> map) {
     if (map == null) {
       return;
     }
@@ -251,7 +251,7 @@ class TwitchStream {
   String twitchId;
   int viewerCount;
 
-  TwitchStream.fromMap(Map map) {
+  TwitchStream.fromMap(Map<String, dynamic> map) {
     if (map == null) return;
     if (map.containsKey('streamId')) {
       streamId = map['streamId'] as String;
@@ -337,7 +337,7 @@ class TwitchGame {
   String gameId;
   String name;
 
-  TwitchGame.fromMap(Map map) {
+  TwitchGame.fromMap(Map<String, dynamic> map) {
     if (map == null) return;
     if (map.containsKey('box_art_url')) {
       thumbnail = map['box_art_url'] as String;
@@ -367,7 +367,7 @@ class TwitchVideo {
   String videoId;
   int viewCount;
 
-  TwitchVideo.fromMap(Map map) {
+  TwitchVideo.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('duration')) {
       this.duration = parseTime(map['duration'] as String);
     }
@@ -455,7 +455,7 @@ class TwitchClip {
   String videoId;
   int viewCount;
 
-  TwitchClip.fromMap(Map map) {
+  TwitchClip.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('publishedAt'))
       this.publishedAt = getDate(map['publishedAt']);
     if (map.containsKey('thumbnail'))

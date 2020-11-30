@@ -22,7 +22,7 @@ class News {
   List<String> _tags;
   DateTime createdAt;
 
-  News.fromMap(Map map) {
+  News.fromMap(Map<String, dynamic> map) {
     if (map.containsKey('id')) {
       id = map['id'] as String;
     }
