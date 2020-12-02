@@ -70,7 +70,7 @@ class JJSlot {
         'subtitle': subtitle ?? '',
         'desc': desc ?? '',
         'color': _color.map((c) => c.value.toRadixString(16)).toList(),
-        'colo2r': color2.map((c) => c.value.toRadixString(16)).toList(),
+        'color2': color2.map((c) => c.value.toRadixString(16)).toList(),
         'creator': creator,
         'twitchUrl': twitchUrl,
         'youtubeUrl': youtubeUrl,
@@ -229,6 +229,25 @@ class JJSlot {
             .where((c) => c != null)
             .toList();
         color2 = l;
+      } else if (map.containsKey('colo2r')) {
+        List<String> hex =
+            (map['colo2r'] as List).map((dynamic e) => e as String).toList();
+        List<Color> l = hex
+            .map((c) {
+              if (c.startsWith('#')) {
+                c = c.substring(1);
+              }
+              if (c.length < 8) {
+                c = 'ff$c';
+              }
+              if (c.length == 8) {
+                return Color(int.parse(c, radix: 16));
+              }
+              return null;
+            })
+            .where((c) => c != null)
+            .toList();
+        color2 = l;
       }
     } catch (e) {
       print('color error2 $e');
@@ -337,7 +356,38 @@ class JJSlot {
 
   set border(Color color) => _border = color;
 
+  Color get avgColor {
+    if (isStyleV2) {
+      return color2.reduce((a, b) {
+        HSVColor x = HSVColor.fromColor(a);
+        HSVColor y = HSVColor.fromColor(b);
+        return HSVColor.fromAHSV(
+          (x.alpha + y.alpha) / 2,
+          (x.hue + y.hue) / 2,
+          (x.saturation + y.saturation) / 2,
+          (x.value + y.value) / 2,
+        ).toColor();
+      });
+    } else {
+      return _color.reduce((a, b) {
+        HSVColor x = HSVColor.fromColor(a);
+        HSVColor y = HSVColor.fromColor(b);
+        return HSVColor.fromAHSV(
+          (x.alpha + y.alpha) / 2,
+          (x.hue + y.hue) / 2,
+          (x.saturation + y.saturation) / 2,
+          (x.value + y.value) / 2,
+        ).toColor();
+      });
+    }
+  }
+
   Color get textColor {
+    return avgColor.textColor;
+    /*
+    if (isStyleV2) {
+    }
+
     if (_color.length == 1) {
       return _color[0].textColor;
       /*
@@ -348,13 +398,13 @@ class JJSlot {
       }*/
     }
     int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
+        _color.length)
         .floor();
     if (i > 0.5) {
       return Colors.black;
     } else {
       return Colors.white;
-    }
+    }*/
   }
 
   double get textSize {
@@ -377,6 +427,8 @@ class JJSlot {
       return Colors.white30;
     }
   }
+
+  bool get isStyleV2 => color2.length >= 2;
 
   bool get isMultiColor {
     return _color.length > 1;
