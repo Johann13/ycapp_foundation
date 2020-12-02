@@ -32,7 +32,8 @@ class JJVodLink {
     return _name;
   }
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toMap() =>
+      <String, dynamic>{
         'name': _name,
         'url': url,
       };
@@ -60,7 +61,8 @@ class JJSlot {
   int colorOrientation;
   int height;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toMap() =>
+      <String, dynamic>{
         'id': id,
         'slot': slot,
         'day': day,
@@ -123,7 +125,7 @@ class JJSlot {
       creator = [];
       if (map.containsKey('creator')) {
         List<String> l =
-            (map['creator'] as List).map((dynamic e) => e as String).toList();
+        (map['creator'] as List).map((dynamic e) => e as String).toList();
         creator = l;
       }
 
@@ -164,23 +166,23 @@ class JJSlot {
           }
         } else if (map['color'] is List) {
           List<String> hex =
-              (map['color'] as List).map((dynamic e) => e as String).toList();
+          (map['color'] as List).map((dynamic e) => e as String).toList();
 
           if (hex != null) {
             if (hex.isNotEmpty) {
               _color = hex
                   .map((c) {
-                    if (c.startsWith('#')) {
-                      c = c.substring(1);
-                    }
-                    if (c.length < 8) {
-                      c = 'ff$c';
-                    }
-                    if (c.length == 8) {
-                      return Color(int.parse(c, radix: 16));
-                    }
-                    return null;
-                  })
+                if (c.startsWith('#')) {
+                  c = c.substring(1);
+                }
+                if (c.length < 8) {
+                  c = 'ff$c';
+                }
+                if (c.length == 8) {
+                  return Color(int.parse(c, radix: 16));
+                }
+                return null;
+              })
                   .where((c) => c != null)
                   .toList();
             }
@@ -212,39 +214,39 @@ class JJSlot {
 
       if (map.containsKey('color2')) {
         List<String> hex =
-            (map['color2'] as List).map((dynamic e) => e as String).toList();
+        (map['color2'] as List).map((dynamic e) => e as String).toList();
         List<Color> l = hex
             .map((c) {
-              if (c.startsWith('#')) {
-                c = c.substring(1);
-              }
-              if (c.length < 8) {
-                c = 'ff$c';
-              }
-              if (c.length == 8) {
-                return Color(int.parse(c, radix: 16));
-              }
-              return null;
-            })
+          if (c.startsWith('#')) {
+            c = c.substring(1);
+          }
+          if (c.length < 8) {
+            c = 'ff$c';
+          }
+          if (c.length == 8) {
+            return Color(int.parse(c, radix: 16));
+          }
+          return null;
+        })
             .where((c) => c != null)
             .toList();
         color2 = l;
       } else if (map.containsKey('colo2r')) {
         List<String> hex =
-            (map['colo2r'] as List).map((dynamic e) => e as String).toList();
+        (map['colo2r'] as List).map((dynamic e) => e as String).toList();
         List<Color> l = hex
             .map((c) {
-              if (c.startsWith('#')) {
-                c = c.substring(1);
-              }
-              if (c.length < 8) {
-                c = 'ff$c';
-              }
-              if (c.length == 8) {
-                return Color(int.parse(c, radix: 16));
-              }
-              return null;
-            })
+          if (c.startsWith('#')) {
+            c = c.substring(1);
+          }
+          if (c.length < 8) {
+            c = 'ff$c';
+          }
+          if (c.length == 8) {
+            return Color(int.parse(c, radix: 16));
+          }
+          return null;
+        })
             .where((c) => c != null)
             .toList();
         color2 = l;
@@ -340,17 +342,19 @@ class JJSlot {
     return now.isBefore(end) && now.isAfter(start);
   }
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColor[500]
           : YColors.primaryColor[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark
           ? colors[0].lighten(10)
           : colors[0].darken(10);
 
@@ -452,7 +456,10 @@ class JJSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -596,9 +603,24 @@ class JJDay {
   TZDateTime get weekDay {
     TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
     TZDateTime tz =
-        TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
+    TZDateTime(getLocation('Europe/London'), now.year, now.month, day);
     return tz;
   }
+
+  Color get avgColor {
+    return slots.map((s) => s.avgColor).reduce((a, b) {
+      HSVColor x = HSVColor.fromColor(a);
+      HSVColor y = HSVColor.fromColor(b);
+      return HSVColor.fromAHSV(
+        (x.alpha + y.alpha) / 2,
+        (x.hue + y.hue) / 2,
+        (x.saturation + y.saturation) / 2,
+        (x.value + y.value) / 2,
+      ).toColor();
+    });
+  }
+
+  Color get textColor => avgColor.textColor;
 }
 
 class JJWeek {
@@ -654,8 +676,8 @@ class JJSchedule {
 
   JJSchedule._(this.year);
 
-  factory JJSchedule.withMaxWeekSize(
-      String year, List<JJSlot> slots, int maxWeekSize) {
+  factory JJSchedule.withMaxWeekSize(String year, List<JJSlot> slots,
+      int maxWeekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -691,8 +713,8 @@ class JJSchedule {
     return schedule;
   }
 
-  factory JJSchedule.withWeekSize(
-      String year, List<JJSlot> slots, int weekSize) {
+  factory JJSchedule.withWeekSize(String year, List<JJSlot> slots,
+      int weekSize) {
     slots.sort((a, b) {
       if (a.day == b.day) {
         return a.slot - b.slot;
@@ -921,12 +943,13 @@ class JJSchedule {
     return jjWeek;
   }
 
-  List<String> get creator => slots
-      .where((s) => s.creator != null && s.creator.isNotEmpty)
-      .map((s) => s.creator)
-      .expand((element) => element)
-      .toSet()
-      .toList();
+  List<String> get creator =>
+      slots
+          .where((s) => s.creator != null && s.creator.isNotEmpty)
+          .map((s) => s.creator)
+          .expand((element) => element)
+          .toSet()
+          .toList();
 }
 
 class JJTimes {
@@ -935,5 +958,8 @@ class JJTimes {
 
   JJTimes(this.start, this.end);
 
-  int get hours => end.difference(start).inHours;
+  int get hours =>
+      end
+          .difference(start)
+          .inHours;
 }
