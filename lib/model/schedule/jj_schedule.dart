@@ -92,7 +92,6 @@ class JJSlot {
     try {
       if (map.containsKey('start')) {
         Timestamp timestamp = map['start'] as Timestamp;
-
         start = TZDateTime.from(
           timestamp.toDate(),
           getLocation('Europe/London'),

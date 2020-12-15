@@ -140,7 +140,7 @@ class ScheduleSlot {
     try {
       if (map.containsKey('creator')) {
         List<String> l =
-            (map['creator'] as List).map((dynamic e) => e as String).toList();
+        (map['creator'] as List).map((dynamic e) => e as String).toList();
         creator = l;
       }
     } catch (e) {
@@ -149,7 +149,7 @@ class ScheduleSlot {
 
     try {
       if (map.containsKey('color')) {
-        dynamic c = map['color'] as String;
+        dynamic c = map['color'];
         if (c is String) {
           if (c.isEmpty) {
             _color.add(YColors.primaryColor[700]);
@@ -169,15 +169,21 @@ class ScheduleSlot {
             }
           }
         } else {
-          _color = (c as List<dynamic>).map((dynamic v) {
-            if (v is int) {
-              return Color(v);
-            } else if (v is String) {
+          if (c is List<String>) {
+            _color = c.map((String v) {
               return Color(int.parse(v.toLowerCase(), radix: 16));
-            } else {
-              return YColors.primaryColor[700];
-            }
-          }).toList();
+            }).toList();
+          } else {
+            _color = (c as List<dynamic>).map((dynamic v) {
+              if (v is int) {
+                return Color(v);
+              } else if (v is String) {
+                return Color(int.parse(v.toLowerCase(), radix: 16));
+              } else {
+                return YColors.primaryColor[700];
+              }
+            }).toList();
+          }
         }
       } else {
         _color.add(YColors.primaryColor[700]);
@@ -342,6 +348,22 @@ class ScheduleSlot {
     return (hour * 60) + min;
   }
 
+  Color get avgColor {
+    if(_color.length==1){
+      return _color.first;
+    }
+    return _color.reduce((a, b) {
+      HSVColor x = HSVColor.fromColor(a);
+      HSVColor y = HSVColor.fromColor(b);
+      return HSVColor.fromAHSV(
+        (x.alpha + y.alpha) / 2,
+        (x.hue + y.hue) / 2,
+        (x.saturation + y.saturation) / 2,
+        (x.value + y.value) / 2,
+      ).toColor();
+    });
+  }
+
   Color get textColor {
     if (_color.length == 1) {
       double luminance =
@@ -353,19 +375,12 @@ class ScheduleSlot {
         return Colors.white;
       }
     }
-    int i = (_color.map((c) => c.computeLuminance()).reduce((a, b) => a + b) /
-            _color.length)
-        .floor();
-    if (i > 0.5) {
-      return Colors.black;
-    } else {
-      return Colors.white;
-    }
+    return avgColor.textColor;
   }
 
   Color get inverseTextColor {
     //int i = (_color.length / 2).floor();
-    if (mix.computeLuminance() <= 0.5) {
+    if (avgColor.computeLuminance() <= 0.5) {
       return Colors.black26;
     } else {
       return Colors.white30;
@@ -378,7 +393,7 @@ class ScheduleSlot {
 
   Color get color {
     if (_color.length > 1) {
-      return null;
+      return avgColor;
     }
     return _color[0];
   }
@@ -394,7 +409,10 @@ class ScheduleSlot {
   }
 
   Color get mix {
-    double a = 0, r = 0, g = 0, b = 0;
+    double a = 0,
+        r = 0,
+        g = 0,
+        b = 0;
     _color.forEach((c) {
       a += c.alpha;
       r += c.red;
@@ -412,17 +430,19 @@ class ScheduleSlot {
 
   set colors(List<Color> list) => _color = list;
 
-  Color get _b => border != null
-      ? border
-      : isStream
+  Color get _b =>
+      border != null
+          ? border
+          : isStream
           ? YColors.accentColor[500]
           : YColors.primaryColor[500];
 
   Color get borderHighlight => _b.isDark ? _b.lighten(20) : _b.darken(20);
 
-  Color get border => _border != null
-      ? _border
-      : colors[0].isDark
+  Color get border =>
+      _border != null
+          ? _border
+          : colors[0].isDark
           ? colors[0].lighten(10)
           : colors[0].darken(10);
 
@@ -543,7 +563,14 @@ class ScheduleDay {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.slots == null) {
       return dateTime;
     }
@@ -566,7 +593,7 @@ class ScheduleDay {
   TZDateTime get weekDay {
     TZDateTime now = TZDateTime.now(getLocation('Europe/London'));
     TZDateTime tz =
-        TZDateTime(getLocation('Europe/London'), now.year, now.month, now.day);
+    TZDateTime(getLocation('Europe/London'), now.year, now.month, now.day);
     return tz.add(Duration(days: (((day + 1) - tz.weekday) % 7)));
   }
 /*
@@ -622,7 +649,14 @@ class Schedule {
   }
 
   DateTime get lastUpdate {
-    DateTime dateTime = DateTime.utc(2019, 1, 5, 22, 0, 0, 0);
+    DateTime dateTime = DateTime.utc(
+        2019,
+        1,
+        5,
+        22,
+        0,
+        0,
+        0);
     if (this.days.isEmpty) {
       return dateTime;
     }
@@ -638,7 +672,7 @@ class Schedule {
 
   List<SlotTime> get slotTimes {
     List<SlotTime> s =
-        days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
+    days.map((day) => day.slotTimes).expand((s) => s).toSet().toList();
     s.sort((a, b) => a.hashCode - b.hashCode);
     return s;
   }
@@ -651,7 +685,7 @@ class Schedule {
       });
     DateTime first = s.first.slotTime.toUK;
     DateTime last =
-        s.last.slotTime.toUK.add(Duration(minutes: s.last.lengthMin));
+    s.last.slotTime.toUK.add(Duration(minutes: s.last.lengthMin));
     Duration duration = last.difference(first);
     int hm = duration.inMinutes;
     int timeCount = hm ~/ 180;
@@ -665,11 +699,15 @@ class Schedule {
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
               .add(Duration(hours: (i * 3)))
               .toUtc()
-              .add(DateTime.now().timeZoneOffset),
+              .add(DateTime
+              .now()
+              .timeZoneOffset),
           TZDateTime(london, now.year, now.month, now.day, 11, 0)
               .add(Duration(hours: ((i + 1) * 3)))
               .toUtc()
-              .add(DateTime.now().timeZoneOffset),
+              .add(DateTime
+              .now()
+              .timeZoneOffset),
         ),
     ].toList();
     /*
@@ -697,7 +735,8 @@ class Schedule {
     return days.map((d) => d.slots.length).reduce(max);
   }
 
-  ScheduleSlot get currentSlot => slots.firstWhere((s) {
+  ScheduleSlot get currentSlot =>
+      slots.firstWhere((s) {
         return s.isStream;
       }, orElse: () {
         return null;
