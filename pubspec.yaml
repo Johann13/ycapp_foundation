@@ -14,9 +14,9 @@ dependencies:
   tinycolor: ^1.0.3
   webfeed: ^0.6.0
   http: ^0.12.2
-  timezone: ^0.5.9
+  timezone: ^0.6.1
   time_machine: ^0.9.16
-  cloud_firestore: ^0.15.0
+  cloud_firestore: ^0.16.0
   shared_preferences: ^0.5.12+4
 
 dev_dependencies:
